@@ -7,6 +7,7 @@ import 'package:warmindo_admin_ui/pages/detail_order_page/binding/detail_order_b
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/binding/detailproduct_binding.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/view/detailproduct_page.dart';
+import 'package:warmindo_admin_ui/pages/edit_profile_page/binding/edit_profile_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/view/edit_profile_page.dart';
 import 'package:warmindo_admin_ui/pages/home_page/binding/home_binding.dart';
 import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
@@ -20,6 +21,7 @@ import 'package:warmindo_admin_ui/pages/setting_page/binding/settings_binding.da
 import 'package:warmindo_admin_ui/pages/setting_page/view/settings_page.dart';
 import 'package:warmindo_admin_ui/pages/shop_page/binding/shop_binding.dart';
 import 'package:warmindo_admin_ui/pages/shop_page/view/shop_page.dart';
+import 'package:warmindo_admin_ui/pages/splash_page/binding/splash_binding.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/view/splash_page.dart';
 import 'package:warmindo_admin_ui/pages/verify_page/binding/verify_binding.dart';
 import 'package:warmindo_admin_ui/pages/verify_page/view/verify_page.dart';
@@ -102,16 +104,20 @@ class AppPages {
     GetPage(
         name: _Paths.EDIT_PROFILE_PAGE,
         page: () => EditProfilPage(),
-        binding: AddProductBinding(),
+        binding: EditProfileBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
-
-     GetPage(
-     name: _Paths.CHANGEPASS_PAGE,
-     page: () => ChangePassPage(),
-     binding: ChangePassBinding(),
-     transition: Transition.fadeIn,
-     transitionDuration: const Duration(milliseconds: 500)),
-    
+    GetPage(
+        name: _Paths.SPLASH_PAGE,
+        page: () => SplashPage(),
+        binding: SplashBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.CHANGEPASS_PAGE,
+        page: () => ChangePassPage(),
+        binding: ChangePassBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
   ];
 }

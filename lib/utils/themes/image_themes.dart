@@ -1,3 +1,3 @@
-class Images{
-  static const String logo = 'assets/images/logo.png';
+class Images {
+  static const String splashLogo = 'assets/images/Warmindo 1.png';
 }
