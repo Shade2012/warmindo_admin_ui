@@ -66,67 +66,80 @@ class LoginPage extends GetView<LoginController> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Stack(
+ @override
+Widget build(BuildContext context) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  double screenHeight = MediaQuery.of(context).size.height;
+  return Scaffold(
+    resizeToAvoidBottomInset: true, // Mengatur agar konten bisa di-scroll saat keyboard muncul
+    body: SingleChildScrollView(
+      child: Column(
         children: [
-          SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: screenHeight / 10),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20, top: 40),
-                    child: Center(child: Text("Hello", style: helloLoginTextStyle)),
+          Container(
+            margin: EdgeInsets.only(left: 20, right: 20, top: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: screenHeight / 10),
+                Container(
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: Text("Hello", style: helloLoginTextStyle),
                   ),
-                  Center(
-                    child: Text("Selamat datang, kamu", style: welcomeLoginTextStyle),
-                  ),
-                  SizedBox(height: screenHeight / 13),
-                  myText(Icons.person_2_outlined, TextInputType.text, "Username", "Isi Username mu", ctrUsername, isUsername),
-                  Password(Icons.lock_outline, "Password", "Isi Password mu", ctrPassword, isPassword),
-                  GestureDetector(
-                    onTap: () {
-                      if (isPassword(ctrPassword.text) == null && isUsername(ctrUsername.text) == null) {
-                        // All fields are valid, perform login logic
-                      }
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: (isUsername(ctrUsername.text) == null) ? ColorResources.buttonloginColor : Colors.grey,
-                      ),
-                      width: screenWidth,
-                      height: 50,
-                      child: Center(child: Text("Login", style: whiteboldTextStyle)),
+                ),
+                Center(
+                  child: Text("Selamat datang, kamu", style: welcomeLoginTextStyle),
+                ),
+                SizedBox(height: screenHeight / 13),
+                myText(
+                  Icons.person_2_outlined,
+                  TextInputType.text,
+                  "Username",
+                  "Isi Username mu",
+                  ctrUsername,
+                  isUsername,
+                ),
+                Password(
+                  Icons.lock_outline,
+                  "Password",
+                  "Isi Password mu",
+                  ctrPassword,
+                  isPassword,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (isPassword(ctrPassword.text) == null && isUsername(ctrUsername.text) == null) {
+                      // All fields are valid, perform login logic
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: (isUsername(ctrUsername.text) == null) ? ColorResources.buttonloginColor : Colors.grey,
                     ),
+                    width: screenWidth,
+                    height: 50,
+                    child: Center(child: Text("Login", style: whiteboldTextStyle)),
                   ),
-                  SizedBox(height: 20), // Spacer untuk memberikan jarak
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          Positioned(
-            child: Container(
-              width: screenWidth,
-              height: screenHeight * 1.8,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(Images.muralLogin),
-                  fit: BoxFit.contain,
-                  alignment: Alignment.bottomCenter,
-                ),
+          Container(
+            width: screenWidth,
+            height: screenHeight * 0.321, // Sesuaikan tinggi gambar
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Images.muralLogin),
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
               ),
             ),
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
