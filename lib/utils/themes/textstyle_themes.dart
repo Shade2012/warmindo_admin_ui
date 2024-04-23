@@ -62,3 +62,27 @@ TextStyle inproggresTextStyle = GoogleFonts.oxygen(
         color: yellowTextColor,
         fontWeight: FontWeight.normal,
         fontSize: figmaFontsize(12)));
+
+TextStyle boldTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(15)));
+
+TextStyle helloLoginTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(24)));
+
+TextStyle welcomeLoginTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(17)));
+
+TextStyle whiteboldTextStyle = GoogleFonts.oxygen(
+    textStyle:TextStyle(
+        color: secondaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(17)));
