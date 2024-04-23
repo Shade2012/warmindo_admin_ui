@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/login_page/controller/login_controller.dart';
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/pages/widget/inputfield.dart';
 import '../../../utils/themes/textstyle_themes.dart';
 import '../../../utils/themes/color_themes.dart';
@@ -127,6 +126,7 @@ class LoginPage extends GetView<LoginController> {
             ],
           ),
         ),
+        
       ),
     );
   }

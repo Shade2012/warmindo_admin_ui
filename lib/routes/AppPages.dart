@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/binding/add_product_binding.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/view/add_product_page.dart';
@@ -13,6 +14,7 @@ import 'package:warmindo_admin_ui/pages/home_page/binding/home_binding.dart';
 import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
 import 'package:warmindo_admin_ui/pages/login_page/binding/login_binding.dart';
 import 'package:warmindo_admin_ui/pages/login_page/view/login_page.dart';
+import 'package:warmindo_admin_ui/pages/navigator_page/view/navigator_page.dart';
 import 'package:warmindo_admin_ui/pages/order_page/binding/order_binding.dart';
 import 'package:warmindo_admin_ui/pages/order_page/view/order_page.dart';
 import 'package:warmindo_admin_ui/pages/product_page/binding/product_binding.dart';
@@ -32,9 +34,14 @@ part 'AppRoutes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPLASH_PAGE;
+  static const INITIAL = Routes.BOTTOM_NAVIGATION;
 
   static final routes = [
+    GetPage(
+        name: _Paths.BOTTOM_NAVIGATION,
+        page: () => BottomNavbar(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.HOME_PAGE,
         page: () => HomePage(),
