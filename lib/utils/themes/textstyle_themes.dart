@@ -13,6 +13,7 @@ const Color greyTextColor = Color(0xFF696969);
 const Color greenTextColor = Color(0xFF007F6D);
 const Color yellowTextColor = Color(0xFFFFA41D);
 const Color redTextColor = Color(0xFFC62828);
+const Color blueTextColor = Color(0xFF4282FF);
 
 
 TextStyle appBarTextStyle = GoogleFonts.oxygen(
@@ -86,3 +87,63 @@ TextStyle whiteboldTextStyle = GoogleFonts.oxygen(
         color: secondaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(17)));
+
+TextStyle homeWelcomeTextStyle = GoogleFonts.oxygen(
+    textStyle:TextStyle(
+        color: secondaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(22)));
+
+TextStyle hintSearchBarTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: greyTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(11)));
+
+TextStyle headerAnalyticBoxTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
+
+TextStyle valueAnalyticBoxTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(20)));
+
+TextStyle subHeadOrderTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
+
+TextStyle viewAllTextStyle2 = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: blueTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(14)));
+
+TextStyle idOrderBoxTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
+  
+TextStyle labelOrderBoxTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: secondaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(11)));
+
+TextStyle titleMenuOrderTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.w700,
+        fontSize: figmaFontsize(14)));
+
+TextStyle priceMenuOrderTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.w700,
+        fontSize: figmaFontsize(14)));
