@@ -28,4 +28,7 @@ class ColorResources {
   static const Color labelcomplete = Color(0xFF007F3A);
   static const Color labelcancel = Color(0xFFC62828);
 
+  //homepage Color
+  static const Color analyticBoxColor = Color(0xFFF0F5F6);
+  static const Color orderBox = Color(0xFFF7F7F7);
 }
