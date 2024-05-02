@@ -5,10 +5,14 @@ import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool showBackButton;
+  final Function()? onBackButtonPressed; // Tambahkan ini
 
   const CustomAppBar({
     Key? key,
     this.title = '',
+    this.showBackButton = false,
+    this.onBackButtonPressed, // Tambahkan ini
   }) : super(key: key);
 
   @override
@@ -23,12 +27,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
+            padding: const EdgeInsets.only(left: 16.0, bottom: 4.0),
             child: Align(
               alignment: Alignment.topLeft,
-              child: Text(
-                title.isNotEmpty ? title : 'Halo, Admin!',
-                style: homeWelcomeTextStyle,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (showBackButton) // Tambahkan kondisi untuk menampilkan tombol back
+                    IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                      ),
+                      onPressed: onBackButtonPressed,
+                    ),
+                  Text(
+                    title.isNotEmpty ? title : 'Halo, Admin!',
+                    style: homeWelcomeTextStyle,
+                  ),
+                ],
               ),
             ),
           ),

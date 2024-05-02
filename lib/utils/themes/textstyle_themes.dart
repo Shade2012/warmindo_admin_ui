@@ -147,3 +147,11 @@ TextStyle priceMenuOrderTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.w700,
         fontSize: figmaFontsize(14)));
+
+TextStyle categoryTextStyle = GoogleFonts.oxygen(
+  textStyle: TextStyle(
+    color: primaryTextColor,
+    fontWeight: FontWeight.bold,
+    fontSize: figmaFontsize(16)
+  )
+);
