@@ -74,13 +74,11 @@ class HomePage extends StatelessWidget {
               children: [
                 OrderBox(
                   order: order001,
-                  status: 'Done',
                   nameCustomer: 'Baratha Wijaya',
                 ),
                 SizedBox(height: 10.0),
                 OrderBox(
                   order: order002,
-                  status: 'In Progress',
                   nameCustomer: 'Damar Fikri',
                 ),
               ],

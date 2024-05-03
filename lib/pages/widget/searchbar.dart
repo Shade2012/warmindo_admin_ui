@@ -10,7 +10,7 @@ class CustomSearchBar extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.hintText,
-    this.onChanged,
+    this.onChanged, required TextStyle style,
   }) : super(key: key);
 
   @override
