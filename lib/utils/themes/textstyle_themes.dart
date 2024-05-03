@@ -15,7 +15,6 @@ const Color yellowTextColor = Color(0xFFFFA41D);
 const Color redTextColor = Color(0xFFC62828);
 const Color blueTextColor = Color(0xFF4282FF);
 
-
 TextStyle appBarTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
@@ -83,13 +82,13 @@ TextStyle welcomeLoginTextStyle = GoogleFonts.oxygen(
         fontSize: figmaFontsize(17)));
 
 TextStyle whiteboldTextStyle = GoogleFonts.oxygen(
-    textStyle:TextStyle(
+    textStyle: TextStyle(
         color: secondaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(17)));
 
 TextStyle homeWelcomeTextStyle = GoogleFonts.oxygen(
-    textStyle:TextStyle(
+    textStyle: TextStyle(
         color: secondaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(22)));
@@ -98,7 +97,7 @@ TextStyle hintSearchBarTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: greyTextColor,
         fontWeight: FontWeight.normal,
-        fontSize: figmaFontsize(11)));
+        fontSize: figmaFontsize(15)));
 
 TextStyle headerAnalyticBoxTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
@@ -129,7 +128,7 @@ TextStyle idOrderBoxTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(16)));
-  
+
 TextStyle labelOrderBoxTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: secondaryTextColor,
@@ -146,4 +145,16 @@ TextStyle priceMenuOrderTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.w700,
+        fontSize: figmaFontsize(14)));
+
+TextStyle categoryTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
+
+TextStyle filterTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: secondaryTextColor,
+        fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(14)));

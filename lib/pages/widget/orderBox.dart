@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/pages/home_page/model/modelorder.dart';
+import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
@@ -7,11 +7,11 @@ class OrderBox extends StatelessWidget {
   const OrderBox({
     Key? key,
     required this.order,
-    required this.status,
+    // required this.status,
     required this.nameCustomer,
   }) : super(key: key);
 
-  final String status;
+  // final String status;
   final Order order;
   final String nameCustomer;
 
@@ -21,7 +21,7 @@ class OrderBox extends StatelessWidget {
         return ColorResources.labelcomplete;
       case 'in progress':
         return ColorResources.labelinprogg;
-      case 'canceled':
+      case 'cancel':
         return ColorResources.labelcancel;
       default:
         return Colors.black;
@@ -30,8 +30,8 @@ class OrderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labelColor = _getLabelColor(status);
-    final borderColor = _getLabelColor(status);
+    final labelColor = _getLabelColor(order.status);
+    final borderColor = _getLabelColor(order.status);
 
     double totalPrice = 0;
     for (var menu in order.menus) {
@@ -72,7 +72,7 @@ class OrderBox extends StatelessWidget {
                   color: labelColor,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Text(status, style: labelOrderBoxTextStyle),
+                child: Text(order.status, style: labelOrderBoxTextStyle),
               ),
             ],
           ),

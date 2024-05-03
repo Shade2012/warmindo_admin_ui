@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/home_page/model/modelorder.dart';
+import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
 import 'package:warmindo_admin_ui/pages/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/orderBox.dart';
@@ -74,13 +74,11 @@ class HomePage extends StatelessWidget {
               children: [
                 OrderBox(
                   order: order001,
-                  status: 'Done',
                   nameCustomer: 'Baratha Wijaya',
                 ),
                 SizedBox(height: 10.0),
                 OrderBox(
                   order: order002,
-                  status: 'In Progress',
                   nameCustomer: 'Damar Fikri',
                 ),
               ],
