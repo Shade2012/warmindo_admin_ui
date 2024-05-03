@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/home_page/model/modelorder.dart';
+import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
