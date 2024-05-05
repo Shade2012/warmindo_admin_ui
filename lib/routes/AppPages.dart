@@ -9,6 +9,8 @@ import 'package:warmindo_admin_ui/pages/detail_product_page/binding/detailproduc
 import 'package:warmindo_admin_ui/pages/detail_product_page/view/detailproduct_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/binding/edit_profile_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/view/edit_profile_page.dart';
+import 'package:warmindo_admin_ui/pages/general_information_page/binding/general_info_binding.dart';
+import 'package:warmindo_admin_ui/pages/general_information_page/view/general_info_page.dart';
 import 'package:warmindo_admin_ui/pages/home_page/binding/home_binding.dart';
 import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
 import 'package:warmindo_admin_ui/pages/login_page/binding/login_binding.dart';
@@ -130,6 +132,12 @@ class AppPages {
         name: _Paths.CHANGEPASS_PAGE,
         page: () => ChangePassPage(),
         binding: ChangePassBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.GENERAL_INFORMATION_PAGE,
+        page: () => GeneralInformation(),
+        binding: GeneralInformationBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
   ];
