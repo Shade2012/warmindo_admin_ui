@@ -62,7 +62,7 @@ class ReusableDialog extends StatelessWidget {
           ),
           child: Text(
             cancelText,
-            style: dialogButtonTextStyle,
+            style: dialogendButtonTextStyle,
           ),
         ),
         TextButton(

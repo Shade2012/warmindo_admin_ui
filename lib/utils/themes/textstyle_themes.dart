@@ -191,6 +191,13 @@ TextStyle titleDialogButtonTextStyle = GoogleFonts.oxygen(
 
 TextStyle dialogButtonTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
+        color: secondaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));  
+
+TextStyle dialogendButtonTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));  
+

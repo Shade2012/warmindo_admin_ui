@@ -155,7 +155,7 @@ class _ProductPageState extends State<ProductPage> {
                 title: "Add Product",
                 content: "Apakah Kamu yakin ingin menambah data?",
                 cancelText: "Tidak",
-                confirmText: "Iya",
+                confirmText: "Iya" ,
                 onCancelPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -164,7 +164,7 @@ class _ProductPageState extends State<ProductPage> {
                   Get.toNamed(Routes.LOGIN_PAGE);
                 },
                 cancelButtonColor: ColorResources.primaryColorLight,
-                confirmButtonColor: ColorResources.buttondelete,
+                confirmButtonColor: ColorResources.buttonadd,
                 dialogImage: Image.asset(Images.askDialog),
               );
             },
