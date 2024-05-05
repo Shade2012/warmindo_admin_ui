@@ -23,6 +23,8 @@ class OrderBox extends StatelessWidget {
         return ColorResources.labelinprogg;
       case 'permintaan pembatalan':
         return ColorResources.labelcancel;
+      case 'cancel':
+        return ColorResources.labelcancel;
       default:
         return Colors.black;
     }
