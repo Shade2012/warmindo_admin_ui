@@ -33,12 +33,19 @@ part 'AppRoutes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.ORDER_PAGE;
+  static const INITIAL = Routes.BOTTOM_NAVIGATION;
 
   static final routes = [
     GetPage(
         name: _Paths.BOTTOM_NAVIGATION,
         page: () => BottomNavbar(),
+        bindings: [
+          HomePageBinding(),
+          ProductBinding(),
+          OrderBinding(),
+          ShopBinding(),
+          SettingsBinding()
+        ],
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(

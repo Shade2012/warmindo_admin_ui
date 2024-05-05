@@ -52,8 +52,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CustomSearchBar(
-              controller: TextEditingController(),
               hintText: 'Search',
+              controller: SearchController(),
               style: searchBarTextStyle,
             ),
           ),
