@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/cancel_order_page/controller/cancel_order_controller.dart';
+import 'package:warmindo_admin_ui/pages/cancel_order_page/view/cancel_order_page.dart';
 import 'package:warmindo_admin_ui/pages/customers_page/view/customers_page.dart';
 import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
 import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';

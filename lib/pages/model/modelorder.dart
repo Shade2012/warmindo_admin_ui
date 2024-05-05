@@ -5,8 +5,9 @@ class Order {
   final List<Menu> menus;
   final String status;
   final String nameCustomer;
+  final String? reason;
 
-  Order({required this.id, required this.menus, required this.status, required this.nameCustomer});
+  Order({required this.id, required this.menus, required this.status, required this.nameCustomer, this.reason});
 }
 
 class Menu {
@@ -51,6 +52,20 @@ Order order002 = Order(
       name: 'Tahu Goreng',
       price: 5000, // Ubah string menjadi angka
       imagePath: Images.splashLogo,
+    ),
+  ],
+);
+
+Order order003 = Order(
+  nameCustomer: 'Damar Fikri',
+  id: 'ID 003',
+  status: 'Permintaan Pembatalan',
+  reason: 'Salah Menggunakan Metode Pembayaran',
+  menus: [
+    Menu(
+      name: 'Es Teh',
+      price: 3000, 
+      imagePath: Images.esTeh,
     ),
   ],
 );

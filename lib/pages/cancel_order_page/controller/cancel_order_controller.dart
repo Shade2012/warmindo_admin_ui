@@ -1,13 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class CancelOrderPage extends StatelessWidget {
-  const CancelOrderPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Cancel Order Page'),
-    ));
-  }
+class CancelOrderController extends GetxController{
+  
 }

@@ -6,4 +6,5 @@ class Images {
   static const String esTeh = 'assets/images/EsTeh.jpeg';
   static const String telurDadar = 'assets/images/download.jpeg';
   static const String askDialog = 'assets/images/dialog.png';
+  static const String cancelDialog = 'assets/images/complete.png';
 }
