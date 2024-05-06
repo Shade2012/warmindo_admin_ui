@@ -254,3 +254,15 @@ TextStyle contentProfileTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));
+
+TextStyle headerAnalyticTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(15)));
+
+TextStyle dropdownAnalyticTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
