@@ -266,3 +266,27 @@ TextStyle dropdownAnalyticTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(16)));
+
+TextStyle restoNameOrderTextSyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(20)));
+
+TextStyle idOrderTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(12)));
+
+TextStyle dateOrderTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(12)));
+    
+TextStyle statusOrderTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: yellowTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
