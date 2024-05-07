@@ -290,3 +290,15 @@ TextStyle statusOrderTextStyle = GoogleFonts.oxygen(
         color: yellowTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));
+
+TextStyle receiptheaderTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(24)));
+
+TextStyle receiptcontentTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(14)));
