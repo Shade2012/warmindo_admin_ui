@@ -19,6 +19,7 @@ abstract class Routes {
   static const SHOP_PAGE = _Paths.SHOP_PAGE;
   static const EDIT_PROFILE_PAGE = _Paths.EDIT_PROFILE_PAGE;
   static const VOUCHER_PAGE = _Paths.VOUCHER_PAGE;
+  static const GENERAL_INFORMATION_PAGE = _Paths.GENERAL_INFORMATION_PAGE;
 
 
 
@@ -42,5 +43,6 @@ abstract class _Paths {
   static const SHOP_PAGE = '/shop-page';
   static const EDIT_PROFILE_PAGE = '/edit-profile-page';
   static const VOUCHER_PAGE = '/voucher-page';
+  static const GENERAL_INFORMATION_PAGE = '/general-information-page';
 
 }
