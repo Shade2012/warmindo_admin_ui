@@ -201,3 +201,29 @@ TextStyle dialogendButtonTextStyle = GoogleFonts.oxygen(
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));  
 
+TextStyle headerverificationTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.w600,
+        fontSize: figmaFontsize(14)));
+
+TextStyle contentverificationTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.w600,
+        fontSize: figmaFontsize(14)));
+
+TextStyle verificationTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: greenTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
+
+TextStyle unverificationTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: greyTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
+
+
+

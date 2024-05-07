@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
+import 'package:warmindo_admin_ui/pages/widget/dialog_cancel_order.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class OrderBox extends StatelessWidget {
   const OrderBox({
     Key? key,
     required this.order,
-    // required this.status,
     required this.nameCustomer,
   }) : super(key: key);
 
-  // final String status;
   final Order order;
   final String nameCustomer;
 
@@ -21,6 +21,8 @@ class OrderBox extends StatelessWidget {
         return ColorResources.labelcomplete;
       case 'in progress':
         return ColorResources.labelinprogg;
+      case 'permintaan pembatalan':
+        return ColorResources.labelcancel;
       case 'cancel':
         return ColorResources.labelcancel;
       default:
@@ -38,97 +40,124 @@ class OrderBox extends StatelessWidget {
       totalPrice += menu.price;
     }
 
-    // Format harga total tanpa desimal 0
     String formattedPrice = totalPrice.toStringAsFixed(
       totalPrice.truncateToDouble() == totalPrice ? 0 : 2,
     );
 
-    return Container(
-      width: 395,
-      height: 160,
-      padding: EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        color: ColorResources.orderBox,
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: borderColor, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            offset: const Offset(2.0, 5.0),
-            blurRadius: 10.0,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('${order.id}', style: idOrderBoxTextStyle),
-              Container(
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: labelColor,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Text(order.status, style: labelOrderBoxTextStyle),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.0),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: order.menus.length,
-              itemBuilder: (context, index) {
-                final menu = order.menus[index];
-                // Format harga item tanpa desimal 0
-                String formattedItemPrice = menu.price.toStringAsFixed(
-                  menu.price.truncateToDouble() == menu.price ? 0 : 2,
-                );
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        menu.imagePath,
-                        width: 40.0,
-                        height: 40.0,
-                      ),
-                      SizedBox(width: 10.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(menu.name, style: titleMenuOrderTextStyle),
-                          SizedBox(height: 4.0),
-                          Text('Rp $formattedItemPrice',
-                              style:
-                                  priceMenuOrderTextStyle), // Menggunakan formattedItemPrice
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
+    return GestureDetector(
+      onTap: () {
+        if (order.status.toLowerCase() == 'permintaan pembatalan') {
+          // Tampilkan dialog di sini
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return DialogCancelOrder(
+                title: 'Alasan: ${order.reason}',
+                content:
+                    'Jika Anda membatalkan order ini maka uang akan dikembalikan ke user',
+                cancelText: 'Tidak',
+                confirmText: 'Ya',
+                dialogImage: Image.asset(Images.cancelDialog),
+                cancelButtonColor: Colors.white,
+                confirmButtonColor: ColorResources.buttondelete,
+                cancelButtonTextColor: Colors.black,
+                confirmButtonTextColor: Colors.white,
+                onCancelPressed: () {
+                  Navigator.pop(context);
+                },
+                onConfirmPressed: () {
+                  Navigator.pop(context);
+                },
+              );
+            },
+          );
+        }
+      },
+      child: Container(
+        width: 395,
+        height: 160,
+        padding: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          color: ColorResources.orderBox,
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: borderColor, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              offset: const Offset(2.0, 5.0),
+              blurRadius: 10.0,
             ),
-          ),
-          SizedBox(height: 8.0),
-          Row(
-            children: [
-              Text(
-                nameCustomer,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${order.id}', style: idOrderBoxTextStyle),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: labelColor,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(order.status, style: labelOrderBoxTextStyle),
+                ),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: order.menus.length,
+                itemBuilder: (context, index) {
+                  final menu = order.menus[index];
+                  String formattedItemPrice = menu.price.toStringAsFixed(
+                    menu.price.truncateToDouble() == menu.price ? 0 : 2,
+                  );
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          menu.imagePath,
+                          width: 40.0,
+                          height: 40.0,
+                        ),
+                        SizedBox(width: 10.0),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(menu.name, style: titleMenuOrderTextStyle),
+                            SizedBox(height: 4.0),
+                            Text('Rp $formattedItemPrice',
+                                style: priceMenuOrderTextStyle),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              Spacer(),
-              Text(
-                'Rp $formattedPrice',
-                style: viewAllTextStyle2,
-              ),
-            ],
-          ),
-        ],
+            ),
+            SizedBox(height: 8.0),
+            Row(
+              children: [
+                Text(
+                  nameCustomer,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Spacer(),
+                Text(
+                  'Rp $formattedPrice',
+                  style: viewAllTextStyle2,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
