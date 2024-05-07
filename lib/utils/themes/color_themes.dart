@@ -19,6 +19,9 @@ class ColorResources {
   static const Color changepassColor = Color(0xFFC62828);
   static const Color buttonmakevoucher = Color(0xFF6D1616);
   static const Color buttondetailvoucher = Color(0xFF004C41);
+  static const Color buttonedit = Color(0xFFFF9B3F);
+  static const Color buttondelete = Color(0xFFFF3F3F);
+  static const Color buttonadd = Color(0xFF1E27FF);
 
   //Filter color
   static const Color filterColor = Color(0xFFEF0000);
