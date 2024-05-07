@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
-import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
@@ -32,12 +30,13 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Manage Order',
-        showBackButton: true,
-        onBackButtonPressed: () {
-          Get.back();
-        },
+      appBar: AppBar(
+        title: Text(
+          'Manage Orders',
+          style: appBarTextStyle,
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
