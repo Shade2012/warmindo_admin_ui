@@ -9,4 +9,5 @@ class Images {
   static const String cancelDialog = 'assets/images/complete.png';
   static const String userImage = 'assets/images/user.png';
   static const String profileBg = 'assets/images/profilebg.jpg';
+  static const String defaultImage = 'assets/images/default_image.png';
 }
