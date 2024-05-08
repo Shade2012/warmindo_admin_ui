@@ -89,7 +89,7 @@ class _ProductPageState extends State<ProductPage> {
                             context: context,
                             builder: (BuildContext context) {
                               return ReusableDialog(
-                                title: "Edit",
+                                title: "Edit Product",
                                 content:
                                     "Apakah Kamu yakin ingin mengubah data?",
                                 cancelText: "Tidak",
@@ -98,8 +98,7 @@ class _ProductPageState extends State<ProductPage> {
                                   Navigator.of(context).pop();
                                 },
                                 onConfirmPressed: () {
-                                  Navigator.of(context).pop();
-                                  Get.toNamed(Routes.LOGIN_PAGE);
+                                  Get.toNamed(Routes.EDIT_PRODUCT_PAGE);
                                 },
                                 cancelButtonColor:
                                     ColorResources.primaryColorLight,
@@ -127,7 +126,7 @@ class _ProductPageState extends State<ProductPage> {
                                 },
                                 onConfirmPressed: () {
                                   Navigator.of(context).pop();
-                                  Get.toNamed(Routes.LOGIN_PAGE);
+                                  // Get.toNamed(Routes.LOGIN_PAGE);
                                 },
                                 cancelButtonColor:
                                     ColorResources.primaryColorLight,
@@ -155,13 +154,12 @@ class _ProductPageState extends State<ProductPage> {
                 title: "Add Product",
                 content: "Apakah Kamu yakin ingin menambah data?",
                 cancelText: "Tidak",
-                confirmText: "Iya" ,
+                confirmText: "Iya",
                 onCancelPressed: () {
                   Navigator.of(context).pop();
                 },
                 onConfirmPressed: () {
-                  Navigator.of(context).pop();
-                  Get.toNamed(Routes.LOGIN_PAGE);
+                  Get.toNamed(Routes.ADD_PRODUCT_PAGE);
                 },
                 cancelButtonColor: ColorResources.primaryColorLight,
                 confirmButtonColor: ColorResources.buttonadd,

@@ -7,6 +7,8 @@ import 'package:warmindo_admin_ui/pages/detail_order_page/binding/detail_order_b
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/binding/detailproduct_binding.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/view/detailproduct_page.dart';
+import 'package:warmindo_admin_ui/pages/edit_product_page/binding/edit_product_binding.dart';
+import 'package:warmindo_admin_ui/pages/edit_product_page/view/edit_product_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/binding/edit_profile_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/view/edit_profile_page.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/binding/general_info_binding.dart';
@@ -37,7 +39,7 @@ part 'AppRoutes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.ADD_PRODUCT_PAGE;
+  static const INITIAL = Routes.BOTTOM_NAVIGATION;
 
   static final routes = [
     GetPage(
@@ -146,6 +148,12 @@ class AppPages {
         name: _Paths.DETAIL_SALES_PAGE,
         page: () => SalesDetailPage(),
         binding: SalesBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.EDIT_PRODUCT_PAGE,
+        page: () => EditProductPage(),
+        binding: EditProductBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
   ];
