@@ -302,3 +302,15 @@ TextStyle receiptcontentTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.normal,
         fontSize: figmaFontsize(14)));
+
+TextStyle titleAddProductTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
+
+TextStyle contentAddProductTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor.withOpacity(0.5),
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
