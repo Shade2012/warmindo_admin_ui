@@ -62,6 +62,7 @@ class EditCustomersPage extends StatelessWidget {
               CustomTextField(
                 controller: ctrNameUser,
                 hintText: "Damar Fikri",
+                readOnly: true,
               ),
               SizedBox(height: screenHeight * 0.02),
               Text("ID User", style: titleAddProductTextStyle),
@@ -69,6 +70,7 @@ class EditCustomersPage extends StatelessWidget {
               CustomTextField(
                 controller: ctrIdUser,
                 hintText: "12345",
+                readOnly: true,
               ),
               SizedBox(height: screenHeight * 0.02),
               Text("No Telepon", style: titleAddProductTextStyle),

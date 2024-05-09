@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final int minLines;
   final int maxLines;
+  final bool readOnly; // Tambahkan properti readOnly
 
   const CustomTextField({
     required this.controller,
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.hintText = "",
     this.minLines = 1,
     this.maxLines = 5,
+    this.readOnly = false, // Inisialisasi properti readOnly dengan nilai default false
   });
 
   @override
@@ -23,15 +25,17 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       minLines: minLines,
       maxLines: maxLines,
+      readOnly: readOnly, // Set properti readOnly sesuai nilai yang diberikan
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(7.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          hintText: hintText,
-          hintStyle: contentAddProductTextStyle),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(7.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+        hintText: hintText,
+        hintStyle: contentAddProductTextStyle,
+      ),
     );
   }
 }
