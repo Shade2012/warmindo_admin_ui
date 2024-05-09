@@ -18,6 +18,7 @@ class AddProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +41,9 @@ class AddProductPage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(Icons.arrow_back_ios_new),
+              child: Icon(
+                Icons.arrow_back_ios_new,
+              ),
             ),
           ),
         ),
@@ -56,8 +59,8 @@ class AddProductPage extends StatelessWidget {
               child: Stack(
                 children: [
                   SizedBox(
-                    height: 120,
-                    width: 120,
+                    height: screenHeight * 0.15,
+                    width: screenHeight * 0.15,
                     child: Image.asset(Images.defaultImage),
                   ),
                   Positioned(
@@ -71,13 +74,14 @@ class AddProductPage extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: 35,
-                        height: 35,
+                        width: screenHeight * 0.04,
+                        height: screenHeight * 0.04,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Icon(Icons.camera_alt, size: 24),
+                        child:
+                            Icon(Icons.camera_alt, size: screenHeight * 0.05),
                       ),
                     ),
                   ),
@@ -115,15 +119,15 @@ class AddProductPage extends StatelessWidget {
                 Text("Kategori Produk", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
-                  items: ['Makanan', 'Minuman', 'Snack'],
-                  value: selectedCategory.value.isNotEmpty
-                      ? selectedCategory.value
-                      : null,
-                  onChanged: (String? value) {
-                    selectedCategory.value = value ?? '';
-                  },
-                  dropdownType: DropdownType.Category,
-                )),
+                      items: ['Makanan', 'Minuman', 'Snack'],
+                      value: selectedCategory.value.isNotEmpty
+                          ? selectedCategory.value
+                          : null,
+                      onChanged: (String? value) {
+                        selectedCategory.value = value ?? '';
+                      },
+                      dropdownType: DropdownType.Category,
+                    )),
               ],
             ),
             SizedBox(height: screenHeight * 0.02),
@@ -133,15 +137,15 @@ class AddProductPage extends StatelessWidget {
                 Text("Stok Produk", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
-                  items: ['Tersedia', 'Tidak Tersedia'],
-                  value: selectedStock.value.isNotEmpty
-                      ? selectedStock.value
-                      : null,
-                  onChanged: (String? value) {
-                    selectedStock.value = value ?? '';
-                  },
-                  dropdownType: DropdownType.Stock,
-                )),
+                      items: ['Tersedia', 'Tidak Tersedia'],
+                      value: selectedStock.value.isNotEmpty
+                          ? selectedStock.value
+                          : null,
+                      onChanged: (String? value) {
+                        selectedStock.value = value ?? '';
+                      },
+                      dropdownType: DropdownType.Stock,
+                    )),
               ],
             ),
             SizedBox(height: screenHeight * 0.02),
@@ -171,7 +175,7 @@ class AddProductPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 100),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
                 ),
               ),
             )
