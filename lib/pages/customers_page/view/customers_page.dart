@@ -8,6 +8,9 @@ class CustomersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Verifikasi Pelanggan',
@@ -15,79 +18,96 @@ class CustomersPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: customerList.map((customer) {
-            return Container(
-              margin: EdgeInsets.only(top: 10, bottom: 5), // Menambahkan jarak antara setiap container
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              width: 410,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.5),
-                  width: 0.5,
-                ),
-                boxShadow: [
-                  BoxShadow(
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                margin: EdgeInsets.only(
+                    top: 10,
+                    bottom: 5), // Menambahkan jarak antara setiap container
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.05,
+                    vertical: screenHeight * 0.015),
+                width: screenWidth * 0.95, // Menggunakan 95% dari lebar layar
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
                     color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1),
+                    width: 0.5,
                   ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'ID Pengguna',
-                        style: headerverificationTextStyle,
-                      ),
-                      Text(
-                        '#${customer.id}',
-                        style: headerverificationTextStyle,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Spacer antara judul dan konten utama
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.zero,
-                        child: Container(
-                          width: 65,
-                          height: 65,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            image: DecorationImage(
-                              image: AssetImage(customer.image),
-                              fit: BoxFit.cover,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'ID Pengguna',
+                          style: headerverificationTextStyle,
+                        ),
+                        Text(
+                          '#${customer.id}',
+                          style: headerverificationTextStyle,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                        height: screenHeight *
+                            0.01), // Spacer antara judul dan konten utama
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.zero,
+                          child: Container(
+                            width: screenWidth *
+                                0.15, // Lebar gambar adalah 15% dari lebar layar
+                            height: screenWidth *
+                                0.15, // Tinggi gambar adalah 15% dari lebar layar
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              image: DecorationImage(
+                                image: AssetImage(customer.image),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10), // Spacer antara gambar dan teks
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center, // Vertically center the text
-                        children: [
-                          Text(
-                            customer.name, // Gunakan data nama dari customer
-                            style: contentverificationTextStyle,
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            customer.verification, // Gunakan data verifikasi dari customer
-                            style: customer.verification == 'Verified' ? verificationTextStyle : unverificationTextStyle,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(
+                            width: screenWidth *
+                                0.02), // Spacer antara gambar dan teks
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment
+                              .center, // Vertically center the text
+                          children: [
+                            Text(
+                              customer.name, // Gunakan data nama dari customer
+                              style: contentverificationTextStyle,
+                            ),
+                            SizedBox(height: screenHeight * 0.02),
+                            Text(
+                              customer
+                                  .verification, // Gunakan data verifikasi dari customer
+                              style: customer.verification == 'Verified'
+                                  ? verificationTextStyle
+                                  : unverificationTextStyle,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           }).toList(),
