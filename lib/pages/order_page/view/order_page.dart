@@ -29,6 +29,9 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -40,7 +43,7 @@ class _OrderPageState extends State<OrderPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(screenWidth * 0.04),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -62,7 +65,7 @@ class _OrderPageState extends State<OrderPage> {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Container(
-                      height: 42,
+                      height: screenHeight * 0.056,
                       child: Text(
                         value,
                         style: TextStyle(
@@ -79,7 +82,7 @@ class _OrderPageState extends State<OrderPage> {
                   filled: true,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.04),
                   ),
                 ),
                 dropdownColor: Colors.black, // Warna latar belakang dropdown
@@ -88,7 +91,7 @@ class _OrderPageState extends State<OrderPage> {
                   color: Colors.white, // Warna ikon putih
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.02),
               // Menampilkan daftar pesanan sesuai filter
               Column(
                 children: getFilteredOrders().map((order) {
@@ -98,7 +101,7 @@ class _OrderPageState extends State<OrderPage> {
                         order: order,
                         nameCustomer: order.nameCustomer,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: screenHeight * 0.01),
                     ],
                   );
                 }).toList(),
