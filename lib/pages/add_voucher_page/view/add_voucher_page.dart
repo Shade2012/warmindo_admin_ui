@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/add_voucher_page/controller/add_voucher_controller.dart';
 import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class AddVoucherPage extends StatelessWidget {
+  final AddVoucherController controller = Get.put(AddVoucherController());
   final TextEditingController ctrVoucherName = TextEditingController();
   final TextEditingController ctrVoucherDiscount = TextEditingController();
   final TextEditingController ctrProductDesc = TextEditingController();
@@ -82,9 +84,14 @@ class AddVoucherPage extends StatelessWidget {
                 Text("Expirated Date", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 CustomTextField(
-                  controller: ctrVoucherDate,
-                  hintText: "Pilih Tanggal",
-                ),
+                    controller: ctrVoucherDate,
+                    hintText: "Pilih Tanggal",
+                    trailing: IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: () {
+                        controller.pickedDate(context);
+                      },
+                    )),
               ],
             ),
             SizedBox(height: screenHeight * 0.02),
