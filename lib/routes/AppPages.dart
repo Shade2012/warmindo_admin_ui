@@ -3,10 +3,14 @@ import 'package:warmindo_admin_ui/pages/add_product_page/binding/add_product_bin
 import 'package:warmindo_admin_ui/pages/add_product_page/view/add_product_page.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/binding/changepass_binding.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/view/changepass_page.dart';
+import 'package:warmindo_admin_ui/pages/customers_page/binding/customers_binding.dart';
+import 'package:warmindo_admin_ui/pages/customers_page/view/customers_page.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/binding/detail_order_binding.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/binding/detailproduct_binding.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/view/detailproduct_page.dart';
+import 'package:warmindo_admin_ui/pages/edit_customers_page/binding/edit_customers_binding.dart';
+import 'package:warmindo_admin_ui/pages/edit_customers_page/view/edit_customers_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_product_page/binding/edit_product_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_product_page/view/edit_product_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/binding/edit_profile_binding.dart';
@@ -30,8 +34,6 @@ import 'package:warmindo_admin_ui/pages/shop_page/binding/shop_binding.dart';
 import 'package:warmindo_admin_ui/pages/shop_page/view/shop_page.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/binding/splash_binding.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/view/splash_page.dart';
-import 'package:warmindo_admin_ui/pages/verify_page/binding/verify_binding.dart';
-import 'package:warmindo_admin_ui/pages/verify_page/view/verify_page.dart';
 import 'package:warmindo_admin_ui/pages/voucher_page/binding/voucher_binding.dart';
 import 'package:warmindo_admin_ui/pages/voucher_page/view/voucher_page.dart';
 part 'AppRoutes.dart';
@@ -39,7 +41,7 @@ part 'AppRoutes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.DETAIL_PRODUCT_PAGE;
+  static const INITIAL = Routes.EDIT_CUSTOMERS_PAGE;
 
   static final routes = [
     GetPage(
@@ -49,7 +51,7 @@ class AppPages {
           HomePageBinding(),
           ProductBinding(),
           OrderBinding(),
-          ShopBinding(),
+          CustomersBinding(),
           SettingsBinding()
         ],
         transition: Transition.fadeIn,
@@ -109,12 +111,6 @@ class AppPages {
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
-        name: _Paths.VERIFY_PAGE,
-        page: () => VerifyPage(),
-        binding: VerifyBinding(),
-        transition: Transition.fadeIn,
-        transitionDuration: const Duration(milliseconds: 500)),
-    GetPage(
         name: _Paths.VOUCHER_PAGE,
         page: () => VoucherPage(),
         binding: VoucherBinding(),
@@ -156,5 +152,17 @@ class AppPages {
         binding: EditProductBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.EDIT_CUSTOMERS_PAGE,
+        page: () => EditCustomersPage(),
+        binding: EditCustomersBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+      name: _Paths.CUSTOMERS_PAGE, 
+      page: () => CustomersPage(),
+      binding: CustomersBinding(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500)),
   ];
 }
