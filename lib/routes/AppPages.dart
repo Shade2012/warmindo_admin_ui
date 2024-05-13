@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/binding/add_product_binding.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/view/add_product_page.dart';
+import 'package:warmindo_admin_ui/pages/add_voucher_page/binding/add_voucher_binding.dart';
+import 'package:warmindo_admin_ui/pages/add_voucher_page/view/add_voucher_page.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/binding/changepass_binding.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/view/changepass_page.dart';
 import 'package:warmindo_admin_ui/pages/customers_page/binding/customers_binding.dart';
@@ -9,6 +11,8 @@ import 'package:warmindo_admin_ui/pages/detail_order_page/binding/detail_order_b
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/binding/detailproduct_binding.dart';
 import 'package:warmindo_admin_ui/pages/detail_product_page/view/detailproduct_page.dart';
+import 'package:warmindo_admin_ui/pages/detail_voucher_page/binding/detail_voucher_binding.dart';
+import 'package:warmindo_admin_ui/pages/detail_voucher_page/view/detail_voucher_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_customers_page/binding/edit_customers_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_customers_page/view/edit_customers_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_product_page/binding/edit_product_binding.dart';
@@ -41,7 +45,7 @@ part 'AppRoutes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.BOTTOM_NAVIGATION;
+  static const INITIAL = Routes.VOUCHER_PAGE;
 
   static final routes = [
     GetPage(
@@ -159,10 +163,22 @@ class AppPages {
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
-      name: _Paths.CUSTOMERS_PAGE, 
-      page: () => CustomersPage(),
-      binding: CustomersBinding(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 500)),
+        name: _Paths.CUSTOMERS_PAGE,
+        page: () => CustomersPage(),
+        binding: CustomersBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.DETAIL_VOUCHER_PAGE,
+        page: () => DetailVoucherPage(),
+        binding: DetailVoucherBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.ADD_VOUCHER_PAGE,
+        page: () => AddVoucherPage(),
+        binding: AddVoucherBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
   ];
 }
