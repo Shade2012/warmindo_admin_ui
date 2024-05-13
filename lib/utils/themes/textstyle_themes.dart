@@ -14,6 +14,7 @@ const Color greenTextColor = Color(0xFF007F6D);
 const Color yellowTextColor = Color(0xFFFFA41D);
 const Color redTextColor = Color(0xFFC62828);
 const Color blueTextColor = Color(0xFF4282FF);
+const Color greyTextColor2 = Color(0xFF9B9B9B);
 
 TextStyle appBarTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
@@ -181,25 +182,25 @@ TextStyle contentDialogButtonTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
-        fontSize: figmaFontsize(12)));  
+        fontSize: figmaFontsize(12)));
 
 TextStyle titleDialogButtonTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
-        fontSize: figmaFontsize(14)));  
+        fontSize: figmaFontsize(14)));
 
 TextStyle dialogButtonTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: secondaryTextColor,
         fontWeight: FontWeight.bold,
-        fontSize: figmaFontsize(12)));  
+        fontSize: figmaFontsize(12)));
 
 TextStyle dialogendButtonTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
-        fontSize: figmaFontsize(12)));  
+        fontSize: figmaFontsize(12)));
 
 TextStyle headerverificationTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
@@ -284,7 +285,7 @@ TextStyle dateOrderTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.normal,
         fontSize: figmaFontsize(12)));
-    
+
 TextStyle statusOrderTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: yellowTextColor,
@@ -314,3 +315,39 @@ TextStyle contentAddProductTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor.withOpacity(0.5),
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));
+
+TextStyle nameProductDetailTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(20)));
+
+TextStyle categoryProductDetailTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: greyTextColor2,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(12)));
+
+TextStyle descProductDetailTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
+
+TextStyle desccontentProductDetailTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: greyTextColor2,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(12)));
+
+TextStyle priceHProductDetailTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: greyTextColor2,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(16)));
+
+TextStyle priceCProductDetailTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(18)));
