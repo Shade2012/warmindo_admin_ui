@@ -14,22 +14,21 @@ class SettingsPage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: ColorResources.profileBg,
+      backgroundColor: ColorResources.primaryColor,
       body: SafeArea(
         child: Container(
           width: screenWidth,
           height: screenHeight,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(Images.profileBg),
-              fit: BoxFit.fill,
-            ),
-          ),
+          // decoration: BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage(Images.profileBg),
+          //       fit: BoxFit.fill,
+          //     ),
+          //     ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
-              // Bagian atas
+              SizedBox(height: screenHeight * 0.05),
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 width: screenWidth,
@@ -59,24 +58,24 @@ class SettingsPage extends StatelessWidget {
                     //   style: usernameProfileTextStyle,
                     // ),
                     SizedBox(height: 15),
-                    ElevatedButton(
-                      onPressed: () {
-                        Get.toNamed(Routes.EDIT_PROFILE_PAGE);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(133, 30),
-                        padding: EdgeInsets.all(8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(color: Colors.white),
-                        ),
-                        backgroundColor: ColorResources.primaryColor,
-                      ),
-                      child: Text(
-                        'Edit Profile',
-                        style: editProfileTextStyle,
-                      ),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Get.toNamed(Routes.EDIT_PROFILE_PAGE);
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     minimumSize: Size(133, 30),
+                    //     padding: EdgeInsets.all(8),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(8.0),
+                    //       side: BorderSide(color: Colors.white),
+                    //     ),
+                    //     backgroundColor: ColorResources.primaryColor,
+                    //   ),
+                    //   child: Text(
+                    //     'Edit Profile',
+                    //     style: editProfileTextStyle,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -114,7 +113,10 @@ class SettingsPage extends StatelessWidget {
                           children: [
                             ListTile(
                               leading: Icon(Icons.person),
-                              title: Text('Profil', style: contentProfileTextStyle,),
+                              title: Text(
+                                'Informasi Umum',
+                                style: contentProfileTextStyle,
+                              ),
                               trailing: Icon(Icons.arrow_forward_ios),
                               onTap: () {
                                 Get.toNamed(Routes.GENERAL_INFORMATION_PAGE);
@@ -122,7 +124,10 @@ class SettingsPage extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Icon(Icons.security),
-                              title: Text('Ubah Kata Sandi', style: contentProfileTextStyle,),
+                              title: Text(
+                                'Ubah Kata Sandi',
+                                style: contentProfileTextStyle,
+                              ),
                               trailing: Icon(Icons.arrow_forward_ios),
                               onTap: () {
                                 Get.toNamed(Routes.CHANGEPASS_PAGE);
@@ -151,7 +156,10 @@ class SettingsPage extends StatelessWidget {
                           children: [
                             ListTile(
                               leading: Icon(FontAwesomeIcons.ticket),
-                              title: Text('Voucher' , style: contentProfileTextStyle,),
+                              title: Text(
+                                'Voucher',
+                                style: contentProfileTextStyle,
+                              ),
                               trailing: Icon(Icons.arrow_forward_ios),
                               onTap: () {
                                 Get.toNamed(Routes.VOUCHER_PAGE);
@@ -159,7 +167,10 @@ class SettingsPage extends StatelessWidget {
                             ),
                             ListTile(
                               leading: Icon(FontAwesomeIcons.store),
-                              title: Text('Shop', style: contentProfileTextStyle,),
+                              title: Text(
+                                'Shop',
+                                style: contentProfileTextStyle,
+                              ),
                               trailing: Icon(Icons.arrow_forward_ios),
                               onTap: () {
                                 Get.toNamed(Routes.SHOP_PAGE);
