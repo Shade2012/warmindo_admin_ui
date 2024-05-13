@@ -37,7 +37,7 @@ part 'AppRoutes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.ADD_PRODUCT_PAGE;
+  static const INITIAL = Routes.BOTTOM_NAVIGATION;
 
   static final routes = [
     GetPage(
