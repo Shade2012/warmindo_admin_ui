@@ -61,6 +61,7 @@ class HomePage extends StatelessWidget {
                       'Pesanan',
                       style: subHeadOrderTextStyle,
                     ),
+                    SizedBox(width: screenWidth * 0.54),
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.ORDER_PAGE);
