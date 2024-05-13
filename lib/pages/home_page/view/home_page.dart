@@ -55,12 +55,12 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(screenWidth * 0.02),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Pesanan',
                       style: subHeadOrderTextStyle,
                     ),
-                    SizedBox(width: screenWidth * 0.56),
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.ORDER_PAGE);
