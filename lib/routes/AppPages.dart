@@ -181,6 +181,5 @@ class AppPages {
         binding: AddVoucherBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
-
   ];
 }
