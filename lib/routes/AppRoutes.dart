@@ -15,7 +15,6 @@ abstract class Routes {
   static const EDIT_PRODUCT_PAGE = _Paths.EDIT_PRODUCT_PAGE;
   static const ORDER_PAGE = _Paths.ORDER_PAGE;
   static const SETTINGS_PAGE = _Paths.SETTINGS_PAGE;
-  static const VERIFY_PAGE = _Paths.VERIFY_PAGE;
   static const SHOP_PAGE = _Paths.SHOP_PAGE;
   static const EDIT_PROFILE_PAGE = _Paths.EDIT_PROFILE_PAGE;
   static const VOUCHER_PAGE = _Paths.VOUCHER_PAGE;
@@ -23,6 +22,8 @@ abstract class Routes {
   static const DETAIL_SALES_PAGE = _Paths.DETAIL_SALES_PAGE;
   static const EDIT_CUSTOMERS_PAGE = _Paths.EDIT_CUSTOMERS_PAGE;
   static const CUSTOMERS_PAGE = _Paths.CUSTOMERS_PAGE;
+  static const DETAIL_VOUCHER_PAGE = _Paths.DETAIL_VOUCHER_PAGE;
+  static const ADD_VOUCHER_PAGE = _Paths.ADD_VOUCHER_PAGE;
 
 
 
@@ -42,7 +43,6 @@ abstract class _Paths {
   static const EDIT_PRODUCT_PAGE = '/edit-product-page';
   static const ORDER_PAGE = '/order-page';
   static const SETTINGS_PAGE = '/settings-page';
-  static const VERIFY_PAGE = '/verify-page';
   static const SHOP_PAGE = '/shop-page';
   static const EDIT_PROFILE_PAGE = '/edit-profile-page';
   static const VOUCHER_PAGE = '/voucher-page';
@@ -50,5 +50,7 @@ abstract class _Paths {
   static const DETAIL_SALES_PAGE = '/detail-sales-page';
   static const EDIT_CUSTOMERS_PAGE = '/edit-customers-page';
   static const CUSTOMERS_PAGE = '/customers-page';
+  static const DETAIL_VOUCHER_PAGE = '/detail-voucher-page';
+  static const ADD_VOUCHER_PAGE = '/add-voucher-page';
 
 }
