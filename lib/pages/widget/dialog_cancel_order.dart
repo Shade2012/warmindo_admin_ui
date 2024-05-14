@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class DialogCancelOrder extends StatelessWidget {
@@ -32,7 +31,7 @@ class DialogCancelOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
+    // final double height = MediaQuery.of(context).size.height;
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Column(
@@ -71,7 +70,7 @@ class DialogCancelOrder extends StatelessWidget {
       ),
       actions: [
         Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.005),
+          padding: EdgeInsets.symmetric(horizontal: width * 0.005),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
