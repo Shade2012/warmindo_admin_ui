@@ -30,8 +30,8 @@ import 'package:warmindo_admin_ui/pages/sales_detail_page/binding/sales_detail_b
 import 'package:warmindo_admin_ui/pages/sales_detail_page/view/sales_detail_page.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/binding/settings_binding.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/view/settings_page.dart';
-import 'package:warmindo_admin_ui/pages/shop_page/binding/shop_binding.dart';
-import 'package:warmindo_admin_ui/pages/shop_page/view/shop_page.dart';
+import 'package:warmindo_admin_ui/pages/schedule_page/binding/schedule_binding.dart';
+import 'package:warmindo_admin_ui/pages/schedule_page/view/schedule_page.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/binding/splash_binding.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/view/splash_page.dart';
 import 'package:warmindo_admin_ui/pages/voucher_page/binding/voucher_binding.dart';
@@ -69,9 +69,9 @@ class AppPages {
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 1500)),
     GetPage(
-        name: _Paths.SHOP_PAGE,
-        page: () => ShopPage(),
-        binding: ShopBinding(),
+        name: _Paths.SCHEDULE_PAGE,
+        page: () => SchedulePage(),
+        binding: ScheduleBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(

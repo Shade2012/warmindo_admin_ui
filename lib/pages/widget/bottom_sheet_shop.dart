@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
@@ -212,7 +214,7 @@ class _BottomSheetShopState extends State<BottomSheetShop> {
                     alignment: Alignment.centerRight,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Get.toNamed(Routes.SCHEDULE_PAGE);
                       },
                       icon: Icon(Icons.arrow_forward_ios_rounded),
                     ),

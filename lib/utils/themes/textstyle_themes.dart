@@ -375,3 +375,15 @@ TextStyle contentSmallBtsShopTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));
+
+TextStyle scheduleTitleTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(14)));
+
+TextStyle scheduleContentTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(12)));

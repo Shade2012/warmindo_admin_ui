@@ -10,4 +10,5 @@ class Images {
   static const String userImage = 'assets/images/user.png';
   static const String profileBg = 'assets/images/profilebg.jpg';
   static const String defaultImage = 'assets/images/default_image.png';
+  static const String datePicker = 'assets/images/date_picker.png';
 }
