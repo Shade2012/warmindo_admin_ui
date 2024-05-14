@@ -100,7 +100,7 @@ class SettingsPage extends StatelessWidget {
                         'Akun',
                         style: headercontentProfileTextStyle,
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 10),
                       Container(
                         width: 327,
                         padding: EdgeInsets.all(10),
@@ -129,6 +129,7 @@ class SettingsPage extends StatelessWidget {
                                 style: contentProfileTextStyle,
                               ),
                               trailing: Icon(Icons.arrow_forward_ios),
+                              
                               onTap: () {
                                 Get.toNamed(Routes.CHANGEPASS_PAGE);
                               },
@@ -142,7 +143,7 @@ class SettingsPage extends StatelessWidget {
                         style: headercontentProfileTextStyle,
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
                       Container(
                         width: 327,
@@ -173,7 +174,18 @@ class SettingsPage extends StatelessWidget {
                               ),
                               trailing: Icon(Icons.arrow_forward_ios),
                               onTap: () {
-                                Get.toNamed(Routes.SHOP_PAGE);
+                                
+                              },
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.logout),
+                              title: Text(
+                                'Log Out',
+                                style: contentProfileTextStyle,
+                              ),
+                              trailing: Icon(Icons.arrow_forward_ios),
+                              onTap: () {
+                                // Get.toNamed(Routes.SHOP_PAGE);
                               },
                             ),
                           ],
