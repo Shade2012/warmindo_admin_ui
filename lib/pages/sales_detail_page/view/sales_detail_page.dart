@@ -66,7 +66,7 @@ class SalesDetailPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: screenWidth * 0.42),
+                  SizedBox(width: screenWidth * 0.395),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
