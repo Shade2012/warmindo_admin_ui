@@ -162,6 +162,7 @@ class AppPages {
         binding: EditCustomersBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
+    
     GetPage(
         name: _Paths.CUSTOMERS_PAGE,
         page: () => CustomersPage(),
