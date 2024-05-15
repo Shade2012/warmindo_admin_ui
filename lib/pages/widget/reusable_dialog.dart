@@ -49,37 +49,42 @@ class ReusableDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: onCancelPressed as void Function()?,
-          style: TextButton.styleFrom(
-            minimumSize: Size(130, 48),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7.0),
-              side: BorderSide(color: Colors.white),
+        Row(
+          children: [
+            TextButton(
+              onPressed: onCancelPressed as void Function()?,
+              style: TextButton.styleFrom(
+                minimumSize: Size(120, 48),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7.0),
+                  side: BorderSide(color: Colors.white),
+                ),
+                backgroundColor: cancelButtonColor,
+                foregroundColor: cancelButtonTextColor,
+              ),
+              child: Text(
+                cancelText,
+                style: dialogendButtonTextStyle,
+              ),
             ),
-            backgroundColor: cancelButtonColor,
-            foregroundColor: cancelButtonTextColor,
-          ),
-          child: Text(
-            cancelText,
-            style: dialogendButtonTextStyle,
-          ),
-        ),
-        TextButton(
-          onPressed: onConfirmPressed as void Function()?,
-          style: TextButton.styleFrom(
-            minimumSize: Size(130, 48),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7.0),
-              side: BorderSide(color: Colors.white),
+            SizedBox(width: 10),
+            TextButton(
+              onPressed: onConfirmPressed as void Function()?,
+              style: TextButton.styleFrom(
+                minimumSize: Size(120, 48),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7.0),
+                  side: BorderSide(color: Colors.white),
+                ),
+                backgroundColor: confirmButtonColor,
+                foregroundColor: confirmButtonTextColor,
+              ),
+              child: Text(
+                confirmText,
+                style: dialogButtonTextStyle,
+              ),
             ),
-            backgroundColor: confirmButtonColor,
-            foregroundColor: confirmButtonTextColor,
-          ),
-          child: Text(
-            confirmText,
-            style: dialogButtonTextStyle,
-          ),
+          ],
         ),
       ],
     );

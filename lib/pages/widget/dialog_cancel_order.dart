@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class DialogCancelOrder extends StatelessWidget {
@@ -31,8 +30,10 @@ class DialogCancelOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    // final double height = MediaQuery.of(context).size.height;
     return AlertDialog(
-      backgroundColor: ColorResources.backgroundColor,
+      backgroundColor: Colors.white,
       title: Column(
         children: [
           if (dialogImage != null) dialogImage!,
@@ -49,9 +50,9 @@ class DialogCancelOrder extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.yellow, 
+                  color: Colors.yellow,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Icon(Icons.info, color: Colors.black), // Icon info
@@ -68,36 +69,45 @@ class DialogCancelOrder extends StatelessWidget {
         ],
       ),
       actions: [
-        TextButton(
-          onPressed: onCancelPressed as void Function()?,
-          style: TextButton.styleFrom(
-            minimumSize: Size(130, 48),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7.0),
-              side: BorderSide(color: Colors.white),
-            ),
-            backgroundColor: cancelButtonColor,
-            foregroundColor: cancelButtonTextColor,
-          ),
-          child: Text(
-            cancelText,
-            style: dialogendButtonTextStyle,
-          ),
-        ),
-        TextButton(
-          onPressed: onConfirmPressed as void Function()?,
-          style: TextButton.styleFrom(
-            minimumSize: Size(130, 48),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7.0),
-              side: BorderSide(color: Colors.white),
-            ),
-            backgroundColor: confirmButtonColor,
-            foregroundColor: confirmButtonTextColor,
-          ),
-          child: Text(
-            confirmText,
-            style: dialogButtonTextStyle,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * 0.005),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: onCancelPressed as void Function()?,
+                style: TextButton.styleFrom(
+                  minimumSize: Size(118, 48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7.0),
+                    side: BorderSide(color: Colors.white),
+                  ),
+                  backgroundColor: cancelButtonColor,
+                  foregroundColor: cancelButtonTextColor,
+                ),
+                child: Text(
+                  cancelText,
+                  style: dialogendButtonTextStyle,
+                ),
+              ),
+              // SizedBox(width: 14),
+              TextButton(
+                onPressed: onConfirmPressed as void Function()?,
+                style: TextButton.styleFrom(
+                  minimumSize: Size(118, 48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7.0),
+                    side: BorderSide(color: Colors.white),
+                  ),
+                  backgroundColor: confirmButtonColor,
+                  foregroundColor: confirmButtonTextColor,
+                ),
+                child: Text(
+                  confirmText,
+                  style: dialogButtonTextStyle,
+                ),
+              ),
+            ],
           ),
         ),
       ],
