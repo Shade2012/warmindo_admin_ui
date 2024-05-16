@@ -352,13 +352,32 @@ TextStyle priceCProductDetailTextStyle = GoogleFonts.oxygen(
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(18)));
 
+TextStyle titleBtsShopTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.w600,
+        fontSize: figmaFontsize(16)));
+
+TextStyle titleLightBtsShopTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(16)));
+
+
+TextStyle blackvoucherTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
+
 TextStyle contentSmallBtsShopTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));
 
-TextStyle scheduleTitleTextStyle = GoogleFonts.oxygen(
+TextStyle whitevoucherTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
@@ -369,4 +388,3 @@ TextStyle scheduleContentTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.normal,
         fontSize: figmaFontsize(12)));
-

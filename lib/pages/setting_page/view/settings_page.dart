@@ -130,6 +130,7 @@ class SettingsPage extends StatelessWidget {
                                 style: contentProfileTextStyle,
                               ),
                               trailing: Icon(Icons.arrow_forward_ios),
+                              
                               onTap: () {
                                 Get.toNamed(Routes.CHANGEPASS_PAGE);
                               },
