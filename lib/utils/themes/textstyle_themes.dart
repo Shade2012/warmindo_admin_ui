@@ -371,6 +371,12 @@ TextStyle blackvoucherTextStyle = GoogleFonts.oxygen(
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));
 
+TextStyle contentBoldBtsShopTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
+
 TextStyle contentSmallBtsShopTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
@@ -378,6 +384,12 @@ TextStyle contentSmallBtsShopTextStyle = GoogleFonts.oxygen(
         fontSize: figmaFontsize(12)));
 
 TextStyle whitevoucherTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(14)));
+
+TextStyle scheduleTitleTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
         fontWeight: FontWeight.bold,
