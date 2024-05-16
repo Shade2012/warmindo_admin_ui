@@ -29,7 +29,7 @@ class BottomNavbar extends StatelessWidget {
         onPressed: () {
           controller.changeIndex(2);
         },
-        child: Obx(() => (controller.currentIndex.value == 2 ? Icon(Icons.cancel, color: ColorResources.backgroundColor,): Icon(Icons.cancel_outlined, color: ColorResources.backgroundColor,))),
+        child: Obx(() => Container( width: 30, child:  Image.asset(controller.currentIndex.value == 2 ? IconThemes.iconcancelSelected : IconThemes.iconcancel))),
         backgroundColor: ColorResources.bgfloatingActionButtonColor,
         shape: CircleBorder(),
       ),
