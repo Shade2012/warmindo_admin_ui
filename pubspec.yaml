@@ -42,6 +42,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   syncfusion_flutter_charts: ^25.1.42+1
   dropdown_button2: ^2.3.9
+  animated_custom_dropdown: ^3.0.0
 
 dev_dependencies:
   flutter_test:
