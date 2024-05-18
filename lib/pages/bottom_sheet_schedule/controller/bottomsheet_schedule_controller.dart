@@ -48,7 +48,7 @@ class BottomSheetScheduleController extends GetxController {
 
   void addSchedule() {
     schedules.add(Schedule(
-      days: selectedDays,
+      days: List.from(selectedDays),
       openingTime: openingTime.value,
       closingTime: closingTime.value,
       is24Hours: is24Hours.value,
@@ -72,4 +72,5 @@ class Schedule {
     required this.isClosed,
   });
 }
+
 

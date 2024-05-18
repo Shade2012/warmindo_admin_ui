@@ -90,7 +90,7 @@ class SchedulePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     showModalBottomSheet(

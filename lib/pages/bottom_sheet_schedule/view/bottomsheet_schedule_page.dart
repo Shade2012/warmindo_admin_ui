@@ -31,7 +31,7 @@ class BottomSheetSchedule extends StatelessWidget {
       child: Container(
         color: Colors.white60,
         width: screenWidth,
-        height: screenHeight * 0.4,
+        height: screenHeight * 0.45,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
