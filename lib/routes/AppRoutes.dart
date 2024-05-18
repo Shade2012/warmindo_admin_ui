@@ -26,6 +26,7 @@ abstract class Routes {
   static const CUSTOMERS_PAGE = _Paths.CUSTOMERS_PAGE;
   static const DETAIL_VOUCHER_PAGE = _Paths.DETAIL_VOUCHER_PAGE;
   static const ADD_VOUCHER_PAGE = _Paths.ADD_VOUCHER_PAGE;
+  static const BOTTOM_SHEET_SCHEDULE = _Paths.BOTTOM_SHEET_SCHEDULE;
 
 
 
@@ -55,5 +56,6 @@ abstract class _Paths {
   static const CUSTOMERS_PAGE = '/customers-page';
   static const DETAIL_VOUCHER_PAGE = '/detail-voucher-page';
   static const ADD_VOUCHER_PAGE = '/add-voucher-page';
+  static const BOTTOM_SHEET_SCHEDULE = '/bottom-sheet-schedule';
 
 }

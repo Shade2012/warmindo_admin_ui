@@ -3,6 +3,8 @@ import 'package:warmindo_admin_ui/pages/add_product_page/binding/add_product_bin
 import 'package:warmindo_admin_ui/pages/add_product_page/view/add_product_page.dart';
 import 'package:warmindo_admin_ui/pages/add_voucher_page/binding/add_voucher_binding.dart';
 import 'package:warmindo_admin_ui/pages/add_voucher_page/view/add_voucher_page.dart';
+import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/binding/bottomsheet_schedule_binding.dart';
+import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/binding/changepass_binding.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/view/changepass_page.dart';
 import 'package:warmindo_admin_ui/pages/customers_page/binding/customers_binding.dart';
@@ -162,7 +164,6 @@ class AppPages {
         binding: EditCustomersBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
-    
     GetPage(
         name: _Paths.CUSTOMERS_PAGE,
         page: () => CustomersPage(),
@@ -179,6 +180,12 @@ class AppPages {
         name: _Paths.ADD_VOUCHER_PAGE,
         page: () => AddVoucherPage(),
         binding: AddVoucherBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.BOTTOM_SHEET_SCHEDULE,
+        page: () => BottomSheetSchedule(),
+        binding: BottomSheetScheduleBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
   ];
