@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottomsheet_schedule_controller.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
+import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';
+import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class SchedulePage extends StatelessWidget {
-  final BottomSheetScheduleController _controller =
-      Get.put(BottomSheetScheduleController());
+  final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
 
   SchedulePage({Key? key}) : super(key: key);
 
@@ -22,7 +23,8 @@ class SchedulePage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new),
           onPressed: () {
-            Get.back();
+            Get.find<NavigatorController>().goToSettingsPage();
+            Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
           },
         ),
         title: Text('Jadwal Restoran'),
@@ -63,31 +65,32 @@ class SchedulePage extends StatelessWidget {
                   ),
                 if (!isScheduleEmpty)
                   Expanded(
-                    child: ListView(
-                      children: [
-                        for (var schedule in schedules)
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 8),
-                            padding: EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${schedule.days}',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  '${schedule.openingTime} - ${schedule.closingTime}',
-                                ),
-                              ],
-                            ),
+                    child: ListView.builder(
+                      itemCount: schedules.length,
+                      itemBuilder: (context, index) {
+                        var schedule = schedules[index];
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                      ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${schedule.days}',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                '${schedule.openingTime} - ${schedule.closingTime}',
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   ),
                 SizedBox(height: 10),
