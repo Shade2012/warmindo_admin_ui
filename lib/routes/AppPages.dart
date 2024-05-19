@@ -3,6 +3,8 @@ import 'package:warmindo_admin_ui/pages/add_product_page/binding/add_product_bin
 import 'package:warmindo_admin_ui/pages/add_product_page/view/add_product_page.dart';
 import 'package:warmindo_admin_ui/pages/add_voucher_page/binding/add_voucher_binding.dart';
 import 'package:warmindo_admin_ui/pages/add_voucher_page/view/add_voucher_page.dart';
+import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/binding/bottomsheet_schedule_binding.dart';
+import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/binding/changepass_binding.dart';
 import 'package:warmindo_admin_ui/pages/change_pass_page/view/changepass_page.dart';
 import 'package:warmindo_admin_ui/pages/customers_page/binding/customers_binding.dart';
@@ -34,8 +36,8 @@ import 'package:warmindo_admin_ui/pages/sales_detail_page/binding/sales_detail_b
 import 'package:warmindo_admin_ui/pages/sales_detail_page/view/sales_detail_page.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/binding/settings_binding.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/view/settings_page.dart';
-import 'package:warmindo_admin_ui/pages/shop_page/binding/shop_binding.dart';
-import 'package:warmindo_admin_ui/pages/shop_page/view/shop_page.dart';
+import 'package:warmindo_admin_ui/pages/schedule_page/binding/schedule_binding.dart';
+import 'package:warmindo_admin_ui/pages/schedule_page/view/schedule_page.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/binding/splash_binding.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/view/splash_page.dart';
 import 'package:warmindo_admin_ui/pages/voucher_page/binding/voucher_binding.dart';
@@ -73,9 +75,9 @@ class AppPages {
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 1500)),
     GetPage(
-        name: _Paths.SHOP_PAGE,
-        page: () => ShopPage(),
-        binding: ShopBinding(),
+        name: _Paths.SCHEDULE_PAGE,
+        page: () => SchedulePage(),
+        binding: ScheduleBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
@@ -178,6 +180,12 @@ class AppPages {
         name: _Paths.ADD_VOUCHER_PAGE,
         page: () => AddVoucherPage(),
         binding: AddVoucherBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.BOTTOM_SHEET_SCHEDULE,
+        page: () => BottomSheetSchedule(),
+        binding: BottomSheetScheduleBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
   ];

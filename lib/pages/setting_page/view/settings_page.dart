@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/widget/bottom_sheet_shop.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
@@ -100,7 +101,7 @@ class SettingsPage extends StatelessWidget {
                         'Akun',
                         style: headercontentProfileTextStyle,
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 10),
                       Container(
                         width: 327,
                         padding: EdgeInsets.all(10),
@@ -129,6 +130,7 @@ class SettingsPage extends StatelessWidget {
                                 style: contentProfileTextStyle,
                               ),
                               trailing: Icon(Icons.arrow_forward_ios),
+                              
                               onTap: () {
                                 Get.toNamed(Routes.CHANGEPASS_PAGE);
                               },
@@ -142,7 +144,7 @@ class SettingsPage extends StatelessWidget {
                         style: headercontentProfileTextStyle,
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
                       Container(
                         width: 327,
@@ -173,7 +175,27 @@ class SettingsPage extends StatelessWidget {
                               ),
                               trailing: Icon(Icons.arrow_forward_ios),
                               onTap: () {
-                                Get.toNamed(Routes.SHOP_PAGE);
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  builder: (BuildContext context) {
+                                    return BottomSheetShop();
+                                  },
+                                );
+                              },
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.logout),
+                              title: Text(
+                                'Log Out',
+                                style: contentProfileTextStyle,
+                              ),
+                              trailing: Icon(Icons.arrow_forward_ios),
+                              onTap: () {
+                                // Get.toNamed(Routes.SHOP_PAGE);
                               },
                             ),
                           ],
