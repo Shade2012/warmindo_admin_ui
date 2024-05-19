@@ -8,6 +8,39 @@ import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
+enum Day {
+  Sunday,
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+}
+
+extension DayExtension on Day {
+  String get name {
+    switch (this) {
+      case Day.Sunday:
+        return 'Minggu';
+      case Day.Monday:
+        return 'Senin';
+      case Day.Tuesday:
+        return 'Selasa';
+      case Day.Wednesday:
+        return 'Rabu';
+      case Day.Thursday:
+        return 'Kamis';
+      case Day.Friday:
+        return 'Jumat';
+      case Day.Saturday:
+        return 'Sabtu';
+      default:
+        return '';
+    }
+  }
+}
+
 class SchedulePage extends StatelessWidget {
   final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
 
@@ -39,16 +72,15 @@ class SchedulePage extends StatelessWidget {
           child: Obx(() {
             final schedules = _controller.schedules;
             final isScheduleEmpty = schedules.isEmpty;
-
             return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (isScheduleEmpty)
                   Column(
                     children: [
                       Image.asset(Images.datePicker),
-                      SizedBox(height: screenHeight * 0.02), // 2% dari tinggi layar
+                      SizedBox(height: screenHeight * 0.02),
                       Text(
                         'Memperkenalkan Jadwal Khusus',
                         textAlign: TextAlign.center,
@@ -76,16 +108,38 @@ class SchedulePage extends StatelessWidget {
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                '${schedule.days}',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${schedule.days.map((day) => day.name).join(', ')}',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 4),
+                                  if (schedule.is24Hours)
+                                    Text(
+                                      '24 Jam',
+                                    ),
+                                  if (!schedule.is24Hours && schedule.isClosed)
+                                    Text(
+                                      'Tutup',
+                                    ),
+                                  if (!schedule.is24Hours && !schedule.isClosed && schedule.openingTime != null && schedule.closingTime != null)
+                                    Text(
+                                      '${(schedule.formattedOpeningTime())} - ${(schedule.formattedClosingTime())}',
+                                    ),
+                                ],
                               ),
-                              SizedBox(height: 4),
-                              Text(
-                                '${schedule.openingTime} - ${schedule.closingTime}',
+                              Switch(
+                                value: schedule.isActive,
+                                onChanged: (newValue) {
+                                  _controller.updateScheduleStatus(index, newValue);
+                                },
+                                activeColor: Colors.green,
+                                inactiveThumbColor: Colors.grey,
                               ),
                             ],
                           ),

@@ -16,8 +16,7 @@ const List<Day> _dayItems = [
 ];
 
 class BottomSheetSchedule extends StatelessWidget {
-  final BottomSheetScheduleController _controller =
-      Get.put(BottomSheetScheduleController());
+  final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
 
   BottomSheetSchedule({Key? key}) : super(key: key);
 
@@ -38,14 +37,6 @@ class BottomSheetSchedule extends StatelessWidget {
             Text('Pilih Hari'),
             SizedBox(height: 10),
             Container(
-              child: CustomDropdown<Day>.multiSelect(
-                items: _dayItems,
-                initialItems: _dayItems.take(1).toList(),
-                onListChanged: (value) {
-                  log('changing value to: $value');
-                  _controller.selectedDays.value = value;
-                },
-              ),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -54,6 +45,17 @@ class BottomSheetSchedule extends StatelessWidget {
                   offset: Offset(0, 3),
                 ),
               ]),
+              child: Obx(() {
+                return CustomDropdown<Day>.multiSelect(
+                  hintText: 'Pilih Hari',
+                  items: _dayItems,
+                  initialItems: _controller.selectedDays.toList(),
+                  onListChanged: (value) {
+                    log('changing value to: $value');
+                    _controller.selectedDays.value = value;
+                  },
+                );
+              }),
             ),
             SizedBox(height: 20),
             Row(
@@ -67,13 +69,10 @@ class BottomSheetSchedule extends StatelessWidget {
                       Obx(() {
                         return TextFormField(
                           onTap: () => _controller.chooseTime(context, true),
-                          enabled: !(_controller.is24Hours.value ||
-                              _controller.isClosedStatus.value),
+                          enabled: !(_controller.is24Hours.value || _controller.isClosedStatus.value),
                           readOnly: true,
                           controller: TextEditingController(
-                            text: _controller.openingTime.value
-                                    ?.format(context) ??
-                                '',
+                            text: _controller.openingTime.value?.format(context) ?? '',
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -98,13 +97,10 @@ class BottomSheetSchedule extends StatelessWidget {
                       Obx(() {
                         return TextFormField(
                           onTap: () => _controller.chooseTime(context, false),
-                          enabled: !(_controller.is24Hours.value ||
-                              _controller.isClosedStatus.value),
+                          enabled: !(_controller.is24Hours.value || _controller.isClosedStatus.value),
                           readOnly: true,
                           controller: TextEditingController(
-                            text: _controller.closingTime.value
-                                    ?.format(context) ??
-                                '',
+                            text: _controller.closingTime.value?.format(context) ?? '',
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -130,21 +126,21 @@ class BottomSheetSchedule extends StatelessWidget {
                       Obx(() => Radio(
                             value: true,
                             groupValue: _controller.is24Hours.value,
-                            onChanged: _controller.toggle24Hours,
+                            onChanged: (value) => _controller.toggle24Hours(value),
                             activeColor: Colors.purple,
                           )),
                       Text('24 Jam'),
                     ],
                   ),
                 ),
-                SizedBox(width: 20),
+                SizedBox(width: screenWidth * 0.02),
                 Expanded(
                   child: Row(
                     children: [
                       Obx(() => Radio(
                             value: true,
                             groupValue: _controller.isClosedStatus.value,
-                            onChanged: _controller.toggleClosed,
+                            onChanged: (value) => _controller.toggleClosed(value),
                             activeColor: Colors.purple,
                           )),
                       Text('Close'),
@@ -153,28 +149,53 @@ class BottomSheetSchedule extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 40),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  _controller.addSchedule(); // Add this line
-                  log('Button clicked');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // Warna latar belakang tombol
-                  foregroundColor: Colors.white, // Warna teks tombol
-                  minimumSize: Size(screenWidth, 45),
-                  textStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.zero, // Membuat tombol menjadi kotak
+            SizedBox(height: screenHeight * 0.09),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _controller.reset();
+                      log('Clear button clicked');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, 
+                      foregroundColor: Colors.white, 
+                      minimumSize: Size(screenWidth / 2 - 30, 45),
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), 
+                      ),
+                    ),
+                    child: Text('Clear'),
                   ),
                 ),
-                child: Text('Simpan'),
-              ),
+                SizedBox(width: screenWidth * 0.03),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _controller.addSchedule();
+                      log('Save button clicked');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green, // Warna latar belakang tombol
+                      foregroundColor: Colors.white, // Warna teks tombol
+                      minimumSize: Size(screenWidth / 2 - 30, 45),
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), 
+                      ),
+                    ),
+                    child: Text('Simpan'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
