@@ -400,3 +400,9 @@ TextStyle scheduleContentTextStyle = GoogleFonts.oxygen(
         color: primaryTextColor,
         fontWeight: FontWeight.normal,
         fontSize: figmaFontsize(12)));
+
+TextStyle titleAppBarTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: secondaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(20)));

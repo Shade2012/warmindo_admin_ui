@@ -38,12 +38,11 @@ class GeneralInformation extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                  child: ClipOval(
                     child: Image.asset(
                       Images.userImage,
-                      width: 125,
-                      height: 125,
+                      width: 150,
+                      height: 150,
                       fit: BoxFit.cover,
                       alignment: Alignment.center,
                     ),
