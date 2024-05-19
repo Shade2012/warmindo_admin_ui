@@ -385,7 +385,7 @@ TextStyle contentSmallBtsShopTextStyle = GoogleFonts.oxygen(
 
 TextStyle whitevoucherTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
-        color: primaryTextColor,
+        color: secondaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(14)));
 
