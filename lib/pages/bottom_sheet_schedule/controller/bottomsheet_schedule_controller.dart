@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:intl/intl.dart';
 import 'package:warmindo_admin_ui/pages/widget/custom_dropdown_multi.dart';
 
@@ -55,6 +56,7 @@ class BottomSheetScheduleController extends GetxController {
       is24Hours: is24Hours.value,
       isClosed: isClosedStatus.value,
     ));
+    schedules.refresh();
   }
 
   void reset() {
@@ -68,6 +70,7 @@ class BottomSheetScheduleController extends GetxController {
    void updateScheduleStatus(int index, bool isActive) {
     if (index >= 0 && index < schedules.length) {
       schedules[index].isActive = isActive;
+      schedules.refresh();
     }
   }
 }

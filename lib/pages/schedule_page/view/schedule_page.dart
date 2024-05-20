@@ -57,7 +57,7 @@ class SchedulePage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios_new),
           onPressed: () {
             Get.find<NavigatorController>().goToSettingsPage();
-            Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+            Get.toNamed(Routes.BOTTOM_NAVIGATION);
           },
         ),
         title: Text('Jadwal Restoran'),
@@ -136,7 +136,9 @@ class SchedulePage extends StatelessWidget {
                               Switch(
                                 value: schedule.isActive,
                                 onChanged: (newValue) {
+
                                   _controller.updateScheduleStatus(index, newValue);
+                                  print('isActive value changed to: $newValue');
                                 },
                                 activeColor: Colors.green,
                                 inactiveThumbColor: Colors.grey,
