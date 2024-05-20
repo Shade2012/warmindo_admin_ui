@@ -117,7 +117,6 @@ class BottomSheetSchedule extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
@@ -159,15 +158,15 @@ class BottomSheetSchedule extends StatelessWidget {
                       log('Clear button clicked');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, 
-                      foregroundColor: Colors.white, 
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
                       minimumSize: Size(screenWidth / 2 - 30, 45),
                       textStyle: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), 
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     child: Text('Clear'),
@@ -189,7 +188,7 @@ class BottomSheetSchedule extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), 
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     child: Text('Simpan'),
