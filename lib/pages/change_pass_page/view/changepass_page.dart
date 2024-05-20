@@ -77,7 +77,7 @@ class ChangePassPage extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: screenHeight * 0.36),
+                SizedBox(height: screenHeight * 0.28),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorResources.primaryColor,
@@ -129,14 +129,20 @@ Widget typePass(
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.black),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.black),
         ),
         hintText: hint,
         labelText: label,
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+        hintStyle: TextStyle(color: Colors.black),
+        errorStyle: TextStyle(color: Colors.black), 
         errorText: validator != null ? validator(controller.text) : null,
+        labelStyle: TextStyle(color: Colors.black),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
       ),
     ),
   );
