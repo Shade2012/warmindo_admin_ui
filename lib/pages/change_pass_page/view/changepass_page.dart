@@ -14,6 +14,7 @@ class ChangePassPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new),
           onPressed: () {
@@ -77,10 +78,10 @@ class ChangePassPage extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: screenHeight * 0.28),
+                SizedBox(height: screenHeight * 0.10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorResources.primaryColor,
+                    backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
                     minimumSize: Size(screenWidth, screenHeight * 0.06),
                     padding: EdgeInsets.all(8.0),
@@ -137,7 +138,7 @@ Widget typePass(
         hintText: hint,
         labelText: label,
         hintStyle: TextStyle(color: Colors.black),
-        errorStyle: TextStyle(color: Colors.black), 
+        errorStyle: TextStyle(color: Colors.black),
         errorText: validator != null ? validator(controller.text) : null,
         labelStyle: TextStyle(color: Colors.black),
         enabledBorder: OutlineInputBorder(
