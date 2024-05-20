@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/widget/bottom_sheet_shop.dart';
@@ -38,12 +39,11 @@ class SettingsPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                    ClipOval(
                       child: Image.asset(
                         Images.userImage,
-                        width: 125,
-                        height: 125,
+                        width: 150,
+                        height: 150,
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
                       ),
