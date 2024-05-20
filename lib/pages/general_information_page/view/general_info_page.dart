@@ -89,10 +89,10 @@ class GeneralInformation extends StatelessWidget {
                   ),
                   keyboardType: TextInputType.phone,
                 ),
-                SizedBox(height: screenHeight * 0.20),
+                SizedBox(height: screenHeight * 0.10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorResources.primaryColor,
+                    backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
                     minimumSize: Size(screenWidth, screenHeight * 0.06),
                     padding: EdgeInsets.all(8.0),

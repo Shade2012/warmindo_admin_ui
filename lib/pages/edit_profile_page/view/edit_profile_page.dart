@@ -14,178 +14,232 @@ class EditProfilPage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final TextEditingController _fullNameController =
-        TextEditingController(text: 'admin');
+    TextEditingController(text: 'admin');
     final TextEditingController _emailController = TextEditingController(text: 'admin@gmail.com');
     final TextEditingController _contactNumberController =
-        TextEditingController(text: '0821-2480-5253');
+    TextEditingController(text: '0821-2480-5253');
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        title: Text(
-          'Edit Profil',
-          style: titleAppBarTextStyle,
-        ),
-        backgroundColor: ColorResources.primaryColor,
-      ),
-      backgroundColor: ColorResources.primaryColor,
       body: SingleChildScrollView(
-        child: Container(
-          width: screenWidth,
-          height: screenHeight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: screenHeight * 0.05),
-              Container(
-                margin: EdgeInsets.only(bottom: 10),
-                width: screenWidth,
-                height: screenHeight * 0.3,
-                color: ColorResources.transparent,
+        child: Column(
+          children: [
+            Container(
+              color: ColorResources.primaryColor, // Set grey background color here
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Stack(
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        ClipOval(
-                          child: Image.asset(
-                            Images.userImage,
-                            width: 150,
-                            height: 150,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.center,
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back_ios_new,size: 20,
+                            color: Colors.white,
                           ),
+                          onPressed: () {
+                            Get.back();
+                          },
                         ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.zero,
-                                  ),
-                                  builder: (BuildContext context) {
-                                    return UploadImage();
-                                  },
-                                );
-                              },
-                              icon: Icon(
-                                Icons.camera_alt,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
+                        Spacer(),
+                        Center(
+                          child: Text("Edit Profile",style: subheaderRegularStyle,),
                         ),
+                        SizedBox(width: screenWidth * 0.13,),
+                        Spacer(),
                       ],
                     ),
-                    SizedBox(height: 15),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: TextFormField(
-                        controller: _fullNameController,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: 'Full Name',
-                          labelStyle: TextStyle(color: Colors.white),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                    SizedBox(height: 30,),
+                    Container(
+                      width: screenWidth,
+                      child: Column(
+                        children: [
+                          Center(
+                              child: Stack(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 75,
+                                    backgroundColor: Colors.grey.shade200,
+                                    child: CircleAvatar(
+                                      radius: 70,
+                                      backgroundImage: AssetImage(Images.userImage),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 1,
+                                    right: 1,
+                                    child: Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Icon(Icons.camera_alt_outlined, color: Colors.black),
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 3,
+                                            color: Colors.white,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                              50,
+                                            ),
+                                          ),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              offset: Offset(2, 4),
+                                              color: Colors.black.withOpacity(
+                                                0.3,
+                                              ),
+                                              blurRadius: 3,
+                                            ),
+                                          ]),
+                                    ),
+                                  ),
+                                ],
+                              )
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _fullNameController,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white), // Set border color to white
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white), // Set border color to white
+                        ),
+                        labelText: "Full Name",
+                        labelStyle: TextStyle(color: Colors.white), // Set label text color to white
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, color: Colors.white), // Set clear icon color to white
+                          onPressed: () {
+                            _fullNameController.clear(); // Clear text when icon is pressed
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Full name is required";
+                        }
+                        return null;
+                      },
+                      style: TextStyle(color: Colors.white), // Set text color to white
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              color: Colors.white, // Set white background color here
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: SingleChildScrollView(
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20.0),
+                      Text("Email",style: regularInputTextStyle,),
+                      const SizedBox(height: 10.0),
+                      TextFormField(
+                        controller: _emailController,style: regularInputTextStyle,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0), // Adjust padding here
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.clear, color: Colors.white),
+                            icon: Icon(Icons.clear, color: Colors.black), // Set clear icon color to white
                             onPressed: () {
-                              _fullNameController.clear();
+                              _emailController.clear(); // Clear text when icon is pressed
                             },
                           ),
                         ),
+
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Email address is required";
+                          }
+                          if (!value.contains("@")) {
+                            return "Invalid email address";
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                    SizedBox(height: 5),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: screenWidth,
-                height: screenHeight  / 2.0,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 40),
-                    Text('Alamat Email'),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        hintText: 'Alamat Email',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text('Nomor Telepon'),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      controller: _contactNumberController,
-                      decoration: InputDecoration(
-                        hintText: 'Nomor Telepon',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(height: 120),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorResources.primaryColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(11),
+                      const SizedBox(height: 10.0),
+                      Text("Nomor Hp",style: regularInputTextStyle,),
+                      const SizedBox(height: 10.0),
+                      TextFormField(
+                        controller: _contactNumberController,style: regularInputTextStyle,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0), // Adjust padding here
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.clear, color: Colors.black), // Set clear icon color to white
+                            onPressed: () {
+                              _contactNumberController.clear(); // Clear text when icon is pressed
+                            },
                           ),
                         ),
-                        onPressed: () {
-                          Get.toNamed(Routes.GENERAL_INFORMATION_PAGE); 
+
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Nomor Hp di perlukan";
+                          }
+                          if (value.length < 11) {
+                            return "Nomor Hp tidak valid";
+                          }
+                          return null;
                         },
-                        child: Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text('Simpan'),
+                      ),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            minimumSize: Size(211, 46),
+                            padding: EdgeInsets.all(8.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          onPressed: () {
+
+
+
+                              // Show a success message or perform other actions
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("Profile updated successfully!"),
+                                ),
+                              );
+
+                          },
+                          child: Text("Edit"),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -142,6 +142,24 @@ TextStyle titleMenuOrderTextStyle = GoogleFonts.oxygen(
         fontWeight: FontWeight.w700,
         fontSize: figmaFontsize(14)));
 
+TextStyle regularInputTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(15)));
+
+TextStyle regulargreyText = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: greyTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: figmaFontsize(15)));
+
+TextStyle subheaderRegularStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: secondaryTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(20)));
+
 TextStyle priceMenuOrderTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: primaryTextColor,
