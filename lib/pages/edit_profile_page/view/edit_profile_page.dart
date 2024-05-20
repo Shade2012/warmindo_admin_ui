@@ -1,124 +1,190 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/widget/up_image_bottomsheet.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class EditProfilPage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+  const EditProfilPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    _fullNameController.text = "admin";
-    _emailController.text = "admin@gmail.com";
-    _phoneNumberController.text = "0821-2480-5253";
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    final TextEditingController _fullNameController =
+        TextEditingController(text: 'admin');
+    final TextEditingController _emailController = TextEditingController(text: 'admin@gmail.com');
+    final TextEditingController _contactNumberController =
+        TextEditingController(text: '0821-2480-5253');
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
           onPressed: () {
             Get.back();
           },
         ),
-        title: Text("Edit Profil"),
-        centerTitle: true,
+        title: Text(
+          'Edit Profil',
+          style: titleAppBarTextStyle,
+        ),
+        backgroundColor: ColorResources.primaryColor,
       ),
+      backgroundColor: ColorResources.primaryColor,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      Images.userImage,
-                      width: 125,
-                      height: 125,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
+        child: Container(
+          width: screenWidth,
+          height: screenHeight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: screenHeight * 0.05),
+              Container(
+                margin: EdgeInsets.only(bottom: 10),
+                width: screenWidth,
+                height: screenHeight * 0.3,
+                color: ColorResources.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(
+                      children: [
+                        ClipOval(
+                          child: Image.asset(
+                            Images.userImage,
+                            width: 150,
+                            height: 150,
+                            fit: BoxFit.cover,
+                            alignment: Alignment.center,
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  builder: (BuildContext context) {
+                                    return UploadImage();
+                                  },
+                                );
+                              },
+                              icon: Icon(
+                                Icons.camera_alt,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.16),
-                TextFormField(
-                  controller: _fullNameController,
-                  decoration: InputDecoration(
-                    labelText: "Full Name",
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Full name is required";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: "Email Address",
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Email address is required";
-                    }
-                    if (!value.contains("@")) {
-                      return "Invalid email address";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                TextFormField(
-                  controller: _phoneNumberController,
-                  decoration: InputDecoration(
-                    labelText: "Phone Number",
-                  ),
-                  keyboardType: TextInputType.phone,
-                ),
-                SizedBox(height: screenHeight * 0.20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorResources.primaryColor,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size(screenWidth, screenHeight * 0.06),
-                    padding: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(11.0),
+                    SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                      child: TextFormField(
+                        controller: _fullNameController,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          labelStyle: TextStyle(color: Colors.white),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.clear, color: Colors.white),
+                            onPressed: () {
+                              _fullNameController.clear();
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    // if (_formKey.currentState!.validate()) {
-                    //   // Update profile information
-                    //   print("Full Name: ${_fullNameController.text}");
-                    //   print("Email Address: ${_emailController.text}");
-                    //   print("Phone Number: ${_phoneNumberController.text}");
-                    //   // print("Username: ${_usernameController.text}");
-
-                    //   // Show a success message or perform other actions
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(
-                    //       content: Text("Profile updated successfully!"),
-                    //     ),
-                    //   );
-                    // }
-                    Get.offAllNamed(Routes.GENERAL_INFORMATION_PAGE);
-                  },
-                  child: Text("Simpan"),
+                    SizedBox(height: 5),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: screenWidth,
+                height: screenHeight  / 2.0,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 40),
+                    Text('Alamat Email'),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: 'Alamat Email',
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text('Nomor Telepon'),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: _contactNumberController,
+                      decoration: InputDecoration(
+                        hintText: 'Nomor Telepon',
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    SizedBox(height: 120),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorResources.primaryColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11),
+                          ),
+                        ),
+                        onPressed: () {
+                          Get.toNamed(Routes.GENERAL_INFORMATION_PAGE); 
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text('Simpan'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
