@@ -17,21 +17,20 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List<Product> filteredProducts =
-      productList; // Inisialisasi dengan semua produk
+  List<Product> filteredProducts = productList; // Inisialisasi dengan semua produk
+  String selectedCategory = 'Semua'; // Variabel state untuk menyimpan kategori yang dipilih
 
   void filterProducts(String category) {
-    if (category == 'Semua') {
-      setState(() {
+    setState(() {
+      selectedCategory = category;
+      if (category == 'Semua') {
         filteredProducts = productList; // Tampilkan semua produk
-      });
-    } else {
-      setState(() {
+      } else {
         filteredProducts = productList
             .where((product) => product.category == category)
             .toList();
-      });
-    }
+      }
+    });
   }
 
   @override
@@ -93,8 +92,7 @@ class _ProductPageState extends State<ProductPage> {
                               builder: (BuildContext context) {
                                 return ReusableDialog(
                                   title: "Edit Product",
-                                  content:
-                                      "Apakah Kamu yakin ingin mengubah data?",
+                                  content: "Apakah Kamu yakin ingin mengubah data?",
                                   cancelText: "Tidak",
                                   confirmText: "Iya",
                                   onCancelPressed: () {
@@ -103,8 +101,7 @@ class _ProductPageState extends State<ProductPage> {
                                   onConfirmPressed: () {
                                     Get.toNamed(Routes.EDIT_PRODUCT_PAGE);
                                   },
-                                  cancelButtonColor:
-                                      ColorResources.primaryColorLight,
+                                  cancelButtonColor: ColorResources.primaryColorLight,
                                   confirmButtonColor: ColorResources.buttonedit,
                                   dialogImage: Image.asset(Images.askDialog),
                                 );
@@ -120,8 +117,7 @@ class _ProductPageState extends State<ProductPage> {
                               builder: (BuildContext context) {
                                 return ReusableDialog(
                                   title: "Delete",
-                                  content:
-                                      "Apakah Kamu yakin ingin menghapus data?",
+                                  content: "Apakah Kamu yakin ingin menghapus data?",
                                   cancelText: "Tidak",
                                   confirmText: "Iya",
                                   onCancelPressed: () {
@@ -131,10 +127,8 @@ class _ProductPageState extends State<ProductPage> {
                                     Navigator.of(context).pop();
                                     // Get.toNamed(Routes.LOGIN_PAGE);
                                   },
-                                  cancelButtonColor:
-                                      ColorResources.primaryColorLight,
-                                  confirmButtonColor:
-                                      ColorResources.buttondelete,
+                                  cancelButtonColor: ColorResources.primaryColorLight,
+                                  confirmButtonColor: ColorResources.buttondelete,
                                   dialogImage: Image.asset(Images.askDialog),
                                 );
                               },
@@ -156,7 +150,7 @@ class _ProductPageState extends State<ProductPage> {
             context: context,
             builder: (BuildContext context) {
               return ReusableDialog(
-                title: "Add Product",
+                title: selectedCategory == 'Varian' ? "Add Varian" : "Add Product",
                 content: "Apakah Kamu yakin ingin menambah data?",
                 cancelText: "Tidak",
                 confirmText: "Iya",
@@ -164,7 +158,11 @@ class _ProductPageState extends State<ProductPage> {
                   Navigator.of(context).pop();
                 },
                 onConfirmPressed: () {
-                  Get.toNamed(Routes.ADD_PRODUCT_PAGE);
+                  if (selectedCategory == 'Varian') {
+                    Get.toNamed(Routes.ADD_VARIAN_PAGE);
+                  } else {
+                    Get.toNamed(Routes.ADD_PRODUCT_PAGE);
+                  }
                 },
                 cancelButtonColor: ColorResources.primaryColorLight,
                 confirmButtonColor: ColorResources.buttonadd,
