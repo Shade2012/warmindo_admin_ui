@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/model/product.dart';
-import 'package:warmindo_admin_ui/pages/widget/categoryWidget.dart';
+import 'package:warmindo_admin_ui/pages/product_page/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';

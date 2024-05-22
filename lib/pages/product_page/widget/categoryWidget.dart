@@ -11,7 +11,7 @@ class CategoryWidget extends StatefulWidget {
 
 class _CategoryWidgetState extends State<CategoryWidget> {
   late List<bool> isSelected;
-  final List<String> categories = ['Semua', 'Makanan', 'Minuman', 'Topping'];
+  final List<String> categories = ['Semua', 'Makanan', 'Minuman', 'Topping', 'Varian'];
 
   @override
   void initState() {
