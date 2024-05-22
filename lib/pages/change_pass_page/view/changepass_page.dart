@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 
 class ChangePassPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -43,7 +42,7 @@ class ChangePassPage extends StatelessWidget {
                   "Masukkan password lama",
                   _currentPasswordController,
                   (value) {
-                    if (value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Password Lama diperlukan";
                     }
                     return null;
@@ -56,7 +55,7 @@ class ChangePassPage extends StatelessWidget {
                   "Masukkan password baru",
                   _newPasswordController,
                   (value) {
-                    if (value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Password Baru diperlukan";
                     }
                     return null;
@@ -69,7 +68,7 @@ class ChangePassPage extends StatelessWidget {
                   "Konfirmasi password baru",
                   _confirmNewPasswordController,
                   (value) {
-                    if (value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Konfirmasi Password Baru diperlukan";
                     }
                     if (_newPasswordController.text != value) {
@@ -120,13 +119,14 @@ Widget typePass(
   String label,
   String hint,
   TextEditingController controller,
-  String? Function(String)? validator,
+  String? Function(String?)? validator,
 ) {
   return Container(
     margin: EdgeInsets.only(top: 20, bottom: 20),
     child: TextFormField(
       controller: controller,
       keyboardType: keyboardType,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -138,13 +138,13 @@ Widget typePass(
         hintText: hint,
         labelText: label,
         hintStyle: TextStyle(color: Colors.black),
-        errorStyle: TextStyle(color: Colors.black),
-        errorText: validator != null ? validator(controller.text) : null,
+        errorStyle: TextStyle(color: Colors.red),
         labelStyle: TextStyle(color: Colors.black),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.black),
         ),
       ),
+      validator: validator,
     ),
   );
 }
