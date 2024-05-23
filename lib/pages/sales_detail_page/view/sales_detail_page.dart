@@ -3,11 +3,17 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:warmindo_admin_ui/pages/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/utils/themes/icon_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
-class SalesDetailPage extends StatelessWidget {
+class SalesDetailPage extends StatefulWidget {
   const SalesDetailPage({Key? key}) : super(key: key);
 
+  @override
+  State<SalesDetailPage> createState() => _SalesDetailPageState();
+}
+
+class _SalesDetailPageState extends State<SalesDetailPage> {
+  String dropdownValue = 'Harian';
+  var _items = ['Harian', 'Mingguan', 'Bulanan'];
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -66,8 +72,9 @@ class SalesDetailPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: screenWidth * 0.42),
+                  SizedBox(width: screenWidth * 0.395),
                   Container(
+                    width: screenWidth * 0.27,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
                       border: Border.all(
@@ -75,19 +82,25 @@ class SalesDetailPage extends StatelessWidget {
                         width: 1.0,
                       ),
                     ),
-                    child: DropdownButton<String>(
-                      value: 'Harian',
-                      style: dropdownAnalyticTextStyle,
-                      onChanged: (String? newValue) {
-                        // Implementasi logika ketika dropdown diubah
-                      },
-                      items: <String>['Harian', 'Mingguan', 'Bulanan']
-                          .map<DropdownMenuItem<String>>((String value) {
+                    child: DropdownButton(
+                      isExpanded: true,
+                      items: _items.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
                         );
                       }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                      value: dropdownValue,
+                      selectedItemBuilder: (BuildContext context) {
+                        return _items.map<Widget>((String value) {
+                          return Center(child: Text(value));
+                        }).toList();
+                      },
                     ),
                   ),
                 ],
@@ -98,18 +111,29 @@ class SalesDetailPage extends StatelessWidget {
                 padding: EdgeInsets.all(screenWidth * 0.02),
                 child: SfCartesianChart(
                   primaryXAxis: CategoryAxis(),
+                  trackballBehavior: TrackballBehavior(
+                    enable: true,
+                    activationMode: ActivationMode.singleTap,
+                    lineType: TrackballLineType.vertical,
+                    tooltipSettings: InteractiveTooltip(
+                      enable: true,
+                      color: Colors.black,
+                    ),
+                  ),
                   series: <LineSeries<SalesData, String>>[
                     LineSeries<SalesData, String>(
-                        // Bind data source
-                        dataSource: <SalesData>[
-                          SalesData('Jan', 35),
-                          SalesData('Feb', 28),
-                          SalesData('Mar', 34),
-                          SalesData('Apr', 32),
-                          SalesData('May', 40)
-                        ],
-                        xValueMapper: (SalesData sales, _) => sales.year,
-                        yValueMapper: (SalesData sales, _) => sales.sales)
+                      // Bind data source
+                      dataSource: <SalesData>[
+                        SalesData('Jan', 35),
+                        SalesData('Feb', 28),
+                        SalesData('Mar', 34),
+                        SalesData('Apr', 32),
+                        SalesData('May', 40),
+                      ],
+                      xValueMapper: (SalesData sales, _) => sales.year,
+                      yValueMapper: (SalesData sales, _) => sales.sales,
+                      color: Colors.blue,
+                    ),
                   ],
                 ),
               ),
