@@ -3,7 +3,7 @@ import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 
 class CategoryWidget extends StatefulWidget {
   final Function(String) onCategorySelected; // Callback untuk kategori terpilih
-  CategoryWidget({Key? key, required this.onCategorySelected}) : super(key: key);
+  const CategoryWidget({Key? key, required this.onCategorySelected}) : super(key: key);
 
   @override
   _CategoryWidgetState createState() => _CategoryWidgetState();
@@ -11,13 +11,13 @@ class CategoryWidget extends StatefulWidget {
 
 class _CategoryWidgetState extends State<CategoryWidget> {
   late List<bool> isSelected;
-  final List<String> categories = ['Semua', 'Makanan', 'Minuman', 'Topping'];
+  final List<String> categories = ['Semua', 'Makanan', 'Minuman', 'Topping', 'Varian'];
 
   @override
   void initState() {
     super.initState();
-    isSelected = List.generate(categories.length, (_) => false); 
-    isSelected[0] = true;
+    isSelected = List.generate(categories.length, (_) => false);
+    isSelected[0] = true; // Default category selection
   }
 
   @override
@@ -33,6 +33,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               child: GestureDetector(
                 onTap: () {
                   setState(() {
+                    // Reset all selections and select the tapped category
                     isSelected = List.generate(categories.length, (_) => false);
                     isSelected[index] = true;
                     widget.onCategorySelected(categories[index]); // Panggil callback
@@ -40,13 +41,16 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 },
                 child: Chip(
                   label: Text(categories[index]),
-                  backgroundColor:
-                      isSelected[index] ? ColorResources.primaryColor : ColorResources.primaryColorLight,
+                  backgroundColor: isSelected[index]
+                      ? ColorResources.primaryColor
+                      : ColorResources.primaryColorLight,
                   labelStyle: TextStyle(
-                    color: isSelected[index] ? ColorResources.primaryColorLight : ColorResources.primaryColorDark,
+                    color: isSelected[index]
+                        ? ColorResources.primaryColorLight
+                        : ColorResources.primaryColorDark,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), 
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/model/product.dart';
+import 'package:warmindo_admin_ui/data/api_controller.dart';
+import 'package:warmindo_admin_ui/pages/model/product_response.dart';
 import 'package:warmindo_admin_ui/pages/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
@@ -17,28 +18,13 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List<Product> filteredProducts =
-      productList; // Inisialisasi dengan semua produk
-
-  void filterProducts(String category) {
-    if (category == 'Semua') {
-      setState(() {
-        filteredProducts = productList; // Tampilkan semua produk
-      });
-    } else {
-      setState(() {
-        filteredProducts = productList
-            .where((product) => product.category == category)
-            .toList();
-      });
-    }
-  }
+  final ApiController dataController = Get.put(ApiController());
 
   @override
   Widget build(BuildContext context) {
-    // Mendapatkan ukuran layar
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Manage Product',
@@ -47,102 +33,118 @@ class _ProductPageState extends State<ProductPage> {
         children: [
           CategoryWidget(
             onCategorySelected: (selectedCategory) {
-              filterProducts(selectedCategory);
+              dataController.setCategory(selectedCategory);
+              if (selectedCategory == 'Semua') {
+                dataController.getAllProductList();
+              } else if (selectedCategory == 'Makanan') {
+                dataController.getFoodList();
+                dataController.getSnackList();
+              } else if (selectedCategory == 'Minuman') {
+                dataController.getDrinkList();
+              } else if (selectedCategory == 'Snack') {
+                dataController.getSnackList();
+              } else if (selectedCategory == 'Topping') {
+                dataController.getToppingList();
+              } else if (selectedCategory == 'Varian') {
+                dataController.getVariantList();
+              }
             },
           ),
           SizedBox(height: 10),
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                final product = filteredProducts[index];
-                return ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(2),
-                      topLeft: Radius.circular(2),
-                    ),
-                    child: SizedBox(
-                      width: screenWidth * 0.15,
-                      height: screenHeight * 0.15,
-                      child: Image.asset(
-                        product.image,
-                        fit: BoxFit.cover,
+            child: Obx(() {
+              List<Menu> productList = dataController.filteredProductList;
+
+              // Urutkan daftar produk berdasarkan menuID secara ascending
+              productList.sort((a, b) => a.menuId.compareTo(b.menuId));
+
+              return ListView.builder(
+                itemCount: productList.length,
+                itemBuilder: (context, index) {
+                  final product = productList[index];
+                  return ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(2),
+                        topLeft: Radius.circular(2),
+                      ),
+                      child: SizedBox(
+                        width: screenWidth * 0.15,
+                        height: screenHeight * 0.15,
+                        child: FadeInImage(
+                          placeholder: AssetImage(Images.mieAyam),
+                          image: NetworkImage('https://picsum.photos/250?image=9'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  title: Text(
-                    product.name,
-                    style: titleproductTextStyle,
-                  ),
-                  subtitle: Text(
-                    'Rp ${product.price.toStringAsFixed(0)} | ${product.stock} in stock',
-                    style: titleproductTextStyle,
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ReusableDialog(
-                                title: "Edit",
-                                content:
-                                    "Apakah Kamu yakin ingin mengubah data?",
-                                cancelText: "Tidak",
-                                confirmText: "Iya",
-                                onCancelPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                onConfirmPressed: () {
-                                  Navigator.of(context).pop();
-                                  Get.toNamed(Routes.LOGIN_PAGE);
-                                },
-                                cancelButtonColor:
-                                    ColorResources.primaryColorLight,
-                                confirmButtonColor: ColorResources.buttonedit,
-                                dialogImage: Image.asset(Images.askDialog),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ReusableDialog(
-                                title: "Delete",
-                                content:
-                                    "Apakah Kamu yakin ingin menghapus data?",
-                                cancelText: "Tidak",
-                                confirmText: "Iya",
-                                onCancelPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                onConfirmPressed: () {
-                                  Navigator.of(context).pop();
-                                  Get.toNamed(Routes.LOGIN_PAGE);
-                                },
-                                cancelButtonColor:
-                                    ColorResources.primaryColorLight,
-                                confirmButtonColor: ColorResources.buttondelete,
-                                dialogImage: Image.asset(Images.askDialog),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    title: Text(
+                      product.nameMenu,
+                      style: titleproductTextStyle,
+                    ),
+                    subtitle: Text(
+                      'Rp ${product.price} | ${product.stock} in stock',
+                      style: titleproductTextStyle,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ReusableDialog(
+                                  title: "Edit",
+                                  content: "Apakah Kamu yakin ingin mengubah data?",
+                                  cancelText: "Tidak",
+                                  confirmText: "Iya",
+                                  onCancelPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  onConfirmPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  cancelButtonColor: ColorResources.primaryColorLight,
+                                  confirmButtonColor: ColorResources.buttonedit,
+                                  dialogImage: Image.asset(Images.askDialog),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ReusableDialog(
+                                  title: "Delete",
+                                  content: "Apakah Kamu yakin ingin menghapus data?",
+                                  cancelText: "Tidak",
+                                  confirmText: "Iya",
+                                  onCancelPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  onConfirmPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  cancelButtonColor: ColorResources.primaryColorLight,
+                                  confirmButtonColor: ColorResources.buttondelete,
+                                  dialogImage: Image.asset(Images.askDialog),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),
@@ -155,7 +157,7 @@ class _ProductPageState extends State<ProductPage> {
                 title: "Add Product",
                 content: "Apakah Kamu yakin ingin menambah data?",
                 cancelText: "Tidak",
-                confirmText: "Iya" ,
+                confirmText: "Iya",
                 onCancelPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -174,7 +176,7 @@ class _ProductPageState extends State<ProductPage> {
         child: Icon(
           Icons.add,
           color: Colors.white,
-        ), // Icon plus
+        ),
       ),
     );
   }
