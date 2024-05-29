@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/data/api_controller.dart';
 import 'package:warmindo_admin_ui/pages/model/product_response.dart';
+
 import 'package:warmindo_admin_ui/pages/product_page/widget/categoryWidget.dart';
+
+// import 'package:warmindo_admin_ui/pages/widget/categoryWidget.dart';
+
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
@@ -22,7 +26,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Mendapatkan ukuran layar
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -77,6 +80,7 @@ class _ProductPageState extends State<ProductPage> {
                           image: NetworkImage('https://picsum.photos/250?image=9'),
                           fit: BoxFit.cover,
                         ),
+                        
                       ),
                     ),
                     title: Text(
@@ -170,7 +174,7 @@ class _ProductPageState extends State<ProductPage> {
                 dialogImage: Image.asset(Images.askDialog),
               );
             },
-            
+
           );
         },
         backgroundColor: Colors.red,
