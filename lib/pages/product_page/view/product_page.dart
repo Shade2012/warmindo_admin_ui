@@ -170,6 +170,7 @@ class _ProductPageState extends State<ProductPage> {
                 dialogImage: Image.asset(Images.askDialog),
               );
             },
+            
           );
         },
         backgroundColor: Colors.red,
