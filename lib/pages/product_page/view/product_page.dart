@@ -38,7 +38,6 @@ class _ProductPageState extends State<ProductPage> {
                 dataController.getAllProductList();
               } else if (selectedCategory == 'Makanan') {
                 dataController.getFoodList();
-                dataController.getSnackList();
               } else if (selectedCategory == 'Minuman') {
                 dataController.getDrinkList();
               } else if (selectedCategory == 'Snack') {

@@ -197,7 +197,7 @@ class ApiController extends GetxController {
     if (selectedCategory.value == 'Semua') {
       filteredProductList.assignAll(allProductList);
     } else if (selectedCategory.value == 'Makanan') {
-      filteredProductList.assignAll([...foodList, ...snackList]);
+      filteredProductList.assignAll(foodList);
     } else if (selectedCategory.value == 'Minuman') {
       filteredProductList.assignAll(drinklist);
     } else if (selectedCategory.value == 'Snack') {
