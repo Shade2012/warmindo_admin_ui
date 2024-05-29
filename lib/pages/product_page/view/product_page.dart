@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/data/api_controller.dart';
 import 'package:warmindo_admin_ui/pages/model/product_response.dart';
-
 import 'package:warmindo_admin_ui/pages/product_page/widget/categoryWidget.dart';
-
-// import 'package:warmindo_admin_ui/pages/widget/categoryWidget.dart';
-
+import 'package:warmindo_admin_ui/pages/product_page/widget/popup_add_product.dart';
+import 'package:warmindo_admin_ui/pages/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
@@ -167,7 +165,13 @@ class _ProductPageState extends State<ProductPage> {
                   Navigator.of(context).pop();
                 },
                 onConfirmPressed: () {
-                  Get.toNamed(Routes.ADD_PRODUCT_PAGE);
+
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context) {
+                      return PopupAddProducts();
+                    }
+                  );
                 },
                 cancelButtonColor: ColorResources.primaryColorLight,
                 confirmButtonColor: ColorResources.buttonadd,
