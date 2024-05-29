@@ -4,10 +4,8 @@ import 'package:warmindo_admin_ui/data/api_controller.dart';
 import 'package:warmindo_admin_ui/pages/model/product_response.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/popup_add_product.dart';
-import 'package:warmindo_admin_ui/pages/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
@@ -165,7 +163,7 @@ class _ProductPageState extends State<ProductPage> {
                   Navigator.of(context).pop();
                 },
                 onConfirmPressed: () {
-
+                  Navigator.of(context).pop();
                   showDialog(
                     context: context, 
                     builder: (BuildContext context) {
