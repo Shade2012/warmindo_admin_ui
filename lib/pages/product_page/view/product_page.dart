@@ -159,6 +159,7 @@ class _ProductPageState extends State<ProductPage> {
                   Navigator.of(context).pop();
                 },
                 onConfirmPressed: () {
+                  Navigator.of(context).pop();
                   showDialog(
                     context: context, 
                     builder: (BuildContext context) {
