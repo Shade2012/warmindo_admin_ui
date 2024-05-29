@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/model/product.dart';
+import 'package:warmindo_admin_ui/data/api_controller.dart';
+import 'package:warmindo_admin_ui/pages/model/product_response.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/popup_add_product.dart';
+import 'package:warmindo_admin_ui/pages/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
@@ -18,47 +20,50 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List<Product> filteredProducts = productList; // Inisialisasi dengan semua produk
-  String selectedCategory = 'Semua'; // Variabel state untuk menyimpan kategori yang dipilih
-
-  void filterProducts(String category) {
-    setState(() {
-      selectedCategory = category;
-      if (category == 'Semua') {
-        filteredProducts = productList; // Tampilkan semua produk
-      } else {
-        filteredProducts = productList
-            .where((product) => product.category == category)
-            .toList();
-      }
-    });
-  }
+  final ApiController dataController = Get.put(ApiController());
 
   @override
   Widget build(BuildContext context) {
-    // Mendapatkan ukuran layar
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Manage Product',
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.01, vertical: screenHeight * 0.01),
-        child: Column(
-          children: [
-            CategoryWidget(
-              onCategorySelected: (selectedCategory) {
-                filterProducts(selectedCategory);
-              },
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredProducts.length,
+      body: Column(
+        children: [
+          CategoryWidget(
+            onCategorySelected: (selectedCategory) {
+              dataController.setCategory(selectedCategory);
+              if (selectedCategory == 'Semua') {
+                dataController.getAllProductList();
+              } else if (selectedCategory == 'Makanan') {
+                dataController.getFoodList();
+                dataController.getSnackList();
+              } else if (selectedCategory == 'Minuman') {
+                dataController.getDrinkList();
+              } else if (selectedCategory == 'Snack') {
+                dataController.getSnackList();
+              } else if (selectedCategory == 'Topping') {
+                dataController.getToppingList();
+              } else if (selectedCategory == 'Varian') {
+                dataController.getVariantList();
+              }
+            },
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            child: Obx(() {
+              List<Menu> productList = dataController.filteredProductList;
+
+              // Urutkan daftar produk berdasarkan menuID secara ascending
+              productList.sort((a, b) => a.menuId.compareTo(b.menuId));
+
+              return ListView.builder(
+                itemCount: productList.length,
                 itemBuilder: (context, index) {
-                  final product = filteredProducts[index];
+                  final product = productList[index];
                   return ListTile(
                     leading: ClipRRect(
                       borderRadius: BorderRadius.only(
@@ -68,18 +73,20 @@ class _ProductPageState extends State<ProductPage> {
                       child: SizedBox(
                         width: screenWidth * 0.15,
                         height: screenHeight * 0.15,
-                        child: Image.asset(
-                          product.image,
+                        child: FadeInImage(
+                          placeholder: AssetImage(Images.mieAyam),
+                          image: NetworkImage('https://picsum.photos/250?image=9'),
                           fit: BoxFit.cover,
                         ),
+                        
                       ),
                     ),
                     title: Text(
-                      product.name,
+                      product.nameMenu,
                       style: titleproductTextStyle,
                     ),
                     subtitle: Text(
-                      'Rp ${product.price.toStringAsFixed(0)} | ${product.stock} in stock',
+                      'Rp ${product.price} | ${product.stock} in stock',
                       style: titleproductTextStyle,
                     ),
                     trailing: Row(
@@ -92,7 +99,7 @@ class _ProductPageState extends State<ProductPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return ReusableDialog(
-                                  title: "Edit Product",
+                                  title: "Edit",
                                   content: "Apakah Kamu yakin ingin mengubah data?",
                                   cancelText: "Tidak",
                                   confirmText: "Iya",
@@ -100,7 +107,7 @@ class _ProductPageState extends State<ProductPage> {
                                     Navigator.of(context).pop();
                                   },
                                   onConfirmPressed: () {
-                                    Get.toNamed(Routes.EDIT_PRODUCT_PAGE);
+                                    Navigator.of(context).pop();
                                   },
                                   cancelButtonColor: ColorResources.primaryColorLight,
                                   confirmButtonColor: ColorResources.buttonedit,
@@ -126,7 +133,6 @@ class _ProductPageState extends State<ProductPage> {
                                   },
                                   onConfirmPressed: () {
                                     Navigator.of(context).pop();
-                                    // Get.toNamed(Routes.LOGIN_PAGE);
                                   },
                                   cancelButtonColor: ColorResources.primaryColorLight,
                                   confirmButtonColor: ColorResources.buttondelete,
@@ -140,10 +146,10 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   );
                 },
-              ),
-            ),
-          ],
-        ),
+              );
+            }),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -151,7 +157,7 @@ class _ProductPageState extends State<ProductPage> {
             context: context,
             builder: (BuildContext context) {
               return ReusableDialog(
-                title: selectedCategory == 'Varian' ? "Add Varian" : "Add Product",
+                title: "Add Product",
                 content: "Apakah Kamu yakin ingin menambah data?",
                 cancelText: "Tidak",
                 confirmText: "Iya",
@@ -159,6 +165,7 @@ class _ProductPageState extends State<ProductPage> {
                   Navigator.of(context).pop();
                 },
                 onConfirmPressed: () {
+
                   showDialog(
                     context: context, 
                     builder: (BuildContext context) {
@@ -171,13 +178,14 @@ class _ProductPageState extends State<ProductPage> {
                 dialogImage: Image.asset(Images.askDialog),
               );
             },
+
           );
         },
         backgroundColor: Colors.red,
         child: Icon(
           Icons.add,
           color: Colors.white,
-        ), // Icon plus
+        ),
       ),
     );
   }
