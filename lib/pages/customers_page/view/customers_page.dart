@@ -8,12 +8,13 @@ class CustomersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController search = TextEditingController();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Verifikasi Pelanggan',
+        title: 'Verifikasi Pelanggan', controller: search,
       ),
       body: SingleChildScrollView(
         child: Column(

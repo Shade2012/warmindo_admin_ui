@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/model/product_response.dart' as model;
 import 'package:warmindo_admin_ui/repository/warmindo_repository.dart';
 
 class ApiController extends GetxController {
+  final TextEditingController search = TextEditingController();
   var allProductList = <model.Menu>[].obs;
   var foodList = <model.Menu>[].obs;
   var drinklist = <model.Menu>[].obs;
@@ -13,6 +15,8 @@ class ApiController extends GetxController {
   var variantList = <model.Menu>[].obs;
   var selectedCategory = ''.obs;
   var filteredProductList = <model.Menu>[].obs;
+  RxBool isLoading = true.obs;
+  RxList<model.Menu> searchResults = <model.Menu>[].obs;
 
   @override
   void onInit() {
@@ -22,7 +26,16 @@ class ApiController extends GetxController {
       setCategory('Semua');
     });
   }
-
+  void searchFilter(String enteredKeyword) {
+    if (enteredKeyword == '') {
+      searchResults.clear();
+    } else {
+      enteredKeyword = enteredKeyword.toLowerCase();
+      searchResults.assignAll(allProductList.where((product) {
+        return product.nameMenu.toLowerCase().contains(enteredKeyword);
+      }).toList());
+    }
+  }
   Future<void> fetchAllData() async {
     await Future.wait([
       getAllProductList(),
@@ -45,6 +58,7 @@ class ApiController extends GetxController {
               .map((json) => model.Menu.fromJson(json))
               .toList();
           filteredProductList();
+          isLoading.value = false;
           print(allProductListData[0]['name_menu']);
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
@@ -63,6 +77,7 @@ class ApiController extends GetxController {
     try {
       final response = await http.get(Uri.parse(FoodApi.getFoodList));
       if (response.statusCode == 200) {
+        isLoading.value = false;
         final responseData = json.decode(response.body)['data'];
         if (responseData != null && responseData['menu'] is List) {
           final List<dynamic> foodListData = responseData['menu'];
@@ -89,6 +104,7 @@ class ApiController extends GetxController {
     try {
       final response = await http.get(Uri.parse(FoodApi.getDrinkList));
       if (response.statusCode == 200) {
+        isLoading.value = false;
         final responseData = json.decode(response.body);
         if (responseData is Map<String, dynamic> &&
             responseData['data'] is Map<String, dynamic> &&
@@ -116,6 +132,7 @@ class ApiController extends GetxController {
     try {
       final response = await http.get(Uri.parse(FoodApi.getSnackList));
       if (response.statusCode == 200) {
+        isLoading.value = false;
         final responseData = json.decode(response.body);
         if (responseData is Map<String, dynamic> &&
             responseData['data'] is Map<String, dynamic> &&
@@ -143,6 +160,7 @@ class ApiController extends GetxController {
     try {
       final response = await http.get(Uri.parse(FoodApi.getToppingList));
       if (response.statusCode == 200) {
+        isLoading.value = false;
         final responseData = json.decode(response.body);
         if (responseData is Map<String, dynamic> &&
             responseData['data'] is Map<String, dynamic> &&
@@ -170,6 +188,7 @@ class ApiController extends GetxController {
     try {
       final response = await http.get(Uri.parse(FoodApi.getVariantList));
       if (response.statusCode == 200) {
+        isLoading.value = false;
         final responseData = json.decode(response.body);
         if (responseData is Map<String, dynamic> &&
             responseData['data'] is Map<String, dynamic> &&

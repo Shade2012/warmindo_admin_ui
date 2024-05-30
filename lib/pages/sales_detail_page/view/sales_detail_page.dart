@@ -64,6 +64,7 @@ class _SalesDetailPageState extends State<SalesDetailPage> {
                   horizontal: screenWidth * 0.01,
                   vertical: screenHeight * 0.01),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Analytics',
@@ -72,7 +73,6 @@ class _SalesDetailPageState extends State<SalesDetailPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: screenWidth * 0.395),
                   Container(
                     width: screenWidth * 0.27,
                     decoration: BoxDecoration(

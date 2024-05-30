@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:warmindo_admin_ui/data/api_controller.dart';
 import 'package:warmindo_admin_ui/pages/model/product_response.dart';
+import 'package:warmindo_admin_ui/pages/product_page/view/normalList.dart';
+import 'package:warmindo_admin_ui/pages/product_page/view/search.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/popup_add_product.dart';
 import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
+import 'package:warmindo_admin_ui/pages/widget/skeleton.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
-class ProductPage extends StatefulWidget {
-  const ProductPage({Key? key}) : super(key: key);
+class ProductPage extends StatelessWidget {
 
-  @override
-  _ProductPageState createState() => _ProductPageState();
-}
+  ProductPage({Key? key}) : super(key: key);
 
-class _ProductPageState extends State<ProductPage> {
   final ApiController dataController = Get.put(ApiController());
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Manage Product',
+        title: 'Manage Product',onChanged: (query){
+        print(query);{
+          dataController.searchFilter(query);
+          print(dataController.searchResults);
+        }
+      }, controller: dataController.search,
       ),
       body: Column(
         children: [
@@ -52,98 +58,31 @@ class _ProductPageState extends State<ProductPage> {
           SizedBox(height: 10),
           Expanded(
             child: Obx(() {
-              List<Menu> productList = dataController.filteredProductList;
+              if(dataController.isLoading.value == true){
+                return ListView.separated(
+                    itemBuilder: (context,index){
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        child: Skeleton(
+                          width: double.infinity,
+                          height: 60,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context,index){
+                      return SizedBox(height: 20,);
+                    },
+                    itemCount: 12);
+              } else{
+                if(dataController.searchResults.isNotEmpty){
+                  return Search();
+                }
+                else{
+                  return ProductList(productList: dataController.filteredProductList);
+                }
+              }
 
-              // Urutkan daftar produk berdasarkan menuID secara ascending
-              productList.sort((a, b) => a.menuId.compareTo(b.menuId));
 
-              return ListView.builder(
-                itemCount: productList.length,
-                itemBuilder: (context, index) {
-                  final product = productList[index];
-                  return ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(2),
-                        topLeft: Radius.circular(2),
-                      ),
-                      child: SizedBox(
-                        width: screenWidth * 0.15,
-                        height: screenHeight * 0.15,
-                        child: FadeInImage(
-                          placeholder: AssetImage(Images.mieAyam),
-                          image: NetworkImage('https://picsum.photos/250?image=9'),
-                          fit: BoxFit.cover,
-                        ),
-                        
-                      ),
-                    ),
-                    title: Text(
-                      product.nameMenu,
-                      style: titleproductTextStyle,
-                    ),
-                    subtitle: Text(
-                      'Rp ${product.price} | ${product.stock} in stock',
-                      style: titleproductTextStyle,
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ReusableDialog(
-                                  title: "Edit",
-                                  content: "Apakah Kamu yakin ingin mengubah data?",
-                                  cancelText: "Tidak",
-                                  confirmText: "Iya",
-                                  onCancelPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  onConfirmPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  cancelButtonColor: ColorResources.primaryColorLight,
-                                  confirmButtonColor: ColorResources.buttonedit,
-                                  dialogImage: Image.asset(Images.askDialog),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ReusableDialog(
-                                  title: "Delete",
-                                  content: "Apakah Kamu yakin ingin menghapus data?",
-                                  cancelText: "Tidak",
-                                  confirmText: "Iya",
-                                  onCancelPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  onConfirmPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  cancelButtonColor: ColorResources.primaryColorLight,
-                                  confirmButtonColor: ColorResources.buttondelete,
-                                  dialogImage: Image.asset(Images.askDialog),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
             }),
           ),
         ],
@@ -164,10 +103,10 @@ class _ProductPageState extends State<ProductPage> {
                 onConfirmPressed: () {
                   Navigator.of(context).pop();
                   showDialog(
-                    context: context, 
-                    builder: (BuildContext context) {
-                      return PopupAddProducts();
-                    }
+                      context: context,
+                      builder: (BuildContext context) {
+                        return PopupAddProducts();
+                      }
                   );
                 },
                 cancelButtonColor: ColorResources.primaryColorLight,
@@ -175,7 +114,6 @@ class _ProductPageState extends State<ProductPage> {
                 dialogImage: Image.asset(Images.askDialog),
               );
             },
-
           );
         },
         backgroundColor: Colors.red,

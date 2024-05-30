@@ -43,6 +43,9 @@ dependencies:
   syncfusion_flutter_charts: ^25.1.42+1
   http: ^1.2.1
   animated_custom_dropdown: ^3.0.0
+  image_picker:
+  permission_handler:
+  shimmer:
 
 
 dev_dependencies:
