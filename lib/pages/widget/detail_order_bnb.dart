@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/icon_themes.dart';
 
 class DetailOrderBnb extends StatelessWidget {
@@ -32,7 +34,9 @@ class DetailOrderBnb extends StatelessWidget {
                   height: 65,
                   child: IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.EDIT_ORDER_PAGE);
+                    },
                   ),
                 ),
               ],

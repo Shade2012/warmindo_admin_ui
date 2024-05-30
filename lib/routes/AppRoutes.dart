@@ -15,7 +15,7 @@ abstract class Routes {
   static const EDIT_PRODUCT_PAGE = _Paths.EDIT_PRODUCT_PAGE;
   static const ORDER_PAGE = _Paths.ORDER_PAGE;
   static const SETTINGS_PAGE = _Paths.SETTINGS_PAGE;
-
+  static const EDIT_ORDER_PAGE = _Paths.EDIT_ORDER_PAGE;
   static const VERIFY_PAGE = _Paths.VERIFY_PAGE;
   static const SCHEDULE_PAGE = _Paths.SCHEDULE_PAGE;
   static const EDIT_PROFILE_PAGE = _Paths.EDIT_PROFILE_PAGE;
@@ -57,5 +57,6 @@ abstract class _Paths {
   static const ADD_VOUCHER_PAGE = '/add-voucher-page';
   static const BOTTOM_SHEET_SCHEDULE = '/bottom-sheet-schedule';
   static const ADD_VARIAN_PAGE = '/add-varian-page';
+  static const EDIT_ORDER_PAGE = '/edit-order-page';
 
 }

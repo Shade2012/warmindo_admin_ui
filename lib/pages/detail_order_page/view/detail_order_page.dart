@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
 import 'package:warmindo_admin_ui/pages/widget/detail_order_bnb.dart';
-import 'package:warmindo_admin_ui/pages/widget/receipt_widget.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class DetailOrderPage extends StatelessWidget {
-  const DetailOrderPage({Key? key});
+  final Order order;
+  DetailOrderPage({required this.order});
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    double totalPrice = order.menus.fold(0, (sum, menu) => sum + menu.price);
+    final currencyFormat =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final adminFee = 1000;
+    final discount = 5000;
+    final totalPayment = totalPrice + adminFee - discount;
 
     return Scaffold(
       appBar: AppBar(
@@ -68,11 +76,11 @@ class DetailOrderPage extends StatelessWidget {
                         Text('Warmindo Anggrek Muria',
                             style: nameRestoTextStyle),
                         SizedBox(height: screenHeight * 0.0110),
-                        Text('Id Pesanan', style: idOrderTextStyle),
+                        Text(order.id, style: idOrderTextStyle),
                         SizedBox(height: screenHeight * 0.0110),
-                        Text('Tanggal Pesanan', style: dateOrderTextStyle),
+                        Text(order.dateOrder, style: dateOrderTextStyle),
                         SizedBox(height: screenHeight * 0.0125),
-                        Text('Status Pesanan', style: statusOrderTextStyle),
+                        Text(order.status, style: statusOrderTextStyle),
                       ],
                     ),
                   ),
@@ -80,7 +88,114 @@ class DetailOrderPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: screenHeight * 0.04),
-            ReceiptScreen(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Pesanan',
+                  style: receiptheaderTextStyle,
+                ),
+                SizedBox(height: 16.0),
+                ...order.menus
+                    .map((menu) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(menu.name, style: receiptcontentTextStyle),
+                              Text('1', style: receiptcontentTextStyle),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+                SizedBox(height: 16.0),
+                Divider(),
+                SizedBox(height: 16.0),
+                Text(
+                  'Detail Pembayaran',
+                  style: receiptheaderTextStyle,
+                ),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Harga', style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(totalPrice),
+                        style: receiptcontentTextStyle), // Corrected line
+                  ],
+                ),
+                SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Biaya Admin', style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(adminFee),
+                        style: receiptcontentTextStyle),
+                  ],
+                ),
+                SizedBox(height: 8.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Diskon', style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(discount),
+                        style: receiptcontentTextStyle),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                Divider(),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Total', style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(totalPayment),
+                        style: receiptcontentTextStyle), // Corrected line
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Pembayaran ${order.paymentMethod}',
+                        style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(totalPayment),
+                        style: receiptcontentTextStyle),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                Divider(),
+                Text(
+                  'Detail Pelanggan',
+                  style: receiptheaderTextStyle,
+                ),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Nama Pelanggan', style: receiptcontentTextStyle),
+                    Text(order.nameCustomer, style: receiptcontentTextStyle),
+                  ],
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Email', style: receiptcontentTextStyle),
+                    Text(order.email ?? '-', style: receiptcontentTextStyle),
+                  ],
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('No. Telepon', style: receiptcontentTextStyle),
+                    Text(order.phoneNumber ?? '-',
+                        style: receiptcontentTextStyle),
+                  ],
+                ),
+              ],
+            ),
             SizedBox(height: screenHeight * 0.04),
             ElevatedButton(
               onPressed: () {},

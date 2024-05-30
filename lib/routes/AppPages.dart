@@ -18,6 +18,8 @@ import 'package:warmindo_admin_ui/pages/detail_voucher_page/binding/detail_vouch
 import 'package:warmindo_admin_ui/pages/detail_voucher_page/view/detail_voucher_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_customers_page/binding/edit_customers_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_customers_page/view/edit_customers_page.dart';
+import 'package:warmindo_admin_ui/pages/edit_order_page/binding/edit_order_binding.dart';
+import 'package:warmindo_admin_ui/pages/edit_order_page/view/edit_order_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_product_page/binding/edit_product_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_product_page/view/edit_product_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/binding/edit_profile_binding.dart';
@@ -107,7 +109,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.DETAIL_ORDER_PAGE,
-        page: () => DetailOrderPage(),
+        page: () => DetailOrderPage(order: Get.arguments),
         binding: DetailOrderBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
@@ -192,6 +194,12 @@ class AppPages {
     GetPage(
         name: _Paths.ADD_VARIAN_PAGE,
         page: () => AddVarianPage(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.EDIT_ORDER_PAGE,
+        page: () => EditOrderPage(),
+        binding: EditOrderBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
   ];
