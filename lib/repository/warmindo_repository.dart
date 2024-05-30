@@ -8,4 +8,6 @@ class FoodApi {
   static var getSnackList = '$apiUrl/api/menus/filter/snack';
   static var getToppingList = '$apiUrl/api/menus/filter/topping';
   static var getVariantList = '$apiUrl/api/menus/filter/varian';
+  static var addMenu = '$apiUrl/api/menus/store';
+  static var updateMenu = '$apiUrl/api/menus/id';
 }

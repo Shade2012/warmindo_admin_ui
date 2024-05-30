@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/add_product_page/controller/add_product_controller.dart';
 import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
 import 'package:warmindo_admin_ui/pages/widget/up_image_bottomsheet.dart';
@@ -8,12 +9,9 @@ import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class AddProductPage extends StatelessWidget {
-  final TextEditingController ctrProductName = TextEditingController();
-  final TextEditingController ctrProductPrice = TextEditingController();
-  final TextEditingController ctrProductDesc = TextEditingController();
-  final TextEditingController ctrProductStock = TextEditingController();
-  final selectedCategory = RxString('');
-  final selectedStock = RxString('');
+  final AddProductController controller = Get.put(AddProductController());
+  // final selectedCategory = RxString('');
+  // final selectedStock = RxString('');
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +93,7 @@ class AddProductPage extends StatelessWidget {
                 Text("Nama Produk", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 CustomTextField(
-                  controller: ctrProductName,
+                  controller: controller.ctrProductName,
                   hintText: "Ex: Mie Ayam",
                 ),
               ],
@@ -107,7 +105,7 @@ class AddProductPage extends StatelessWidget {
                 Text("Harga Produk", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 CustomTextField(
-                  controller: ctrProductPrice,
+                  controller: controller.ctrProductPrice,
                   hintText: "Ex: 15000",
                 ),
               ],
@@ -120,11 +118,11 @@ class AddProductPage extends StatelessWidget {
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
                       items: ['Makanan', 'Minuman', 'Snack'],
-                      value: selectedCategory.value.isNotEmpty
-                          ? selectedCategory.value
+                      value: controller.selectedCategory.value.isNotEmpty
+                          ? controller.selectedCategory.value
                           : null,
                       onChanged: (String? value) {
-                        selectedCategory.value = value ?? '';
+                        controller.selectedCategory.value = value ?? '';
                       },
                       dropdownType: DropdownType.Category,
                     )),
@@ -138,11 +136,11 @@ class AddProductPage extends StatelessWidget {
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
                       items: ['Tersedia', 'Tidak Tersedia'],
-                      value: selectedStock.value.isNotEmpty
-                          ? selectedStock.value
+                      value: controller.selectedStock.value.isNotEmpty
+                          ? controller.selectedStock.value
                           : null,
                       onChanged: (String? value) {
-                        selectedStock.value = value ?? '';
+                        controller.selectedStock.value = value ?? '';
                       },
                       dropdownType: DropdownType.Stock,
                     )),
@@ -155,7 +153,7 @@ class AddProductPage extends StatelessWidget {
                 Text("Deskripsi Produk", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 CustomTextField(
-                  controller: ctrProductDesc,
+                  controller: controller.ctrProductDesc,
                   hintText: "Ex: Mie Ayam Pedas Mantap",
                   minLines: 3,
                   maxLines: 5,
@@ -165,8 +163,29 @@ class AddProductPage extends StatelessWidget {
             SizedBox(height: screenHeight * 0.02),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  // Lakukan penanganan input disini
+                onPressed: () async {
+                  try {
+                    // Panggil fungsi addMenu dari AddProductController untuk menambahkan produk baru
+                    await controller.addMenu();
+                    Get.snackbar(
+                      "Sukses",
+                      "Produk berhasil ditambahkan",
+                      snackPosition: SnackPosition.TOP,
+                    );
+                    // Kosongkan input setelah berhasil menambahkan produk
+                    controller.ctrProductName.clear();
+                    controller.ctrProductPrice.clear();
+                    controller.ctrProductDesc.clear();
+                    controller.selectedCategory.value = '';
+                    controller.selectedStock.value = '';
+                  } catch (e) {
+                    // Tampilkan pesan kesalahan jika gagal menambahkan produk
+                    Get.snackbar(
+                      "Error",
+                      "Gagal menambahkan produk. Error: $e",
+                      snackPosition: SnackPosition.TOP,
+                    );
+                  }
                 },
                 child: Text('Tambahkan Produk'),
                 style: ElevatedButton.styleFrom(
@@ -175,7 +194,8 @@ class AddProductPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
                 ),
               ),
             )

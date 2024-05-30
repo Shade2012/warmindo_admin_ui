@@ -17,7 +17,6 @@ class ApiController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Fetch all data and then set category
     fetchAllData().then((_) {
       setCategory('Semua');
     });
