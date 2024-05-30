@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
 import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
 import 'package:warmindo_admin_ui/pages/widget/dialog_cancel_order.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
@@ -17,13 +19,13 @@ class OrderBox extends StatelessWidget {
 
   Color _getLabelColor(String status) {
     switch (status.toLowerCase()) {
-      case 'done':
+      case 'selesai':
         return ColorResources.labelcomplete;
-      case 'in progress':
+      case 'dalam Proses':
         return ColorResources.labelinprogg;
       case 'permintaan pembatalan':
         return ColorResources.labelcancel;
-      case 'cancel':
+      case 'batal':
         return ColorResources.labelcancel;
       default:
         return Colors.black;
@@ -71,6 +73,8 @@ class OrderBox extends StatelessWidget {
               );
             },
           );
+        } else {
+          Get.to(DetailOrderPage(order: order));
         }
       },
       child: Container(
