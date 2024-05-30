@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:warmindo_admin_ui/pages/widget/searchbar.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:get/get.dart';
+import '../../data/api_controller.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final ApiController dataController = Get.put(ApiController());
   final String title;
   final bool showBackButton;
+  final TextEditingController controller;
+  final ValueChanged<String>? onChanged;
   final Function()? onBackButtonPressed; // Tambahkan ini
 
-  const CustomAppBar({
+   CustomAppBar({
     Key? key,
+     this.onChanged,
     this.title = '',
     this.showBackButton = false,
-    this.onBackButtonPressed, // Tambahkan ini
+    this.onBackButtonPressed, required this.controller, // Tambahkan ini
   }) : super(key: key);
 
   @override
@@ -53,7 +59,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CustomSearchBar(
               hintText: 'Search',
-              controller: SearchController(),
+              controller: controller,
+           onChanged: onChanged,
               style: searchBarTextStyle,
             ),
           ),

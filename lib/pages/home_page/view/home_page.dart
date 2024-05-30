@@ -13,13 +13,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController search1 = TextEditingController();
+    final TextEditingController search2 = TextEditingController();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: CustomAppBar().preferredSize,
-        child: CustomAppBar(),
+        preferredSize: CustomAppBar(controller: search1,).preferredSize,
+        child: CustomAppBar(controller: search2,),
       ),
       body: Padding(
         padding: EdgeInsets.all(screenWidth * 0.02),
