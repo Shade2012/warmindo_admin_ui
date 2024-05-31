@@ -213,16 +213,45 @@ class AddProductPage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          final selectedImage =
-                              dataController.selectedImage.value;
-                          if (selectedImage != null) {
-                            dataController.addProduct(nameMenu: ctrProductName.text, price: int.parse(ctrProductPrice.text), category: selectedCategory.value, stock: selectedStock.value, ratings: 4.0, description: ctrProductDesc.text, image: selectedImage,
-                            );
+                          final selectedImage = dataController.selectedImage.value;
+                          final productName = ctrProductName.text.trim();
+                          final productPrice = ctrProductPrice.text.trim();
+                          final productCategory = selectedCategory.value;
+                          final productStock = selectedStock.value;
+
+                          if (selectedImage != null &&
+                              productName.isNotEmpty &&
+                              productPrice.isNotEmpty &&
+                              productCategory.isNotEmpty) {
+                            // Convert productPrice to integer safely
+                            final intPrice = int.tryParse(productPrice);
+                            if (intPrice != null) {
+                              dataController.addProduct(
+                                nameMenu: productName,
+                                price: intPrice,
+                                category: productCategory,
+                                stock: productStock,
+                                ratings: 4.0,
+                                description: ctrProductDesc.text,
+                                image: selectedImage,
+                              );
+                            } else {
+                              // Handle case when price is not a valid integer
+                              print('Invalid price');
+                            }
                           } else {
-                            // Handle the case when no image is selected
-                            print('No image selected');
+                            // Handle case when any required field is empty
+                            Get.snackbar(
+                              'Warning',
+                              'Semua data harus diisi',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.orange,
+                              colorText: Colors.white,
+                            );
+
                           }
                         },
+
                         child: Text('Tambahkan Produk'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorResources.primaryColor,

@@ -20,6 +20,17 @@ class AddProductController extends GetxController {
     required double ratings,
     required String description,
   }) async {
+    if (image == null || nameMenu == null || nameMenu.isEmpty || price.isNaN || category == null || category.isEmpty || stock == null || ratings == null || description == null || description.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Semua data harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
     try {
       isLoading.value = true;
       var request = http.MultipartRequest('POST', Uri.parse(FoodApi.storeProduct))
@@ -37,7 +48,6 @@ class AddProductController extends GetxController {
         ));
 
       var response = await http.Response.fromStream(await request.send());
-      print(image.path);
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Successfully added the product
         isLoading.value = false;
@@ -45,7 +55,8 @@ class AddProductController extends GetxController {
         print('Response: ${response.body}');
 
         Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
-      } else {
+      }
+      else {
         // Error occurred
         isLoading.value = false;
         print('Failed to add product: ${response.statusCode}');
