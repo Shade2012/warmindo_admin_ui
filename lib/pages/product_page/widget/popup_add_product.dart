@@ -82,7 +82,7 @@ class PopupAddProducts extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Get.toNamed(Routes.ADD_PRODUCT_PAGE);
+                Get.toNamed(Routes.ADD_TOPPING_PAGE);
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
