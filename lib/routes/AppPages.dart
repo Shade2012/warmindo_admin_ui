@@ -157,7 +157,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.EDIT_PRODUCT_PAGE,
-        page: () => EditProductPage(),
+        page: () => EditProductPage(product: Get.arguments),
         binding: EditProductBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
