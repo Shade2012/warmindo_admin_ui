@@ -14,14 +14,69 @@ class PopupAddProducts extends StatelessWidget {
     return AlertDialog(
       content: SizedBox(
         width: screenWidth * 0.9,
-        height: screenHeight * 0.2,
-        child: Row(
+        height: screenHeight * 0.3,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                    maximumSize: Size(screenWidth * 0.4, screenHeight * 0.2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    Get.toNamed(Routes.ADD_PRODUCT_PAGE);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add, color: Colors.white),
+                      SizedBox(height: 8), // Space between icon and text
+                      Text(
+                        'Add Product',
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 5),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                    maximumSize: Size(screenWidth * 0.4, screenHeight * 0.2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    Get.toNamed(Routes.ADD_VARIAN_PAGE);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add, color: Colors.white),
+                      SizedBox(height: 8), // Space between icon and text
+                      Text(
+                        'Add Variant',
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 5),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey,
-                maximumSize: Size(screenWidth * 0.4, screenHeight * 0.2),
+                minimumSize: Size(screenWidth * 0.7, screenHeight * 0.01),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -33,34 +88,9 @@ class PopupAddProducts extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.add, color: Colors.white),
-                  SizedBox(height: 8), // Space between icon and text
+                  SizedBox(height: 5), // Space between icon and text
                   Text(
-                    'Add Product',
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 5),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey,
-                maximumSize: Size(screenWidth * 0.4, screenHeight * 0.2),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: () {
-                Get.toNamed(Routes.ADD_VARIAN_PAGE);
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add, color: Colors.white),
-                  SizedBox(height: 8), // Space between icon and text
-                  Text(
-                    'Add Variant',
+                    'Add Topping',
                     style: TextStyle(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
