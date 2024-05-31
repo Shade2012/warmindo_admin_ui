@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/binding/add_product_binding.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/view/add_product_page.dart';
+import 'package:warmindo_admin_ui/pages/add_topping_page/binding/add_topping_binding.dart';
+import 'package:warmindo_admin_ui/pages/add_topping_page/view/add_topping_page.dart';
 import 'package:warmindo_admin_ui/pages/add_varian_page/view/add_varian_page.dart';
 import 'package:warmindo_admin_ui/pages/add_voucher_page/binding/add_voucher_binding.dart';
 import 'package:warmindo_admin_ui/pages/add_voucher_page/view/add_voucher_page.dart';
@@ -200,6 +202,12 @@ class AppPages {
         name: _Paths.EDIT_ORDER_PAGE,
         page: () => EditOrderPage(),
         binding: EditOrderBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.ADD_TOPPING_PAGE,
+        page: () => AddToppingPage(),
+        binding: AddToppingBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
   ];

@@ -28,6 +28,7 @@ abstract class Routes {
   static const ADD_VOUCHER_PAGE = _Paths.ADD_VOUCHER_PAGE;
   static const BOTTOM_SHEET_SCHEDULE = _Paths.BOTTOM_SHEET_SCHEDULE;
   static const ADD_VARIAN_PAGE = _Paths.ADD_VARIAN_PAGE;
+  static const ADD_TOPPING_PAGE = _Paths.ADD_TOPPING_PAGE;
 
 }
 
@@ -58,5 +59,6 @@ abstract class _Paths {
   static const BOTTOM_SHEET_SCHEDULE = '/bottom-sheet-schedule';
   static const ADD_VARIAN_PAGE = '/add-varian-page';
   static const EDIT_ORDER_PAGE = '/edit-order-page';
+  static const ADD_TOPPING_PAGE = '/add-topping-page';
 
 }
