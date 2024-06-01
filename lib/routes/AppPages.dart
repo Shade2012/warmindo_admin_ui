@@ -105,7 +105,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.DETAIL_PRODUCT_PAGE,
-        page: () => DetailProductPage(),
+        page: () => DetailProductPage(product: Get.arguments),
         binding: DetailProductBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),

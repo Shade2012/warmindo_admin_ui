@@ -21,8 +21,7 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat =
-        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final ApiController dataController = Get.put(ApiController());
@@ -52,29 +51,43 @@ class ProductList extends StatelessWidget {
                 print('Parsed price as double: $adjustedPrice');
 
                 return ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(2),
-                      topLeft: Radius.circular(2),
-                    ),
-                    child: SizedBox(
-                      width: screenWidth * 0.15,
-                      height: screenHeight * 0.15,
-                      child: FadeInImage(
-                        placeholder: AssetImage(Images.mieAyam),
-                        image:
-                            NetworkImage(product.image),
-                        fit: BoxFit.cover,
+                  leading: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(2),
+                        topLeft: Radius.circular(2),
+                      ),
+                      child: SizedBox(
+                        width: screenWidth * 0.15,
+                        height: screenHeight * 0.15,
+                        child: FadeInImage(
+                          placeholder: AssetImage(Images.mieAyam),
+                          image: NetworkImage(product.image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
-                  title: Text(
-                    product.nameMenu,
-                    style: titleproductTextStyle,
+                  title: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                    },
+                    child: Text(
+                      product.nameMenu,
+                      style: titleproductTextStyle,
+                    ),
                   ),
-                  subtitle: Text(
-                    '${currencyFormat.format(adjustedPrice)} | ${product.stock} in stock',
-                    style: titleproductTextStyle,
+                  subtitle: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                    },
+                    child: Text(
+                      '${currencyFormat.format(adjustedPrice)} | ${product.stock} in stock',
+                      style: titleproductTextStyle,
+                    ),
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -87,19 +100,16 @@ class ProductList extends StatelessWidget {
                             builder: (BuildContext context) {
                               return ReusableDialog(
                                 title: "Edit",
-                                content:
-                                    "Apakah Kamu yakin ingin mengubah data?",
+                                content: "Apakah Kamu yakin ingin mengubah data?",
                                 cancelText: "Tidak",
                                 confirmText: "Iya",
                                 onCancelPressed: () {
                                   Navigator.of(context).pop();
                                 },
                                 onConfirmPressed: () {
-                                  Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
-                                      arguments: product);
+                                  Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
                                 },
-                                cancelButtonColor:
-                                    ColorResources.primaryColorLight,
+                                cancelButtonColor: ColorResources.primaryColorLight,
                                 confirmButtonColor: ColorResources.buttonedit,
                                 dialogImage: Image.asset(Images.askDialog),
                               );
@@ -115,8 +125,7 @@ class ProductList extends StatelessWidget {
                             builder: (BuildContext context) {
                               return ReusableDialog(
                                 title: "Delete",
-                                content:
-                                    "Apakah Kamu yakin ingin menghapus data?",
+                                content: "Apakah Kamu yakin ingin menghapus data?",
                                 cancelText: "Tidak",
                                 confirmText: "Iya",
                                 onCancelPressed: () {
@@ -126,8 +135,7 @@ class ProductList extends StatelessWidget {
                                   productController.deleteProduct(product.menuId);
                                   dataController.fetchAllData();
                                 },
-                                cancelButtonColor:
-                                    ColorResources.primaryColorLight,
+                                cancelButtonColor: ColorResources.primaryColorLight,
                                 confirmButtonColor: ColorResources.buttondelete,
                                 dialogImage: Image.asset(Images.askDialog),
                               );
