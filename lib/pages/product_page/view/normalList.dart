@@ -62,8 +62,7 @@ class ProductList extends StatelessWidget {
                       height: screenHeight * 0.15,
                       child: FadeInImage(
                         placeholder: AssetImage(Images.mieAyam),
-                        image:
-                            NetworkImage(product.image),
+                        image: NetworkImage(product.image),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -123,7 +122,8 @@ class ProductList extends StatelessWidget {
                                   Navigator.of(context).pop();
                                 },
                                 onConfirmPressed: () {
-                                  productController.deleteProduct(product.menuId);
+                                  productController
+                                      .deleteProduct(product.menuId);
                                   dataController.fetchAllData();
                                 },
                                 cancelButtonColor:
