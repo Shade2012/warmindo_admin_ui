@@ -88,6 +88,7 @@ class ProductPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'btn1',
         onPressed: () {
           showDialog(
             context: context,
