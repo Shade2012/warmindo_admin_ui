@@ -1,3 +1,3 @@
 class GlobalVariables {
-  static const apiUrl = 'http://warmindo.pradiptaahmad.tech';
+  static const apiUri = 'http://warmindo.pradiptaahmad.tech';
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/widget/bottom_sheet_shop.dart';
+import 'package:warmindo_admin_ui/pages/setting_page/widget/bottom_sheet_shop.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
@@ -147,17 +147,6 @@ class SettingsPage extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              ListTile(
-                                leading: Icon(FontAwesomeIcons.ticket),
-                                title: Text(
-                                  'Voucher',
-                                  style: contentProfileTextStyle,
-                                ),
-                                trailing: Icon(Icons.arrow_forward_ios),
-                                onTap: () {
-                                  Get.toNamed(Routes.VOUCHER_PAGE);
-                                },
-                              ),
                               ListTile(
                                 leading: Icon(FontAwesomeIcons.store),
                                 title: Text(
