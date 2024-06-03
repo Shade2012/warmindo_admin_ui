@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/login_page/controller/login_controller.dart';
 import 'package:warmindo_admin_ui/pages/widget/inputfield.dart';
-import '../../../utils/themes/textstyle_themes.dart';
-import '../../../utils/themes/color_themes.dart';
-import '../../../utils/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
 
-class LoginPage extends GetView<LoginController> {
-  final TextEditingController ctrUsername = TextEditingController();
-  final TextEditingController ctrPassword = TextEditingController();
+class LoginPage extends StatelessWidget {
+  final LoginController controller = Get.put(LoginController());
 
   LoginPage({Key? key}) : super(key: key);
 
@@ -21,9 +20,9 @@ class LoginPage extends GetView<LoginController> {
     return null;
   }
 
-  String? isUsername(String value) {
+  String? isEmail(String value) {
     if (value.isEmpty) {
-      return 'Username is required';
+      return 'email is required';
     }
     return null;
   }
@@ -35,32 +34,34 @@ class LoginPage extends GetView<LoginController> {
     TextEditingController controller2,
     String? Function(String)? validator,
   ) {
-    return Container(
-      margin: EdgeInsets.only(top: 20, bottom: 20),
-      child: TextField(
-        controller: controller2,
-        obscureText: controller.obscureText.value,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+    return Obx(
+      () => Container(
+        margin: EdgeInsets.only(top: 20, bottom: 20),
+        child: TextField(
+          controller: controller2,
+          obscureText: controller.obscureText.value,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            suffixIcon: IconButton(
+              onPressed: () {
+                controller.obscureText.value = !controller.obscureText.value;
+              },
+              icon: Icon(controller.obscureText.value
+                  ? Icons.visibility
+                  : Icons.visibility_off),
+            ),
+            hintText: hint,
+            labelText: label,
+            prefixIcon: Icon(icon),
+            labelStyle: boldTextStyle,
+            hintStyle: TextStyle(
+              color: primaryTextColor,
+              fontSize: 12,
+            ),
+            errorText: validator != null ? validator(controller2.text) : null,
           ),
-          suffixIcon: IconButton(
-            onPressed: () {
-              controller.obscureText.value = !controller.obscureText.value;
-            },
-            icon: Icon(controller.obscureText.value
-                ? Icons.visibility
-                : Icons.visibility_off),
-          ),
-          hintText: hint,
-          labelText: label,
-          prefixIcon: Icon(icon),
-          labelStyle: boldTextStyle,
-          hintStyle: TextStyle(
-            color: primaryTextColor,
-            fontSize: 12,
-          ),
-          errorText: validator != null ? validator(controller2.text) : null,
         ),
       ),
     );
@@ -98,30 +99,39 @@ class LoginPage extends GetView<LoginController> {
                   myText(
                     Icons.person_2_outlined,
                     TextInputType.text,
-                    "Username",
-                    "Isi Username mu",
-                    ctrUsername,
-                    isUsername,
+                    "Email",
+                    "Isi Email mu",
+                    controller.ctrEmail,
+                    isEmail,
                   ),
                   Password(
                     Icons.lock_outline,
                     "Password",
                     "Isi Password mu",
-                    ctrPassword,
+                    controller.ctrPassword,
                     isPassword,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      if (isPassword(ctrPassword.text) == null &&
-                          isUsername(ctrUsername.text) == null) {
-                        // All fields are valid, perform login logic
+                    onTap: () async {
+                      if (isPassword(controller.ctrPassword.text) == null &&
+                          isEmail(controller.ctrEmail.text) == null) {
+                          controller.loginAdmin(controller.ctrEmail.text, controller.ctrPassword.text);
+                      } else {
+                        // Optional: Show error message for invalid input
+                        Get.snackbar(
+                          'Error',
+                          'Please enter valid username and password.',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
                       }
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: screenHeight * 0.02),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: (isUsername(ctrUsername.text) == null)
+                        color: (isEmail(controller.ctrEmail.text) == null)
                             ? ColorResources.buttonloginColor
                             : Colors.grey,
                       ),

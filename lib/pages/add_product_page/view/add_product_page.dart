@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/controller/add_product_controller.dart';
 import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
@@ -20,9 +21,13 @@ class AddProductPage extends StatelessWidget {
   final TextEditingController ctrProductStock = TextEditingController();
   final selectedCategory = RxString('');
   final selectedStock = RxInt(0);
+  final selectedSecondCategory = RxString('Mie');
 
   @override
   Widget build(BuildContext context) {
+    void getImage(ImageSource source) {
+      dataController.getImage(source);
+    }
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -72,7 +77,9 @@ class AddProductPage extends StatelessWidget {
                               onTap: () {
                                 showModalBottomSheet(
                                   context: context,
-                                  builder: (context) => UploadImage(),
+                                  builder: (context) => UploadImage(
+                                    onImageCapture: getImage,
+                                  ),
                                 );
                               },
                               child: SizedBox(
@@ -105,7 +112,9 @@ class AddProductPage extends StatelessWidget {
                                         ),
                                         child: Wrap(
                                           children: [
-                                            UploadImage(),
+                                            UploadImage(
+                                              onImageCapture: getImage,
+                                            ),
                                           ],
                                         ),
                                       );
@@ -198,6 +207,22 @@ class AddProductPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text("Kategory Produk Kedua", style: titleAddProductTextStyle),
+                        SizedBox(height: screenHeight * 0.01),
+                        Obx(() => CustomDropdown(
+                          items: ['Mie', 'Nasi Goreng','Ayam','Kopi','Iced','Teh','Susu','Gorengan','Lain-lain'],
+                          value: selectedSecondCategory.value,
+                          onChanged: (String? value) {
+                            selectedSecondCategory.value = value ?? '';
+                          },
+                          dropdownType: DropdownType.SecondCategory,
+                        )),
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text("Deskripsi Produk",
                             style: titleAddProductTextStyle),
                         SizedBox(height: screenHeight * 0.01),
@@ -210,20 +235,26 @@ class AddProductPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.02),
-                    Center(
+                    Container(
+                      width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
+                          // Check if all required fields are filled
                           final selectedImage = dataController.selectedImage.value;
                           final productName = ctrProductName.text.trim();
                           final productPrice = ctrProductPrice.text.trim();
                           final productCategory = selectedCategory.value;
                           final productStock = selectedStock.value;
 
-                          if (selectedImage != null &&
-                              productName.isNotEmpty &&
-                              productPrice.isNotEmpty &&
-                              productCategory.isNotEmpty) {
-                            // Convert productPrice to integer safely
+                          if (dataController.selectedImage.value.path.isEmpty|| productName.isEmpty || productPrice.isEmpty || productCategory.isEmpty) {
+                            Get.snackbar(
+                              'Warning',
+                              'Semua data harus diisi',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.orange,
+                              colorText: Colors.white,
+                            );
+                          } else {
                             final intPrice = int.tryParse(productPrice);
                             if (intPrice != null) {
                               dataController.addProduct(
@@ -233,22 +264,9 @@ class AddProductPage extends StatelessWidget {
                                 stock: productStock,
                                 ratings: 4.0,
                                 description: ctrProductDesc.text,
-                                image: selectedImage,
+                                image: selectedImage, secondCategory: selectedSecondCategory.value,
                               );
-                            } else {
-                              // Handle case when price is not a valid integer
-                              print('Invalid price');
                             }
-                          } else {
-                            // Handle case when any required field is empty
-                            Get.snackbar(
-                              'Warning',
-                              'Semua data harus diisi',
-                              snackPosition: SnackPosition.TOP,
-                              backgroundColor: Colors.orange,
-                              colorText: Colors.white,
-                            );
-
                           }
                         },
 
@@ -263,7 +281,7 @@ class AddProductPage extends StatelessWidget {
                               horizontal: screenWidth * 0.25),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
           ),

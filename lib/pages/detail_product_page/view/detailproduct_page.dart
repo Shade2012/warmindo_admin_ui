@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/pages/model/product_response.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
 class DetailProductPage extends StatelessWidget {
-  const DetailProductPage({Key? key});
+  final Menu product;
+  const DetailProductPage({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +53,8 @@ class DetailProductPage extends StatelessWidget {
               child: Container(
                 width: screenWidth * 0.8, // Menggunakan 80% lebar layar
                 height: screenHeight * 0.25, // Menggunakan 30% tinggi layar
-                child: Image.asset(
-                  Images.mieAyam,
+                child: Image.network(
+                  product.image,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -64,12 +65,12 @@ class DetailProductPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Nama Produk',
+                  product.nameMenu,
                   style: nameProductDetailTextStyle,
                 ),
                 SizedBox(height: screenHeight * 0.002),
                 Text(
-                  'Makanan',
+                  product.category,
                   style: categoryProductDetailTextStyle,
                 ),
               ],
@@ -80,7 +81,7 @@ class DetailProductPage extends StatelessWidget {
                 Icon(Icons.star, color: Colors.amber),
                 SizedBox(width: screenWidth * 0.02), // Jarak 2% lebar layar
                 Text(
-                  '4.6',
+                  product.ratings,
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -96,7 +97,7 @@ class DetailProductPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  'Makanan Indomie mie rebus rasa Ayam Bawang',
+                  product.description,
                   style: desccontentProductDetailTextStyle,
                 ),
               ],
@@ -122,7 +123,7 @@ class DetailProductPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Rp 10.000',
+                    product.price,
                     style: priceCProductDetailTextStyle,
                   ),
                 ],
@@ -133,8 +134,8 @@ class DetailProductPage extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    width: screenWidth * 0.1, // Menggunakan 10% lebar layar
-                    height: screenHeight * 0.1, // Menggunakan 10% tinggi layar
+                    width: screenWidth * 0.1, 
+                    height: screenHeight * 0.1, 
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.grey[200],
@@ -142,14 +143,14 @@ class DetailProductPage extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(FontAwesomeIcons.pencil),
                       onPressed: () {
-                        // Tambahkan aksi ketika tombol ditekan
+                        
                       },
                     ),
                   ),
-                  SizedBox(width: screenWidth * 0.02), // Jarak 2% lebar layar
+                  SizedBox(width: screenWidth * 0.02), 
                   Container(
-                    width: screenWidth * 0.1, // Menggunakan 10% lebar layar
-                    height: screenHeight * 0.1, // Menggunakan 10% tinggi layar
+                    width: screenWidth * 0.1, 
+                    height: screenHeight * 0.1, 
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.grey[200],
@@ -157,7 +158,7 @@ class DetailProductPage extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(FontAwesomeIcons.solidTrashCan),
                       onPressed: () {
-                        // Tambahkan aksi ketika tombol ditekan
+                        
                       },
                     ),
                   ),

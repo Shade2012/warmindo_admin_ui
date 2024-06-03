@@ -21,8 +21,7 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat =
-        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final ApiController dataController = Get.put(ApiController());
@@ -73,8 +72,7 @@ class ProductList extends StatelessWidget {
           itemCount: productList.length,
           itemBuilder: (context, index) {
             final product = productList[index];
-            double? priceAsDouble = double.tryParse(
-                product.price.replaceAll(',', '').replaceAll('.', ''));
+            double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
             double adjustedPrice = priceAsDouble! / 100;
 
             return ListTile(
@@ -116,8 +114,7 @@ class ProductList extends StatelessWidget {
                               Navigator.of(context).pop();
                             },
                             onConfirmPressed: () {
-                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
-                                  arguments: product);
+                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
                             confirmButtonColor: ColorResources.buttonedit,

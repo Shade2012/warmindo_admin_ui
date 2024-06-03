@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum DropdownType { Category, Stock, Status, VerificationStatus }
+enum DropdownType { Category, Stock, Status, VerificationStatus,SecondCategory }
 
 class CustomDropdown extends StatelessWidget {
   final List<String> items;
@@ -23,16 +23,19 @@ class CustomDropdown extends StatelessWidget {
     String hintText;
     switch (dropdownType) {
       case DropdownType.Category:
-        hintText = hint ?? 'Select Category';
+        hintText = hint ?? 'Pilih Category';
         break;
       case DropdownType.Stock:
-        hintText = hint ?? 'Select Stock';
+        hintText = hint ?? 'Pilih Stock';
         break;
       case DropdownType.Status:
-        hintText = hint ?? 'Select Status';
+        hintText = hint ?? 'Pilih Status';
+        break;
+      case DropdownType.SecondCategory:
+        hintText = hint ?? 'Pilih Kategory Kedua';
         break;
       case DropdownType.VerificationStatus:
-        hintText = hint ?? 'Select Verification Status';
+        hintText = hint ?? 'Pilih Status Verifikasi';
         break;
     }
 
