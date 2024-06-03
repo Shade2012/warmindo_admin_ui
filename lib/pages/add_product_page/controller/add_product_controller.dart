@@ -16,11 +16,12 @@ class AddProductController extends GetxController {
     required String nameMenu,
     required int price,
     required String category,
+    required String secondCategory,
     required int stock,
     required double ratings,
     required String description,
   }) async {
-    if (image.path.isEmpty  || nameMenu == null || nameMenu.isEmpty || price.isNaN || category == null || category.isEmpty || stock == null || ratings == null || description == null || description.isEmpty)  {
+    if (image.path.isEmpty  || nameMenu == null || nameMenu.isEmpty || price.isNaN || category == null || category.isEmpty || stock == null || ratings == null || description == null || description.isEmpty || secondCategory.isEmpty)  {
       Get.snackbar(
         'Warning',
         'Semua data harus diisi',
@@ -39,6 +40,7 @@ class AddProductController extends GetxController {
           ..fields['category'] = category
           ..fields['stock'] = stock.toString()
           ..fields['ratings'] = ratings.toString()
+          ..fields['second_category'] = secondCategory
           ..fields['description'] = description
           ..files.add(http.MultipartFile(
             'image',

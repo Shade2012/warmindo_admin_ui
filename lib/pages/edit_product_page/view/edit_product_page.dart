@@ -216,7 +216,7 @@ class EditProductPage extends StatelessWidget {
                     Text("Kategory Produk Kedua", style: titleAddProductTextStyle),
                     SizedBox(height: screenHeight * 0.01),
                     Obx(() => CustomDropdown(
-                      items: ['Mie', 'Nasi','Ayam','Kopi','Buah','Teh','Gorengan','Lain-lain'],
+                      items: ['Mie', 'Nasi Goreng','Ayam','Kopi','Iced','Gorengan','Lain-lain'],
                       value: selectedSecondCategory.value,
                       onChanged: (String? value) {
                         selectedSecondCategory.value = value ?? '';
