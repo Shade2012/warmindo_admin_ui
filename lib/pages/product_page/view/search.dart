@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../data/api_controller.dart';
 import 'package:get/get.dart';
+import '../../../routes/AppPages.dart';
 import '../../../utils/themes/color_themes.dart';
 import '../../../utils/themes/image_themes.dart';
 import '../../../utils/themes/textstyle_themes.dart';
@@ -103,7 +104,7 @@ class Search extends StatelessWidget {
                             cancelText: "Tidak",
                             confirmText: "Iya",
                             onCancelPressed: () {
-                              Navigator.of(context).pop();
+                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
                             },
                             onConfirmPressed: () {
                               Navigator.of(context).pop();

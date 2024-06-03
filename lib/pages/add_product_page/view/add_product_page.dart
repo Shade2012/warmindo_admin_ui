@@ -21,6 +21,7 @@ class AddProductPage extends StatelessWidget {
   final TextEditingController ctrProductStock = TextEditingController();
   final selectedCategory = RxString('');
   final selectedStock = RxInt(0);
+  final selectedSecondCategory = RxString('Mie');
 
   @override
   Widget build(BuildContext context) {
@@ -206,6 +207,22 @@ class AddProductPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text("Kategory Produk Kedua", style: titleAddProductTextStyle),
+                        SizedBox(height: screenHeight * 0.01),
+                        Obx(() => CustomDropdown(
+                          items: ['Mie', 'Nasi Goreng','Ayam','Kopi','Iced','Teh','Susu','Gorengan','Lain-lain'],
+                          value: selectedSecondCategory.value,
+                          onChanged: (String? value) {
+                            selectedSecondCategory.value = value ?? '';
+                          },
+                          dropdownType: DropdownType.SecondCategory,
+                        )),
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text("Deskripsi Produk",
                             style: titleAddProductTextStyle),
                         SizedBox(height: screenHeight * 0.01),
@@ -218,7 +235,8 @@ class AddProductPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.02),
-                    Center(
+                    Container(
+                      width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
                           // Check if all required fields are filled
@@ -246,7 +264,7 @@ class AddProductPage extends StatelessWidget {
                                 stock: productStock,
                                 ratings: 4.0,
                                 description: ctrProductDesc.text,
-                                image: selectedImage,
+                                image: selectedImage, secondCategory: selectedSecondCategory.value,
                               );
                             }
                           }
