@@ -5,9 +5,13 @@ import '../../utils/themes/textstyle_themes.dart';
 import '../add_product_page/controller/add_product_controller.dart';
 import 'package:get/get.dart';
 
+import '../edit_product_page/controller/edit_product_controller.dart';
+typedef ImageCaptureCallback = void Function(ImageSource source);
 class UploadImage extends StatelessWidget {
-  final AddProductController dataController = Get.put(AddProductController());
-   UploadImage({super.key});
+  final ImageCaptureCallback? onImageCapture;
+
+
+  UploadImage({this.onImageCapture,});
 
   @override
   Widget build(BuildContext context) {
@@ -30,35 +34,36 @@ class UploadImage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: (){
-                  dataController.getImage(ImageSource.camera);
+                  onImageCapture!(ImageSource.camera);
                 },
                 child: Column(
                   children: [
-                    Icon(Icons.camera_alt,size: 40,),
-                    SizedBox(height: 10,),
-                    Text('Camera',style: regularInputTextStyle,)
+                    Icon(Icons.camera_alt, size: 40),
+                    SizedBox(height: 10),
+                    Text('Camera', style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ),
-              SizedBox(width: screenWidth * 0.3,),
+              SizedBox(width: screenWidth * 0.3),
               GestureDetector(
-                onTap: (){
-                  dataController.getImage(ImageSource.gallery);
-                },
+                onTap:  () {
+                  onImageCapture!(ImageSource.gallery);
+                }
+                    ,
                 child: Column(
                   children: [
-                    Icon(Icons.photo,size: 40,),
-                    SizedBox(height: 10,),
-                    Text('Gallery',style: regularInputTextStyle,)
+                    Icon(Icons.photo, size: 40),
+                    SizedBox(height: 10),
+                    Text('Gallery', style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ),
             ],
           ),
           SizedBox(height: 30),
-
         ],
       ),
     );
   }
 }
+
