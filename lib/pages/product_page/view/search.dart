@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import '../../../data/api_controller.dart';
 import 'package:get/get.dart';
 import '../../../routes/AppPages.dart';
@@ -11,7 +12,7 @@ import '../../widget/reusable_dialog.dart';
 
 class Search extends StatelessWidget {
   final ApiController dataController = Get.put(ApiController());
-
+  final ProductController productController = Get.put(ProductController());
   Search({Key? key}) : super(key: key);
 
   @override
@@ -76,7 +77,7 @@ class Search extends StatelessWidget {
                   height: screenHeight * 0.15,
                   child: FadeInImage(
                     placeholder: AssetImage(Images.mieAyam),
-                    image: NetworkImage('https://picsum.photos/250?image=9'),
+                    image: NetworkImage(product.image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -104,10 +105,10 @@ class Search extends StatelessWidget {
                             cancelText: "Tidak",
                             confirmText: "Iya",
                             onCancelPressed: () {
-                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
+                              Get.back();
                             },
                             onConfirmPressed: () {
-                              Navigator.of(context).pop();
+                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
                             confirmButtonColor: ColorResources.buttonedit,
@@ -129,10 +130,11 @@ class Search extends StatelessWidget {
                             cancelText: "Tidak",
                             confirmText: "Iya",
                             onCancelPressed: () {
-                              Navigator.of(context).pop();
+                              Get.back();
                             },
                             onConfirmPressed: () {
-                              Navigator.of(context).pop();
+                              productController.deleteProduct(product.menuId);
+                              dataController.fetchAllData();
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
                             confirmButtonColor: ColorResources.buttondelete,
