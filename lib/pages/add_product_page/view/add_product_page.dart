@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/controller/add_product_controller.dart';
 import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
@@ -23,6 +24,9 @@ class AddProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void getImage(ImageSource source) {
+      dataController.getImage(source);
+    }
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -72,7 +76,9 @@ class AddProductPage extends StatelessWidget {
                               onTap: () {
                                 showModalBottomSheet(
                                   context: context,
-                                  builder: (context) => UploadImage(),
+                                  builder: (context) => UploadImage(
+                                    onImageCapture: getImage,
+                                  ),
                                 );
                               },
                               child: SizedBox(
@@ -105,7 +111,9 @@ class AddProductPage extends StatelessWidget {
                                         ),
                                         child: Wrap(
                                           children: [
-                                            UploadImage(),
+                                            UploadImage(
+                                              onImageCapture: getImage,
+                                            ),
                                           ],
                                         ),
                                       );
@@ -213,17 +221,22 @@ class AddProductPage extends StatelessWidget {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
+                          // Check if all required fields are filled
                           final selectedImage = dataController.selectedImage.value;
                           final productName = ctrProductName.text.trim();
                           final productPrice = ctrProductPrice.text.trim();
                           final productCategory = selectedCategory.value;
                           final productStock = selectedStock.value;
 
-                          if (selectedImage != null &&
-                              productName.isNotEmpty &&
-                              productPrice.isNotEmpty &&
-                              productCategory.isNotEmpty) {
-                            // Convert productPrice to integer safely
+                          if (dataController.selectedImage.value.path.isEmpty|| productName.isEmpty || productPrice.isEmpty || productCategory.isEmpty) {
+                            Get.snackbar(
+                              'Warning',
+                              'Semua data harus diisi',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.orange,
+                              colorText: Colors.white,
+                            );
+                          } else {
                             final intPrice = int.tryParse(productPrice);
                             if (intPrice != null) {
                               dataController.addProduct(
@@ -235,20 +248,7 @@ class AddProductPage extends StatelessWidget {
                                 description: ctrProductDesc.text,
                                 image: selectedImage,
                               );
-                            } else {
-                              // Handle case when price is not a valid integer
-                              print('Invalid price');
                             }
-                          } else {
-                            // Handle case when any required field is empty
-                            Get.snackbar(
-                              'Warning',
-                              'Semua data harus diisi',
-                              snackPosition: SnackPosition.TOP,
-                              backgroundColor: Colors.orange,
-                              colorText: Colors.white,
-                            );
-
                           }
                         },
 
@@ -263,7 +263,7 @@ class AddProductPage extends StatelessWidget {
                               horizontal: screenWidth * 0.25),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
           ),

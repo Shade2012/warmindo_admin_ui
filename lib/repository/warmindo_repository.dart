@@ -9,5 +9,5 @@ class FoodApi {
   static var getToppingList = '$apiUrl/api/menus/filter/topping';
   static var getVariantList = '$apiUrl/api/menus/filter/varian';
   static String storeProduct = '$apiUrl/api/menus/store';
-  static String updateProduct = '$apiUrl/api/menus/update/{id}';
+  static String updateProduct = '$apiUrl/api/menus/';
 }

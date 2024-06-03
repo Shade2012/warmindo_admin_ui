@@ -58,36 +58,18 @@ class ProductPage extends StatelessWidget {
           SizedBox(height: 10),
           Expanded(
             child: Obx(() {
-              if(dataController.isLoading.value == true){
-                return ListView.separated(
-                    itemBuilder: (context,index){
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 15),
-                        child: Skeleton(
-                          width: double.infinity,
-                          height: 60,
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context,index){
-                      return SizedBox(height: 20,);
-                    },
-                    itemCount: 12);
-              } else{
                 if(dataController.searchResults.isNotEmpty){
                   return Search();
                 }
                 else{
                   return ProductList(productList: dataController.filteredProductList);
                 }
-              }
-
-
             }),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "btn1",
         onPressed: () {
           showDialog(
             context: context,

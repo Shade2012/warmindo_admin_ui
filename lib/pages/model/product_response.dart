@@ -72,6 +72,7 @@ class Menu {
   String nameMenu;
   String price;
   String category;
+  String secondCategory;
   String stock;
   String ratings;
   String description;
@@ -87,6 +88,7 @@ class Menu {
     required this.stock,
     required this.ratings,
     required this.description,
+    required this.secondCategory,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -97,6 +99,7 @@ class Menu {
     String? nameMenu,
     String? price,
     String? category,
+    String? secondCategory,
     String? stock,
     String? ratings,
     String? description,
@@ -114,6 +117,7 @@ class Menu {
         description: description ?? this.description,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        secondCategory: secondCategory ?? this.secondCategory,
       );
 
   factory Menu.fromJson(Map<String, dynamic> json) => Menu(
@@ -127,6 +131,7 @@ class Menu {
     description: json["description"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
+    secondCategory: json['second_category'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -138,6 +143,7 @@ class Menu {
     "stock": stock,
     "ratings": ratings,
     "description": description,
+    "second_category": secondCategory,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };
