@@ -148,17 +148,6 @@ class SettingsPage extends StatelessWidget {
                           child: Column(
                             children: [
                               ListTile(
-                                leading: Icon(FontAwesomeIcons.ticket),
-                                title: Text(
-                                  'Voucher',
-                                  style: contentProfileTextStyle,
-                                ),
-                                trailing: Icon(Icons.arrow_forward_ios),
-                                onTap: () {
-                                  Get.toNamed(Routes.VOUCHER_PAGE);
-                                },
-                              ),
-                              ListTile(
                                 leading: Icon(FontAwesomeIcons.store),
                                 title: Text(
                                   'Shop',
