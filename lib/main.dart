@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
   Get.put(NavigatorController(), permanent: true);
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('token');
-  
-  runApp(MyApp(startPage: token == null ? Routes.LOGIN_PAGE : Routes.BOTTOM_NAVIGATION));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String startPage;
-  const MyApp({super.key, required this.startPage});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -23,7 +17,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Warmindo Admin UI',
       debugShowCheckedModeBanner: false,
-      initialRoute: startPage,
+      initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     );
   }

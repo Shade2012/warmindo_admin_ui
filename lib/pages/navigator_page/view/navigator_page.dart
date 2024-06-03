@@ -18,7 +18,7 @@ class BottomNavbar extends StatelessWidget {
     ProductPage(),
     CancelOrderPage(), // Empty Container for Cart Page (to replace with FloatingActionButton)
     CustomersPage(),
-    const SettingsPage ()
+    SettingsPage ()
   ];
 
   @override
