@@ -19,13 +19,10 @@ abstract class Routes {
   static const VERIFY_PAGE = _Paths.VERIFY_PAGE;
   static const SCHEDULE_PAGE = _Paths.SCHEDULE_PAGE;
   static const EDIT_PROFILE_PAGE = _Paths.EDIT_PROFILE_PAGE;
-  static const VOUCHER_PAGE = _Paths.VOUCHER_PAGE;
   static const GENERAL_INFORMATION_PAGE = _Paths.GENERAL_INFORMATION_PAGE;
   static const DETAIL_SALES_PAGE = _Paths.DETAIL_SALES_PAGE;
   static const EDIT_CUSTOMERS_PAGE = _Paths.EDIT_CUSTOMERS_PAGE;
   static const CUSTOMERS_PAGE = _Paths.CUSTOMERS_PAGE;
-  static const DETAIL_VOUCHER_PAGE = _Paths.DETAIL_VOUCHER_PAGE;
-  static const ADD_VOUCHER_PAGE = _Paths.ADD_VOUCHER_PAGE;
   static const BOTTOM_SHEET_SCHEDULE = _Paths.BOTTOM_SHEET_SCHEDULE;
   static const ADD_VARIAN_PAGE = _Paths.ADD_VARIAN_PAGE;
   static const ADD_TOPPING_PAGE = _Paths.ADD_TOPPING_PAGE;
@@ -49,13 +46,10 @@ abstract class _Paths {
   static const VERIFY_PAGE = '/verify-page';
   static const SCHEDULE_PAGE = '/schedule-page';
   static const EDIT_PROFILE_PAGE = '/edit-profile-page';
-  static const VOUCHER_PAGE = '/voucher-page';
   static const GENERAL_INFORMATION_PAGE = '/general-information-page';
   static const DETAIL_SALES_PAGE = '/detail-sales-page';
   static const EDIT_CUSTOMERS_PAGE = '/edit-customers-page';
   static const CUSTOMERS_PAGE = '/customers-page';
-  static const DETAIL_VOUCHER_PAGE = '/detail-voucher-page';
-  static const ADD_VOUCHER_PAGE = '/add-voucher-page';
   static const BOTTOM_SHEET_SCHEDULE = '/bottom-sheet-schedule';
   static const ADD_VARIAN_PAGE = '/add-varian-page';
   static const EDIT_ORDER_PAGE = '/edit-order-page';
