@@ -56,11 +56,11 @@ class _OrderPageState extends State<OrderPage> {
                 },
                 items: <String>[
                   'All',
-                  'In Progress',
+                  'Dalam Proses',
                   'Pesanan Siap',
-                  'Done',
+                  'Selesai',
                   'Menunggu Batal',
-                  'Cancel',
+                  'Batal'
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
