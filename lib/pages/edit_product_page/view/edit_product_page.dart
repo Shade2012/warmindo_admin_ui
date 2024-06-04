@@ -23,8 +23,7 @@ class EditProductPage extends StatelessWidget {
   final selectedSecondCategory = RxString('');
   final selectedStock = RxString('');
   final ProductController productController = Get.put(ProductController());
-  final EditProductController editProductController =
-      Get.put(EditProductController());
+  final EditProductController editProductController = Get.put(EditProductController());
   void getImage(ImageSource source) {
     editProductController.getImage(source);
   }
