@@ -21,7 +21,8 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final ApiController dataController = Get.put(ApiController());
@@ -72,29 +73,45 @@ class ProductList extends StatelessWidget {
           itemCount: productList.length,
           itemBuilder: (context, index) {
             final product = productList[index];
-            double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
+            double? priceAsDouble = double.tryParse(
+                product.price.replaceAll(',', '').replaceAll('.', ''));
             double adjustedPrice = priceAsDouble! / 100;
 
             return ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(2),
-                child: SizedBox(
-                  width: screenWidth * 0.15,
-                  height: screenHeight * 0.15,
-                  child: FadeInImage(
-                    placeholder: AssetImage(Images.mieAyam),
-                    image: NetworkImage(product.image),
-                    fit: BoxFit.cover,
+              leading: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: SizedBox(
+                    width: screenWidth * 0.15,
+                    height: screenHeight * 0.15,
+                    child: FadeInImage(
+                      placeholder: AssetImage(Images.mieAyam),
+                      image: NetworkImage(product.image),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-              title: Text(
-                product.nameMenu,
-                style: titleproductTextStyle,
+              title: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                },
+                child: Text(
+                  product.nameMenu,
+                  style: titleproductTextStyle,
+                ),
               ),
-              subtitle: Text(
-                '${currencyFormat.format(adjustedPrice)} | ${product.stock} in stock',
-                style: titleproductTextStyle,
+              subtitle: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                },
+                child: Text(
+                  '${currencyFormat.format(adjustedPrice)} | ${product.stock} in stock',
+                  style: titleproductTextStyle,
+                ),
               ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -114,7 +131,8 @@ class ProductList extends StatelessWidget {
                               Navigator.of(context).pop();
                             },
                             onConfirmPressed: () {
-                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
+                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
+                                  arguments: product);
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
                             confirmButtonColor: ColorResources.buttonedit,
