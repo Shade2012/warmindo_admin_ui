@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../utils/themes/textstyle_themes.dart';
-import '../add_product_page/controller/add_product_controller.dart';
-import 'package:get/get.dart';
-
-import '../edit_product_page/controller/edit_product_controller.dart';
 typedef ImageCaptureCallback = void Function(ImageSource source);
+
 class UploadImage extends StatelessWidget {
   final ImageCaptureCallback? onImageCapture;
 
-
-  UploadImage({this.onImageCapture,});
+  UploadImage({this.onImageCapture});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +28,12 @@ class UploadImage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: (){
-                  onImageCapture!(ImageSource.camera);
+                onTap: () {
+                  if (onImageCapture != null) {
+                    onImageCapture!(ImageSource.camera);
+                  } else {
+                    print('onImageCapture callback is null');
+                  }
                 },
                 child: Column(
                   children: [
@@ -46,10 +45,13 @@ class UploadImage extends StatelessWidget {
               ),
               SizedBox(width: screenWidth * 0.3),
               GestureDetector(
-                onTap:  () {
-                  onImageCapture!(ImageSource.gallery);
-                }
-                    ,
+                onTap: () {
+                  if (onImageCapture != null) {
+                    onImageCapture!(ImageSource.gallery);
+                  } else {
+                    print('onImageCapture callback is null');
+                  }
+                },
                 child: Column(
                   children: [
                     Icon(Icons.photo, size: 40),
@@ -66,4 +68,3 @@ class UploadImage extends StatelessWidget {
     );
   }
 }
-

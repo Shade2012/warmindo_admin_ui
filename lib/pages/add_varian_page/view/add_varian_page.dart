@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
 import 'package:warmindo_admin_ui/pages/widget/up_image_bottomsheet.dart';

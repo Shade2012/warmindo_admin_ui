@@ -93,8 +93,7 @@ class EditProductPage extends StatelessWidget {
                           child: SizedBox(
                             height: screenHeight * 0.15,
                             width: screenHeight * 0.15,
-                            child: editProductController.selectedImage.value !=
-                                        null &&
+                            child: editProductController.selectedImage.value != null &&
                                     editProductController
                                         .selectedImage.value!.path.isNotEmpty
                                 ? Image.file(

@@ -16,7 +16,7 @@ class BottomNavbar extends StatelessWidget {
   final List<Widget> pages = [
     HomePage(),
     ProductPage(),
-    CancelOrderPage(), // Empty Container for Cart Page (to replace with FloatingActionButton)
+    CancelOrderPage(), 
     CustomersPage(),
     SettingsPage ()
   ];
@@ -24,6 +24,7 @@ class BottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Obx(() => pages[controller.currentIndex.value]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
