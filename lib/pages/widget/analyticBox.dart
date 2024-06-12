@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
 
@@ -11,19 +9,19 @@ class AnalyticBox extends StatelessWidget {
     required this.totalSales,
     required this.titleAnalyticBox,
     required this.imagePath,
+    this.onTap,
   }) : super(key: key);
 
   final int totalSales;
   final String titleAnalyticBox;
   final String imagePath;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     String formattedTotalSales = _formatTotalSales(totalSales);
     return GestureDetector(
-      onTap: () {
-        Get.toNamed(Routes.DETAIL_SALES_PAGE); 
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(

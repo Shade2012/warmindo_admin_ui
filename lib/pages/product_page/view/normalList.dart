@@ -19,6 +19,12 @@ class ProductList extends StatelessWidget {
     required this.productList,
   }) : super(key: key);
 
+  Future<void> _refreshData(ApiController dataController) async {
+    dataController.isLoading.value = true;
+    await dataController.fetchAllData();
+    dataController.isLoading.value = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final currencyFormat =
@@ -69,109 +75,113 @@ class ProductList extends StatelessWidget {
           itemCount: 12,
         );
       } else {
-        return ListView.builder(
-          itemCount: productList.length,
-          itemBuilder: (context, index) {
-            final product = productList[index];
-            double? priceAsDouble = double.tryParse(
-                product.price.replaceAll(',', '').replaceAll('.', ''));
-            double adjustedPrice = priceAsDouble! / 100;
+        return RefreshIndicator(
+          onRefresh: () => _refreshData(dataController),
+          child: ListView.builder(
+            itemCount: productList.length,
+            itemBuilder: (context, index) {
+              final product = productList[index];
+              double? priceAsDouble = double.tryParse(
+                  product.price.replaceAll(',', '').replaceAll('.', ''));
+              double adjustedPrice = priceAsDouble! / 100;
 
-            return ListTile(
-              leading: GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(2),
-                  child: SizedBox(
-                    width: screenWidth * 0.15,
-                    height: screenHeight * 0.15,
-                    child: FadeInImage(
-                      placeholder: AssetImage(Images.mieAyam),
-                      image: NetworkImage(product.image),
-                      fit: BoxFit.cover,
+              return ListTile(
+                leading: GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(2),
+                    child: SizedBox(
+                      width: screenWidth * 0.15,
+                      height: screenHeight * 0.15,
+                      child: FadeInImage(
+                        placeholder: AssetImage(Images.mieAyam),
+                        image: NetworkImage(product.image),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              title: GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
-                },
-                child: Text(
-                  product.nameMenu,
-                  style: titleproductTextStyle,
-                ),
-              ),
-              subtitle: GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
-                },
-                child: Text(
-                  '${currencyFormat.format(adjustedPrice)} | ${product.stock} in stock',
-                  style: titleproductTextStyle,
-                ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ReusableDialog(
-                            title: "Edit",
-                            content: "Apakah Kamu yakin ingin mengubah data?",
-                            cancelText: "Tidak",
-                            confirmText: "Iya",
-                            onCancelPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            onConfirmPressed: () {
-                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
-                                  arguments: product);
-                            },
-                            cancelButtonColor: ColorResources.primaryColorLight,
-                            confirmButtonColor: ColorResources.buttonedit,
-                            dialogImage: Image.asset(Images.askDialog),
-                          );
-                        },
-                      );
-                    },
+                title: GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                  },
+                  child: Text(
+                    product.nameMenu,
+                    style: titleproductTextStyle,
                   ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ReusableDialog(
-                            title: "Delete",
-                            content: "Apakah Kamu yakin ingin menghapus data?",
-                            cancelText: "Tidak",
-                            confirmText: "Iya",
-                            onCancelPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            onConfirmPressed: () {
-                              productController.deleteProduct(product.menuId);
-                              dataController.fetchAllData();
-                            },
-                            cancelButtonColor: ColorResources.primaryColorLight,
-                            confirmButtonColor: ColorResources.buttondelete,
-                            dialogImage: Image.asset(Images.askDialog),
-                          );
-                        },
-                      );
-                    },
+                ),
+                subtitle: GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
+                  },
+                  child: Text(
+                    '${currencyFormat.format(adjustedPrice)} | ${product.stock} in stock',
+                    style: titleproductTextStyle,
                   ),
-                ],
-              ),
-            );
-          },
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ReusableDialog(
+                              title: "Edit",
+                              content: "Apakah Kamu yakin ingin mengubah data?",
+                              cancelText: "Tidak",
+                              confirmText: "Iya",
+                              onCancelPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              onConfirmPressed: () {
+                                Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
+                                    arguments: product);
+                              },
+                              cancelButtonColor: ColorResources.primaryColorLight,
+                              confirmButtonColor: ColorResources.buttonedit,
+                              dialogImage: Image.asset(Images.askDialog),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ReusableDialog(
+                              title: "Delete",
+                              content: "Apakah Kamu yakin ingin menghapus data?",
+                              cancelText: "Tidak",
+                              confirmText: "Iya",
+                              onCancelPressed: () {
+                                Get.back();
+                              },
+                              onConfirmPressed: () {
+                                productController.deleteProduct(product.menuId);
+                                dataController.fetchAllData();
+                                Get.back();
+                              },
+                              cancelButtonColor: ColorResources.primaryColorLight,
+                              confirmButtonColor: ColorResources.buttondelete,
+                              dialogImage: Image.asset(Images.askDialog),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         );
       }
     });

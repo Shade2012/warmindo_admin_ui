@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/pages/widget/searchbar.dart';
 import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
-import 'package:get/get.dart';
-import '../../data/api_controller.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final ApiController dataController = Get.put(ApiController());
   final String title;
-  final bool showBackButton;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
-  final Function()? onBackButtonPressed; // Tambahkan ini
+  final bool showSearch;
 
-   CustomAppBar({
+  CustomAppBar({
     Key? key,
-     this.onChanged,
     this.title = '',
-    this.showBackButton = false,
-    this.onBackButtonPressed, required this.controller, // Tambahkan ini
+    this.controller,
+    this.onChanged,
+    this.showSearch = true,
   }) : super(key: key);
 
   @override
@@ -39,14 +34,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (showBackButton) // Tambahkan kondisi untuk menampilkan tombol back
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                      ),
-                      onPressed: onBackButtonPressed,
-                    ),
                   Text(
                     title.isNotEmpty ? title : 'Halo, Admin!',
                     style: homeWelcomeTextStyle,
@@ -55,15 +42,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: CustomSearchBar(
-              hintText: 'Search',
-              controller: controller,
-           onChanged: onChanged,
-              style: searchBarTextStyle,
+          if (showSearch) // Menampilkan pencarian jika showSearch true
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                controller: controller,
+                onChanged: onChanged,
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  hintStyle: hintSearchBarTextStyle.copyWith(color: greyTextColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  prefixIcon: Icon(Icons.search),
+                ),
+                style: searchBarTextStyle,
+              ),
             ),
-          ),
           SizedBox(height: 8.0)
         ],
       ),

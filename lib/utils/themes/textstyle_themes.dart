@@ -26,7 +26,7 @@ TextStyle searchBarTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
         color: greyTextColor,
         fontWeight: FontWeight.bold,
-        fontSize: figmaFontsize(11)));
+        fontSize: figmaFontsize(16)));
 
 TextStyle filterButtonTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(

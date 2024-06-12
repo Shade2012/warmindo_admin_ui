@@ -13,15 +13,16 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController search1 = TextEditingController();
-    final TextEditingController search2 = TextEditingController();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: CustomAppBar(controller: search1,).preferredSize,
-        child: CustomAppBar(controller: search2,),
+        preferredSize: Size.fromHeight(55),
+        child: CustomAppBar(
+          title: 'Halo, Admin!',
+          showSearch: false,
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(screenWidth * 0.02),
@@ -39,6 +40,9 @@ class HomePage extends StatelessWidget {
                         totalSales: 200000,
                         titleAnalyticBox: 'Total Penjualan',
                         imagePath: IconThemes.iconCoin,
+                        onTap: () {
+                          Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                        },
                       ),
                     ),
                   ),
@@ -49,6 +53,9 @@ class HomePage extends StatelessWidget {
                         totalSales: 50,
                         titleAnalyticBox: 'Produk',
                         imagePath: IconThemes.iconProduct,
+                        onTap: () {
+                          Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                        },
                       ),
                     ),
                   ),

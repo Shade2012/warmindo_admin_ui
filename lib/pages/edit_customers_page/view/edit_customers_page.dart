@@ -90,7 +90,7 @@ class EditCustomersPage extends StatelessWidget {
               Text("Status User", style: titleAddProductTextStyle),
               SizedBox(height: screenHeight * 0.01),
               Obx(() => CustomDropdown(
-                    items: ['Telah Terveritifikasi', 'Belum Terveritifikasi'],
+                    items: ['Terivikasi', 'Belum Terivikasi'],
                     value: selectedStatus.value.isNotEmpty
                         ? selectedStatus.value
                         : null,

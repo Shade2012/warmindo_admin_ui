@@ -3,6 +3,7 @@ import 'package:warmindo_admin_ui/common/global_variables.dart';
 final String apiUrl = GlobalVariables.apiUri;
 class FoodApi {
   static AuthEndpoint auth = AuthEndpoint();
+  static AllCustomers customers = AllCustomers();
   static var getallProductList = '$apiUrl/api/menus';
   static var getFoodList = '$apiUrl/api/menus/filter/makanan';
   static var getDrinkList = '$apiUrl/api/menus/filter/minuman';
@@ -16,4 +17,8 @@ class FoodApi {
 
 class AuthEndpoint {
   final String login = '$apiUrl/api/admins/login';
+}
+
+class AllCustomers {
+  final String customers = '$apiUrl/api/users/users';
 }
