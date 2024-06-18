@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/controller/settings_controller.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/widget/bottom_sheet_shop.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class SettingsPage extends StatelessWidget {
   final SettingsController controller = Get.put(SettingsController());

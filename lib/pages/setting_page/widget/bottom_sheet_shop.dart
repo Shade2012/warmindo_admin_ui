@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/schedule_page/controller/schedule_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class BottomSheetShop extends StatelessWidget {
   const BottomSheetShop({Key? key}) : super(key: key);
@@ -198,6 +198,7 @@ class BottomSheetShop extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: IconButton(
                       onPressed: () {
+                        Get.back();
                         Get.toNamed(Routes.SCHEDULE_PAGE);
                       },
                       icon: Icon(Icons.arrow_forward_ios_rounded),

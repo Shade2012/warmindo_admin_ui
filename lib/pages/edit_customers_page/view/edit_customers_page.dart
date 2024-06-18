@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
-import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
+import 'package:warmindo_admin_ui/global/widget/textfield.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class EditCustomersPage extends StatelessWidget {
   final TextEditingController ctrNameUser = TextEditingController();

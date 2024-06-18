@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/icon_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
 
 class DetailOrderBnb extends StatelessWidget {
   const DetailOrderBnb({super.key});

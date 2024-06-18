@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/login_page/controller/login_controller.dart';
-import 'package:warmindo_admin_ui/pages/widget/inputfield.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/inputfield.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 
 class LoginPage extends StatelessWidget {
   final LoginController controller = Get.put(LoginController());

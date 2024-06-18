@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/controller/add_product_controller.dart';
-import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
-import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
-import 'package:warmindo_admin_ui/pages/widget/up_image_bottomsheet.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
+import 'package:warmindo_admin_ui/global/widget/textfield.dart';
+import 'package:warmindo_admin_ui/global/widget/up_image_bottomsheet.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
-import '../../../data/api_controller.dart';
 
 class AddProductPage extends StatelessWidget {
   final AddProductController dataController = Get.put(AddProductController());
@@ -30,7 +29,6 @@ class AddProductPage extends StatelessWidget {
     }
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
     return Stack(
       children: [
         Scaffold(

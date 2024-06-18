@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/model/customers.dart';
+import 'package:warmindo_admin_ui/global/model/customers.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class DetailCustomersPage extends StatelessWidget {
   final CustomerData customer;
-  const DetailCustomersPage({Key? key, required this.customer}) : super(key: key);
+  const DetailCustomersPage({Key? key, required this.customer})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class DetailCustomersPage extends StatelessWidget {
             ),
           ),
         ),
-        title: Text('Detail Produk'),
+        title: Text('Detail Pelanggan'),
         centerTitle: true,
       ),
       body: Padding(
@@ -53,15 +54,15 @@ class DetailCustomersPage extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                width: screenWidth * 0.8, 
-                height: screenHeight * 0.25, 
+                width: screenWidth * 0.8,
+                height: screenHeight * 0.25,
                 child: customer.profilePicture != null
                     ? Image.network(
                         customer.profilePicture!,
                         fit: BoxFit.cover,
                       )
                     : Image.asset(
-                        Images.userImage, 
+                        Images.userImage,
                         fit: BoxFit.cover,
                       ),
               ),
@@ -77,16 +78,12 @@ class DetailCustomersPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.002),
                 Text(
-                  customer.userVerified,
+                  customer.userVerified == 'Verifikasi'
+                      ? 'Verifikasi'
+                      : 'Belum Verifikasi',
                   style: customer.userVerified == 'Verifikasi'
-                      ? TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                        )
-                      : TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      ? verificationTextStyle
+                      : unverificationTextStyle,
                 ),
               ],
             ),

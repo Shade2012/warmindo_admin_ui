@@ -4,9 +4,9 @@ import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottoms
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
 import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 enum Day {
   Sunday,
@@ -56,8 +56,9 @@ class SchedulePage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new),
           onPressed: () {
-            Get.find<NavigatorController>().goToSettingsPage();
-            Get.toNamed(Routes.BOTTOM_NAVIGATION);
+            // Get.find<NavigatorController>().goToSettingsPage();
+            // Get.toNamed(Routes.BOTTOM_NAVIGATION);
+            Get.back();
           },
         ),
         title: Text('Jadwal Restoran'),

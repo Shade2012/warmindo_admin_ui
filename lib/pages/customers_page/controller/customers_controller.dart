@@ -1,18 +1,45 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/model/customers.dart';
-import 'package:warmindo_admin_ui/repository/warmindo_repository.dart';
+import 'package:warmindo_admin_ui/global/services/intenet_service.dart';
+import 'package:warmindo_admin_ui/global/model/customers.dart';
+import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:http/http.dart' as http;
 
 class CustomersController extends GetxController {
   var allCustomerList = <CustomerData>[].obs;
   var searchResults = <CustomerData>[].obs;
   RxBool isLoading = true.obs;
+  RxBool isConnected = true.obs;
+  final InternetService _internetService = InternetService();
+  Timer? timer;
 
   @override
   void onInit() {
-    fetchDataCustomer();
+    _internetService.connectionChange.listen(_updateConnectionStatus);
+    _checkInternetConnection();
+    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      if (isConnected.value) {
+        fetchDataCustomer();
+      }
+    });
     super.onInit();
+  }
+
+  void _updateConnectionStatus(bool connected) {
+    isConnected.value = connected;
+    if (!isConnected.value) {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> _checkInternetConnection() async {
+    isConnected.value = await _internetService.isConnected;
+    if (isConnected.value) {
+      fetchDataCustomer();
+    } else {
+      isLoading.value = false;
+    }
   }
 
   Future<void> fetchDataCustomer() async {
@@ -48,7 +75,6 @@ class CustomersController extends GetxController {
           .where((customer) =>
               customer.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
-      
     }
   }
 }

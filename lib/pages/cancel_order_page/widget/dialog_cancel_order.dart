@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class DialogCancelOrder extends StatelessWidget {
   final String title;

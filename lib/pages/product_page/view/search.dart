@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
-import '../../../data/api_controller.dart';
 import 'package:get/get.dart';
 import '../../../routes/AppPages.dart';
-import '../../../utils/themes/color_themes.dart';
-import '../../../utils/themes/image_themes.dart';
-import '../../../utils/themes/textstyle_themes.dart';
-import '../../widget/reusable_dialog.dart';
+import '../../../global/themes/color_themes.dart';
+import '../../../global/themes/image_themes.dart';
+import '../../../global/themes/textstyle_themes.dart';
+import '../../../global/widget/reusable_dialog.dart';
 
 class Search extends StatelessWidget {
-  final ApiController dataController = Get.put(ApiController());
   final ProductController productController = Get.put(ProductController());
   Search({Key? key}) : super(key: key);
 
@@ -22,7 +20,7 @@ class Search extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Obx(() {
-      if (dataController.isLoading.value) {
+      if (productController.isLoading.value) {
         return ListView.separated(
           itemBuilder: (context, index) {
             return Shimmer.fromColors(
@@ -63,9 +61,9 @@ class Search extends StatelessWidget {
         );
       } else {
         return ListView.builder(
-          itemCount: dataController.searchResults.length,
+          itemCount: productController.searchResults.length,
           itemBuilder: (context, index) {
-            final product = dataController.searchResults[index];
+            final product = productController.searchResults[index];
             double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
             double adjustedPrice = priceAsDouble! / 100;
 
@@ -134,7 +132,7 @@ class Search extends StatelessWidget {
                             },
                             onConfirmPressed: () {
                               productController.deleteProduct(product.menuId);
-                              dataController.fetchAllData();
+                              productController.fetchAllData();
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
                             confirmButtonColor: ColorResources.buttondelete,

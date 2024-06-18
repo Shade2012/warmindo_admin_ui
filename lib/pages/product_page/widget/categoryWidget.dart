@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 
 class CategoryWidget extends StatefulWidget {
   final Function(String) onCategorySelected; // Callback untuk kategori terpilih

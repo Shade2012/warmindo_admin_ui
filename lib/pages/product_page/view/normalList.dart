@@ -2,40 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:warmindo_admin_ui/data/api_controller.dart';
-import 'package:warmindo_admin_ui/pages/model/product_response.dart';
+import 'package:warmindo_admin_ui/global/model/product_response.dart';
 import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
-import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
+import 'package:warmindo_admin_ui/global/widget/reusable_dialog.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+
 
 class ProductList extends StatelessWidget {
   final List<Menu> productList;
 
-  const ProductList({
+   ProductList({
     Key? key,
     required this.productList,
   }) : super(key: key);
 
-  Future<void> _refreshData(ApiController dataController) async {
-    dataController.isLoading.value = true;
-    await dataController.fetchAllData();
-    dataController.isLoading.value = false;
+  Future<void> _refreshData(ProductController productController) async {
+    productController.isLoading.value = true;
+    productController.fetchAllData();
   }
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat =
-        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final ApiController dataController = Get.put(ApiController());
     final ProductController productController = Get.put(ProductController());
 
     return Obx(() {
-      if (dataController.isLoading.value) {
+      if (!productController.isConnected.value) {
+        return Center(
+          child: Text(
+            'Tidak ada koneksi internet mohon cek internet anda',
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        );
+      }
+      if (productController.isLoading.value) {
         return ListView.separated(
           itemBuilder: (context, index) {
             return Shimmer.fromColors(
@@ -76,7 +82,11 @@ class ProductList extends StatelessWidget {
         );
       } else {
         return RefreshIndicator(
-          onRefresh: () => _refreshData(dataController),
+          color: ColorResources.primaryColor,
+          backgroundColor: ColorResources.primaryColorLight,
+          onRefresh: () {
+            return _refreshData(productController);
+          },
           child: ListView.builder(
             itemCount: productList.length,
             itemBuilder: (context, index) {
@@ -136,7 +146,7 @@ class ProductList extends StatelessWidget {
                               cancelText: "Tidak",
                               confirmText: "Iya",
                               onCancelPressed: () {
-                                Navigator.of(context).pop();
+                                Get.back();
                               },
                               onConfirmPressed: () {
                                 Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
@@ -166,7 +176,7 @@ class ProductList extends StatelessWidget {
                               },
                               onConfirmPressed: () {
                                 productController.deleteProduct(product.menuId);
-                                dataController.fetchAllData();
+                                productController.fetchAllData();
                                 Get.back();
                               },
                               cancelButtonColor: ColorResources.primaryColorLight,

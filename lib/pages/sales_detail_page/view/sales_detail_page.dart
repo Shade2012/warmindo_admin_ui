@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:warmindo_admin_ui/pages/sales_detail_page/controller/sales_detail_controller.dart';
-import 'package:warmindo_admin_ui/pages/widget/analyticBox.dart';
-import 'package:warmindo_admin_ui/utils/themes/icon_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
+import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
 import '../model/sales_model.dart';
 
 class SalesDetailPage extends StatelessWidget {
@@ -121,7 +121,7 @@ class SalesDetailPage extends StatelessWidget {
                         title: AxisTitle(
                           text: 'Waktu',
                           textStyle: TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -130,7 +130,7 @@ class SalesDetailPage extends StatelessWidget {
                         title: AxisTitle(
                           text: controller.yAxisTitle.value,
                           textStyle: TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -141,7 +141,14 @@ class SalesDetailPage extends StatelessWidget {
                         lineType: TrackballLineType.vertical,
                         tooltipSettings: InteractiveTooltip(
                           enable: true,
-                          color: Colors.red,
+                          color: Colors.white,
+                          textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                          // format: 'point.x : point.y',
+                          borderColor: Colors.black,
+                          borderWidth: 1,
                         ),
                       ),
                       legend: Legend(
@@ -149,14 +156,14 @@ class SalesDetailPage extends StatelessWidget {
                         alignment: ChartAlignment.center,
                         position: LegendPosition.bottom,
                       ),
-                      series: <LineSeries<SalesData, String>>[
-                        LineSeries<SalesData, String>(
+                      series: <ColumnSeries<SalesData, String>>[
+                        ColumnSeries<SalesData, String>(
                           dataSource: controller.chartData,
-                          xValueMapper: (SalesData sales, _) => sales.year,
+                          xValueMapper: (SalesData sales, _) => sales.year, // Use 'date' here
                           yValueMapper: (SalesData sales, _) => sales.sales,
-                          color: Colors.black,
+                          color: Colors.black87,
                           animationDuration: 0,
-                          name: 'Sales Data',
+                          name: 'Data Penjualan',
                         ),
                       ],
                     ),
