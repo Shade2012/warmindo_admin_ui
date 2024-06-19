@@ -1,4 +1,4 @@
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 
 // Definisi kelas Menu jika belum ada
 class Menu {

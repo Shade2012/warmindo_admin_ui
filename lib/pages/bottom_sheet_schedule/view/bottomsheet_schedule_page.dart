@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottomsheet_schedule_controller.dart';
 import 'dart:developer';
-import 'package:warmindo_admin_ui/pages/widget/custom_dropdown_multi.dart';
+import 'package:warmindo_admin_ui/global/widget/custom_dropdown_multi.dart';
 
 const List<Day> _dayItems = [
   Day('Senin'),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
+import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import '../controller/customers_controller.dart';
 import '../widget/customers_widget.dart';
 
@@ -24,6 +24,15 @@ class CustomersPage extends StatelessWidget {
         onChanged: (value) => controller.searchCustomers(value),
       ),
       body: Obx(() {
+        if (!controller.isConnected.value) {
+          return Center(
+          child: Text(
+            'Tidak ada koneksi internet mohon cek internet anda',
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        );
+        }
         if (controller.isLoading.value) {
           return buildShimmerList(screenWidth, screenHeight);
         } else {
@@ -31,7 +40,7 @@ class CustomersPage extends StatelessWidget {
             return Center(
               child: Text(
                 'Data Pelanggan tidak ditemukan',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             );
           } else {
@@ -45,15 +54,9 @@ class CustomersPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        margin: EdgeInsets.only(
-                            top: 10,
-                            bottom:
-                                5), // Menambahkan jarak antara setiap container
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05,
-                            vertical: screenHeight * 0.015),
-                        width: screenWidth *
-                            0.95, // Menggunakan 95% dari lebar layar
+                        margin: EdgeInsets.only(top: 10, bottom: 5), 
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05,vertical: screenHeight * 0.015),
+                        width: screenWidth * 0.95, 
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(6),
@@ -86,8 +89,7 @@ class CustomersPage extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                                height: screenHeight *
-                                    0.01), // Spacer antara judul dan konten utama
+                                height: screenHeight * 0.01), 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,10 +97,8 @@ class CustomersPage extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.zero,
                                   child: Container(
-                                    width: screenWidth *
-                                        0.15, // Lebar gambar adalah 15% dari lebar layar
-                                    height: screenWidth *
-                                        0.15, // Tinggi gambar adalah 15% dari lebar layar
+                                    width: screenWidth * 0.15, 
+                                    height: screenWidth * 0.15, 
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(6),
                                       image: DecorationImage(

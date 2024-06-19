@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 
 class CircleIcon extends StatelessWidget {
   final IconData iconData;

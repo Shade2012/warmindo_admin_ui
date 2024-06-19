@@ -1,68 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:warmindo_admin_ui/data/api_controller.dart';
-import 'package:warmindo_admin_ui/pages/model/product_response.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:warmindo_admin_ui/pages/product_page/view/normalList.dart';
 import 'package:warmindo_admin_ui/pages/product_page/view/search.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/categoryWidget.dart';
 import 'package:warmindo_admin_ui/pages/product_page/widget/popup_add_product.dart';
-import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
-import 'package:warmindo_admin_ui/pages/widget/reusable_dialog.dart';
-import 'package:warmindo_admin_ui/pages/widget/skeleton.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
+import 'package:warmindo_admin_ui/global/widget/reusable_dialog.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 
 class ProductPage extends StatelessWidget {
-
   ProductPage({Key? key}) : super(key: key);
-
-  final ApiController dataController = Get.put(ApiController());
-
   @override
   Widget build(BuildContext context) {
+    final ProductController productController = Get.put(ProductController());
     final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Manage Product',onChanged: (query){
+        title: 'Kelola Produk',onChanged: (query){
         print(query);{
-          dataController.searchFilter(query);
-          print(dataController.searchResults);
+          productController.searchFilter(query);
+          print(productController.searchResults);
         }
-      }, controller: dataController.search,
+      }, controller: productController.search,
       ),
       body: Column(
         children: [
           CategoryWidget(
             onCategorySelected: (selectedCategory) {
-              dataController.setCategory(selectedCategory);
+              productController.selectedCategory(selectedCategory);
               if (selectedCategory == 'Semua') {
-                dataController.getAllProductList();
+                productController.getAllProductList();
               } else if (selectedCategory == 'Makanan') {
-                dataController.getFoodList();
+                productController.getFoodList();
               } else if (selectedCategory == 'Minuman') {
-                dataController.getDrinkList();
+                productController.getDrinkList();
               } else if (selectedCategory == 'Snack') {
-                dataController.getSnackList();
+                productController.getSnackList();
               } else if (selectedCategory == 'Topping') {
-                dataController.getToppingList();
+                productController.getToppingList();
               } else if (selectedCategory == 'Varian') {
-                dataController.getVariantList();
+                productController.getVariantList();
               }
             },
           ),
           SizedBox(height: 10),
           Expanded(
             child: Obx(() {
-                if(dataController.searchResults.isNotEmpty){
+                if(productController.searchResults.isNotEmpty){
                   return Search();
                 }
                 else{
-                  return ProductList(productList: dataController.filteredProductList);
+                  return ProductList(productList: productController.filteredProductList);
                 }
             }),
           ),

@@ -47,6 +47,8 @@ dependencies:
   permission_handler:
   shimmer:
   shared_preferences: ^2.2.3
+  # connectivity_plus: ^6.0.3
+  connectivity_plus: ^3.0.3
 
 
 dev_dependencies:

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
-import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
-import 'package:warmindo_admin_ui/pages/widget/dialog_cancel_order.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/model/modelorder.dart';
+import 'package:warmindo_admin_ui/pages/cancel_order_page/widget/dialog_cancel_order.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class OrderBox extends StatelessWidget {
   const OrderBox({

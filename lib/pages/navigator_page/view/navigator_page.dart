@@ -7,8 +7,8 @@ import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
 import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';
 import 'package:warmindo_admin_ui/pages/product_page/view/product_page.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/view/settings_page.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/icon_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
 
 class BottomNavbar extends StatelessWidget {
   final NavigatorController controller = Get.put(NavigatorController());
@@ -46,11 +46,11 @@ class BottomNavbar extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard_outlined),
-            label: 'Home',
+            label: 'Beranda',
           ),
           BottomNavigationBarItem(
             icon: Obx(() => SvgPicture.asset(controller.currentIndex.value == 1 ? IconThemes.iconmenuSelected : IconThemes.iconmenu)),
-            label: 'Menu',
+            label: 'Produk',
           ),
           BottomNavigationBarItem(
             icon: SizedBox.shrink(),
@@ -58,11 +58,11 @@ class BottomNavbar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'User',
+            label: 'Pelanggan',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: 'Pengaturan',
           ),
         ],
       )),
