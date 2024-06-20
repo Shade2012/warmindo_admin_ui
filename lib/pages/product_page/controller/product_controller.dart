@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:warmindo_admin_ui/global/model/product_response.dart' as model;
@@ -19,6 +20,7 @@ class ProductController extends GetxController {
   var filteredProductList = <model.Menu>[].obs;
   RxBool isLoading = false.obs;
   final TextEditingController search = TextEditingController();
+  RxString searchObx = ''.obs;
   RxBool isConnected = true.obs;
   RxList<model.Menu> searchResults = <model.Menu>[].obs;
   final InternetService _internetService = InternetService();
@@ -28,6 +30,10 @@ class ProductController extends GetxController {
     super.onInit();
     _internetService.connectionChange.listen(_updateConnectionStatus);
     _checkInternetConnection();
+    search.addListener(() {
+      searchObx.value = search.text;
+      searchFilter(search.text);
+    });
   }
 
   void _updateConnectionStatus(bool connected) {

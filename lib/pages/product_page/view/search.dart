@@ -59,7 +59,12 @@ class Search extends StatelessWidget {
           separatorBuilder: (context, index) => SizedBox(height: 20),
           itemCount: 12,
         );
-      } else {
+      }
+      if(productController.searchResults.length == 0){
+        return Center(
+          child: Text('Produk tidak ditemukan'),
+        );
+      }else {
         return ListView.builder(
           itemCount: productController.searchResults.length,
           itemBuilder: (context, index) {
