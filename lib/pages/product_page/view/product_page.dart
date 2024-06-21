@@ -52,7 +52,7 @@ class ProductPage extends StatelessWidget {
           SizedBox(height: 10),
           Expanded(
             child: Obx(() {
-                if(productController.searchResults.isNotEmpty){
+                if(productController.searchObx.isNotEmpty){
                   return Search();
                 }
                 else{
