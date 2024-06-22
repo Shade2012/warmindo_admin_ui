@@ -15,7 +15,7 @@ class LoginController extends GetxController {
 
   Future<void> loginAdmin(String email, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isLoading = true.obs;
+    isLoading.value = true; 
     final url = Uri.parse(AuthEndpoint().login);
 
     final client = http.Client();
@@ -55,7 +55,7 @@ class LoginController extends GetxController {
     } catch (e) {
       print(e);
     } finally {
-      isLoading = false.obs;
+      isLoading.value = false; 
       client.close();
     }
   }

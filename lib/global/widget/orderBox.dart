@@ -34,6 +34,8 @@ class OrderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final labelColor = _getLabelColor(order.status);
     final borderColor = _getLabelColor(order.status);
 
@@ -78,8 +80,8 @@ class OrderBox extends StatelessWidget {
         }
       },
       child: Container(
-        width: 395,
-        height: 160,
+        width: screenWidth * 1.4,
+        height: screenHeight * 0.18,
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
           color: ColorResources.orderBox,

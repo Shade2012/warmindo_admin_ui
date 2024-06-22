@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:warmindo_admin_ui/global/model/modelorder.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/widget/detail_order_bnb.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/detail_order_page/widget/pdf_generator.dart';
 
 class DetailOrderPage extends StatelessWidget {
   final Order order;
@@ -198,7 +201,10 @@ class DetailOrderPage extends StatelessWidget {
             ),
             SizedBox(height: screenHeight * 0.04),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                final pdfFile = await generateOrderPdf(order);
+                await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdfFile);
+              },
               child: Text('Cetak Bukti'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorResources.primaryColor,
