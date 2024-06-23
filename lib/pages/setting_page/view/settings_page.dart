@@ -38,46 +38,26 @@ class SettingsPage extends StatelessWidget {
                       ClipOval(
                         child: Image.asset(
                           Images.userImage,
-                          width: 150,
-                          height: 150,
+                          width: screenWidth * 0.4, 
+                          height: screenWidth * 0.4,
                           fit: BoxFit.cover,
                           alignment: Alignment.center,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: screenHeight * 0.02),
                       Text(
                         'Admin',
                         style: nameProfileTextStyle,
                       ),
-                      SizedBox(height: 5),
-                      SizedBox(height: 15),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     Get.toNamed(Routes.EDIT_PROFILE_PAGE);
-                      //   },
-                      //   style: ElevatedButton.styleFrom(
-                      //     minimumSize: Size(133, 30),
-                      //     padding: EdgeInsets.all(8),
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(8.0),
-                      //       side: BorderSide(color: Colors.white),
-                      //     ),
-                      //     backgroundColor: ColorResources.primaryColor,
-                      //   ),
-                      //   child: Text(
-                      //     'Edit Profile',
-                      //     style: editProfileTextStyle,
-                      //   ),
-                      // ),
+                      SizedBox(height: screenHeight * 0.01),
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
-                // Bagian bawah
+                SizedBox(height: screenHeight * 0.02),
                 Expanded(
                   child: Container(
                     width: screenWidth,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.only(
@@ -87,16 +67,15 @@ class SettingsPage extends StatelessWidget {
                     ),
                     child: ListView(
                       children: [
-                        SizedBox(height: 40),
-                        // Menu Akun
+                        SizedBox(height: screenHeight * 0.05),
                         Text(
                           'Akun',
                           style: headercontentProfileTextStyle,
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: screenHeight * 0.01),
                         Container(
-                          width: 327,
-                          padding: EdgeInsets.all(10),
+                          width: screenWidth * 0.9,
+                          padding: EdgeInsets.all(screenWidth * 0.025),
                           decoration: BoxDecoration(
                             color: ColorResources.wProfileBg,
                             borderRadius: BorderRadius.circular(8),
@@ -122,7 +101,6 @@ class SettingsPage extends StatelessWidget {
                                   style: contentProfileTextStyle,
                                 ),
                                 trailing: Icon(Icons.arrow_forward_ios),
-                                
                                 onTap: () {
                                   Get.toNamed(Routes.CHANGEPASS_PAGE);
                                 },
@@ -130,17 +108,15 @@ class SettingsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.02),
                         Text(
                           'Toko',
                           style: headercontentProfileTextStyle,
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: screenHeight * 0.01),
                         Container(
-                          width: 327,
-                          padding: EdgeInsets.all(10),
+                          width: screenWidth * 0.9,
+                          padding: EdgeInsets.all(screenWidth * 0.025),
                           decoration: BoxDecoration(
                             color: ColorResources.wProfileBg,
                             borderRadius: BorderRadius.circular(8),
@@ -151,7 +127,7 @@ class SettingsPage extends StatelessWidget {
                               ListTile(
                                 leading: Icon(FontAwesomeIcons.store),
                                 title: Text(
-                                  'Shop',
+                                  'Toko',
                                   style: contentProfileTextStyle,
                                 ),
                                 trailing: Icon(Icons.arrow_forward_ios),
@@ -171,7 +147,7 @@ class SettingsPage extends StatelessWidget {
                               ListTile(
                                 leading: Icon(Icons.logout),
                                 title: Text(
-                                  'Log Out',
+                                  'Keluar',
                                   style: contentProfileTextStyle,
                                 ),
                                 trailing: Icon(Icons.arrow_forward_ios),

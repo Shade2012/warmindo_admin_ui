@@ -191,9 +191,9 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.DETAIL_CUSTOMERS_PAGE,
-        page: () => DetailCustomersPage(customer: Get.arguments),
+        page: () => DetailCustomersPage(customerData: Get.arguments),
         binding: DetailCustomersBinding(),
         transition: Transition.fadeIn,
-        transitionDuration: const Duration(milliseconds: 500)),
+        transitionDuration: const Duration(milliseconds: 100)),
   ];
 }
