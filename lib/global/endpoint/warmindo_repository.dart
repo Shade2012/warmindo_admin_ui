@@ -21,4 +21,5 @@ class AuthEndpoint {
 
 class AllCustomers {
   final String customers = '$apiUrl/api/users/users';
+  final String updateCustomers = '$apiUrl/api/users/update';
 }

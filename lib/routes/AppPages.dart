@@ -49,7 +49,7 @@ part 'AppRoutes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.BOTTOM_NAVIGATION;
+  static const INITIAL = Routes.SPLASH_PAGE;
 
   static final routes = [
     GetPage(
@@ -156,7 +156,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.EDIT_CUSTOMERS_PAGE,
-        page: () => EditCustomersPage(),
+        page: () => EditCustomersPage(customers: Get.arguments),
         binding: EditCustomersBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),

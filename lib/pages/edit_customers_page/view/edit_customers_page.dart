@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/model/customers.dart';
 import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/customers_page/controller/customers_controller.dart';
+import 'package:warmindo_admin_ui/pages/edit_customers_page/controller/edit_customers_controller.dart';
+import 'package:warmindo_admin_ui/pages/login_page/controller/login_controller.dart';
 
 class EditCustomersPage extends StatelessWidget {
+  final CustomerData customers;
   final TextEditingController ctrNameUser = TextEditingController();
   final TextEditingController ctrEmailUser = TextEditingController();
   final TextEditingController ctrPhoneUser = TextEditingController();
-  final TextEditingController ctrIdUser = TextEditingController();
+  final EditCustomersController editCustomersController =
+      Get.put(EditCustomersController());
+  final CustomersController dataCustomers = Get.put(CustomersController());
+  final LoginController loginController = Get.put(LoginController());
   final selectedStatus = RxString('');
 
-  EditCustomersPage({Key? key}) : super(key: key);
+  EditCustomersPage({required this.customers}) {
+    ctrNameUser.text = customers.name;
+    ctrEmailUser.text = customers.email;
+    ctrPhoneUser.text = customers.phoneNumber;
+    selectedStatus.value =
+        customers.userVerified == 0 ? 'Terverifikasi' : 'Belum Terverifikasi';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,15 +75,6 @@ class EditCustomersPage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.01),
               CustomTextField(
                 controller: ctrNameUser,
-                hintText: "Damar Fikri",
-                readOnly: true,
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              Text("ID User", style: titleAddProductTextStyle),
-              SizedBox(height: screenHeight * 0.01),
-              CustomTextField(
-                controller: ctrIdUser,
-                hintText: "12345",
                 readOnly: true,
               ),
               SizedBox(height: screenHeight * 0.02),
@@ -77,20 +82,20 @@ class EditCustomersPage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.01),
               CustomTextField(
                 controller: ctrPhoneUser,
-                hintText: "081234567890",
+                readOnly: true,
               ),
               SizedBox(height: screenHeight * 0.02),
               Text("Email", style: titleAddProductTextStyle),
               SizedBox(height: screenHeight * 0.01),
               CustomTextField(
                 controller: ctrEmailUser,
-                hintText: "damar@example.com",
+                readOnly: true,
               ),
               SizedBox(height: screenHeight * 0.02),
               Text("Status User", style: titleAddProductTextStyle),
               SizedBox(height: screenHeight * 0.01),
               Obx(() => CustomDropdown(
-                    items: ['Terivikasi', 'Belum Terivikasi'],
+                    items: ['Terverifikasi', 'Belum Terverifikasi'],
                     value: selectedStatus.value.isNotEmpty
                         ? selectedStatus.value
                         : null,
@@ -103,7 +108,10 @@ class EditCustomersPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Lakukan penanganan input disini
+                    editCustomersController.updateCustomers(
+                      id: customers.id.toString(),
+                      userVerified:selectedStatus.value == 'Terverifikasi' ? '1' : '0',
+                    );
                   },
                   child: Text('Edit Data'),
                   style: ElevatedButton.styleFrom(
@@ -112,7 +120,8 @@ class EditCustomersPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.35),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.35),
                   ),
                 ),
               ),
