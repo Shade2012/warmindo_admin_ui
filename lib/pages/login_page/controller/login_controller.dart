@@ -10,8 +10,17 @@ import 'package:warmindo_admin_ui/routes/AppPages.dart';
 class LoginController extends GetxController {
   RxBool isLoading = false.obs;
   var obscureText = true.obs;
+  var token = ''.obs;
   TextEditingController ctrEmail = TextEditingController();
   TextEditingController ctrPassword = TextEditingController();
+
+   void setToken(String newToken) {
+    token.value = newToken;
+  }
+
+  String getToken() {
+    return token.value;
+  }
 
   Future<void> loginAdmin(String email, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
