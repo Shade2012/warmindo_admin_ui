@@ -19,10 +19,6 @@ class ProductList extends StatelessWidget {
     required this.productList,
   }) : super(key: key);
 
-  Future<void> _refreshData(ProductController productController) async {
-    productController.isLoading.value = true;
-    productController.fetchAllData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +81,8 @@ class ProductList extends StatelessWidget {
           color: ColorResources.primaryColor,
           backgroundColor: ColorResources.primaryColorLight,
           onRefresh: () {
-            return _refreshData(productController);
+            productController.isLoading.value = true;
+            return productController.fetchAllData();
           },
           child: ListView.builder(
             itemCount: productList.length,

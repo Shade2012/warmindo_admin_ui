@@ -62,7 +62,6 @@ class DetailOrderPage extends StatelessWidget {
           children: [
             Container(
               width: screenHeight * 0.86,
-              height: screenHeight * 0.118,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

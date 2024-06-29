@@ -180,6 +180,7 @@ class BottomSheetSchedule extends StatelessWidget {
                       log('Save button clicked');
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0,
                       backgroundColor: Colors.green, // Warna latar belakang tombol
                       foregroundColor: Colors.white, // Warna teks tombol
                       minimumSize: Size(screenWidth / 2 - 30, 45),

@@ -1,6 +1,7 @@
 import 'package:warmindo_admin_ui/global/common/global_variables.dart';
 
 final String apiUrl = GlobalVariables.apiUri;
+
 class FoodApi {
   static AuthEndpoint auth = AuthEndpoint();
   static AllCustomers customers = AllCustomers();

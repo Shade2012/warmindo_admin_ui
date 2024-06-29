@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottomsheet_schedule_controller.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
-import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
@@ -165,6 +163,7 @@ class SchedulePage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
+                    elevation: 0,
                     backgroundColor: ColorResources.primaryColor,
                     foregroundColor: ColorResources.primaryColorLight,
                     minimumSize: Size(screenWidth * 0.6, 50),
