@@ -30,7 +30,7 @@ class SettingsPage extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(bottom: 10),
                   width: screenWidth,
-                  height: screenHeight * 0.3,
+                  height: screenHeight * 0.35,
                   color: ColorResources.transparent,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

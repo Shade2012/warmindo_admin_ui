@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class ProductController extends GetxController {
   var variantList = <model.Menu>[].obs;
   var selectedCategory = ''.obs;
   var filteredProductList = <model.Menu>[].obs;
+  Timer? timer;
   RxBool isLoading = false.obs;
   final TextEditingController search = TextEditingController();
   RxString searchObx = ''.obs;
@@ -30,6 +32,11 @@ class ProductController extends GetxController {
     super.onInit();
     _internetService.connectionChange.listen(_updateConnectionStatus);
     _checkInternetConnection();
+    timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      if (isConnected.value) {
+        fetchAllData();
+      }
+    });
     search.addListener(() {
       searchObx.value = search.text;
       searchFilter(search.text);

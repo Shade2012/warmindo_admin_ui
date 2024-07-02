@@ -40,7 +40,6 @@ class CustomersPage extends StatelessWidget {
             return Center(
               child: Text(
                 'Data Pelanggan tidak ditemukan',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             );
           } else {

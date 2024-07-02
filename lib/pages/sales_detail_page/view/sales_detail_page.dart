@@ -79,13 +79,7 @@ class SalesDetailPage extends StatelessWidget {
                         children: [
                           Container(
                             width: screenWidth * 0.27,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 1.0,
-                              ),
-                            ),
+                            height: screenHeight * 0.05,
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                 isExpanded: true,
