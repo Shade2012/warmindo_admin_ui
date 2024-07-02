@@ -22,6 +22,8 @@ import 'package:warmindo_admin_ui/pages/edit_product_page/binding/edit_product_b
 import 'package:warmindo_admin_ui/pages/edit_product_page/view/edit_product_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/binding/edit_profile_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/view/edit_profile_page.dart';
+import 'package:warmindo_admin_ui/pages/edit_varian_page/binding/edit_varian_binding.dart';
+import 'package:warmindo_admin_ui/pages/edit_varian_page/view/edit_varian_page.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/binding/general_info_binding.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/view/general_info_page.dart';
 import 'package:warmindo_admin_ui/pages/home_page/binding/home_binding.dart';
@@ -175,6 +177,12 @@ class AppPages {
     GetPage(
         name: _Paths.ADD_VARIAN_PAGE,
         page: () => AddVarianPage(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.EDIT_VARIAN_PAGE,
+        page: () => EditVarianPage(),
+        binding: EditVariantBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(

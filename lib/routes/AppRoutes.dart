@@ -27,6 +27,7 @@ abstract class Routes {
   static const ADD_VARIAN_PAGE = _Paths.ADD_VARIAN_PAGE;
   static const ADD_TOPPING_PAGE = _Paths.ADD_TOPPING_PAGE;
   static const DETAIL_CUSTOMERS_PAGE = _Paths.DETAIL_CUSTOMERS_PAGE;
+  static const EDIT_VARIAN_PAGE = _Paths.EDIT_VARIAN_PAGE;
 
 }
 
@@ -56,5 +57,6 @@ abstract class _Paths {
   static const EDIT_ORDER_PAGE = '/edit-order-page';
   static const ADD_TOPPING_PAGE = '/add-topping-page';
   static const DETAIL_CUSTOMERS_PAGE = '/detail-customers-page';
+  static const EDIT_VARIAN_PAGE = '/edit-varian-page';
 
 }
