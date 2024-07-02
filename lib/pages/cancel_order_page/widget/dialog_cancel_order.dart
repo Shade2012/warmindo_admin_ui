@@ -31,13 +31,14 @@ class DialogCancelOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    // final double height = MediaQuery.of(context).size.height;
+    final double height = MediaQuery.of(context).size.height;
+
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Column(
         children: [
           if (dialogImage != null) dialogImage!,
-          SizedBox(width: 8),
+          SizedBox(height: height * 0.01),
           Text(
             title,
             style: titleDialogButtonTextStyle,
@@ -50,14 +51,22 @@ class DialogCancelOrder extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(height * 0.01),
                 decoration: BoxDecoration(
-                  color: Colors.yellow,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
                 ),
-                child: Icon(Icons.info, color: Colors.black), // Icon info
+                child: Icon(Icons.info, color: Colors.black,), 
               ),
-              SizedBox(width: 10),
+              SizedBox(width: width * 0.02),
               Expanded(
                 child: Text(
                   content,
@@ -77,30 +86,33 @@ class DialogCancelOrder extends StatelessWidget {
               TextButton(
                 onPressed: onCancelPressed as void Function()?,
                 style: TextButton.styleFrom(
-                  minimumSize: Size(118, 48),
+                  minimumSize: Size(width * 0.3, height * 0.06),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7.0),
                     side: BorderSide(color: Colors.white),
                   ),
                   backgroundColor: cancelButtonColor,
                   foregroundColor: cancelButtonTextColor,
+                  shadowColor: Colors.black,
+                  elevation: 0,
                 ),
                 child: Text(
                   cancelText,
                   style: dialogendButtonTextStyle,
                 ),
               ),
-              // SizedBox(width: 14),
               TextButton(
                 onPressed: onConfirmPressed as void Function()?,
                 style: TextButton.styleFrom(
-                  minimumSize: Size(118, 48),
+                  minimumSize: Size(width * 0.3, height * 0.06),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7.0),
                     side: BorderSide(color: Colors.white),
                   ),
                   backgroundColor: confirmButtonColor,
                   foregroundColor: confirmButtonTextColor,
+                  shadowColor: Colors.black,
+                  elevation: 0,
                 ),
                 child: Text(
                   confirmText,
