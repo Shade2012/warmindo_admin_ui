@@ -16,7 +16,6 @@ Future<Uint8List> generateOrderPdf(Order order) async {
   final discount = 5000.0;
   final totalPayment = totalPrice + adminFee - discount;
 
-  // Load the logo image
   final ByteData bytes = await rootBundle.load('assets/images/logo.png');
   final Uint8List logo = bytes.buffer.asUint8List();
 
@@ -33,7 +32,8 @@ Future<Uint8List> generateOrderPdf(Order order) async {
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
                     pw.Text('Warmindo Anggrek Muria', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-                    pw.Text('Besito Kulon, Besito, Gebog, Kabupaten Kudus, Jawa Tengah 59333', style: pw.TextStyle(fontSize: 12)),
+                    pw.Text('Jalan Raya Jurang Besito Kulon', style: pw.TextStyle(fontSize: 12)),
+                    pw.Text('Besito, Gebog, Kabupaten Kudus, Jawa Tengah 59333', style: pw.TextStyle(fontSize: 12)),
                   ],
                 ),
                 pw.Image(pw.MemoryImage(logo), width: 100), // Add the logo image

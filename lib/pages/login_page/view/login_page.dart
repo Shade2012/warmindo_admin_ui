@@ -149,7 +149,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   Container(
                     width: screenWidth,
-                    height: screenHeight * 0.360, // Sesuaikan tinggi gambar
+                    height: screenHeight * 0.330, 
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(Images.muralLogin),
