@@ -6,7 +6,6 @@ import 'package:warmindo_admin_ui/pages/history_order_page/widget/history_order_
 
 class HistoryPage extends StatelessWidget {
   final HistoryController controller = Get.put(HistoryController());
-
   HistoryPage({super.key});
 
   @override
@@ -24,7 +23,7 @@ class HistoryPage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(

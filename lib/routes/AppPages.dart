@@ -217,5 +217,11 @@ class AppPages {
         binding: HistoryBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 100)),
+    GetPage(
+        name: _Paths.DETAIL_HISTORY_PAGE,
+        page: () => DetailOrderPage(order: Get.arguments),
+        binding: DetailOrderBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100)),
   ];
 }

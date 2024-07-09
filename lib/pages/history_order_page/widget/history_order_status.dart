@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/history_detail_page/view/detail_history_page.dart';
 import 'package:warmindo_admin_ui/pages/history_order_page/controller/history_controller.dart';
-import 'package:warmindo_admin_ui/pages/history_order_page/model/history_order_model.dart';
+import 'package:warmindo_admin_ui/global/model/history_order_model.dart';
 
 class OrderStatusWidget extends StatelessWidget {
   final List<Order> orders;
@@ -39,7 +39,7 @@ class OrderStatusWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: (){
-        // Get.to(() => HistoryDetailFilterPage(status: status, orders: controller.getOrdersByStatus(status)));
+        Get.to(() => DetailHistoryPage(status: status, orders: controller.getOrdersByStatus(status)));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
