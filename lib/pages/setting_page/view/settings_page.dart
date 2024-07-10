@@ -10,7 +10,7 @@ import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class SettingsPage extends StatelessWidget {
   final SettingsController controller = Get.put(SettingsController());
-   SettingsPage({Key? key});
+  SettingsPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class SettingsPage extends StatelessWidget {
                       ClipOval(
                         child: Image.asset(
                           Images.userImage,
-                          width: screenWidth * 0.4, 
+                          width: screenWidth * 0.4,
                           height: screenWidth * 0.4,
                           fit: BoxFit.cover,
                           alignment: Alignment.center,
@@ -57,7 +57,8 @@ class SettingsPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     width: screenWidth,
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.only(
@@ -66,6 +67,8 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                     child: ListView(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
                       children: [
                         SizedBox(height: screenHeight * 0.05),
                         Text(
@@ -142,6 +145,17 @@ class SettingsPage extends StatelessWidget {
                                       return BottomSheetShop();
                                     },
                                   );
+                                },
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.notifications),
+                                title: Text(
+                                  'Notifikasi',
+                                  style: contentProfileTextStyle,
+                                ),
+                                trailing: Icon(Icons.arrow_forward_ios),
+                                onTap: () {
+                                  Get.toNamed(Routes.INPUT_NOTIFICATION_PAGE);
                                 },
                               ),
                               ListTile(

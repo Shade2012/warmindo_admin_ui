@@ -32,6 +32,8 @@ import 'package:warmindo_admin_ui/pages/history_order_page/binding/history_bindi
 import 'package:warmindo_admin_ui/pages/history_order_page/view/history_page.dart';
 import 'package:warmindo_admin_ui/pages/home_page/binding/home_binding.dart';
 import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
+import 'package:warmindo_admin_ui/pages/input_notification_page/binding/input_notification_binding.dart';
+import 'package:warmindo_admin_ui/pages/input_notification_page/view/input_notification_page.dart';
 import 'package:warmindo_admin_ui/pages/login_page/binding/login_binding.dart';
 import 'package:warmindo_admin_ui/pages/login_page/view/login_page.dart';
 import 'package:warmindo_admin_ui/pages/navigator_page/view/navigator_page.dart';
@@ -223,5 +225,11 @@ class AppPages {
         binding: DetailOrderBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 100)),
+    GetPage(
+        name: _Paths.INPUT_NOTIFICATION_PAGE,
+        page: () => InputNotificationPage(),
+        binding: InputNotificationBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100))
   ];
 }
