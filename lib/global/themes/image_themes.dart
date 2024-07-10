@@ -9,4 +9,9 @@ class Images {
   static const String userImage = 'assets/images/user.png';
   static const String defaultImage = 'assets/images/default_image.png';
   static const String datePicker = 'assets/images/date_picker.png';
+  static const String sedangDiproses = 'assets/images/sedang_diproses.png';
+  static const String menungguBatal = 'assets/images/menunggu_batal.png';
+  static const String batal = 'assets/images/batal_pesanan.png';
+  static const String pesananSiap = 'assets/images/pesanan_siap_diambil.png';
+  static const String pesanan_selesai = 'assets/images/selesai.png';
 }

@@ -7,8 +7,9 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final int minLines;
   final int maxLines;
-  final bool readOnly; 
-  final Widget? trailing; // Tambahkan properti trailing
+  final bool readOnly;
+  final Widget? trailing;
+  final Function(String)? onChanged;
 
   const CustomTextField({
     required this.controller,
@@ -16,8 +17,9 @@ class CustomTextField extends StatelessWidget {
     this.hintText = "",
     this.minLines = 1,
     this.maxLines = 5,
-    this.readOnly = false, 
-    this.trailing, // Inisialisasi properti trailing
+    this.readOnly = false,
+    this.trailing,
+    this.onChanged, 
   });
 
   @override
@@ -27,7 +29,8 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       minLines: minLines,
       maxLines: maxLines,
-      readOnly: readOnly, 
+      readOnly: readOnly,
+      onChanged: onChanged, 
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7.0),
@@ -37,7 +40,7 @@ class CustomTextField extends StatelessWidget {
         ),
         hintText: hintText,
         hintStyle: contentAddProductTextStyle,
-        suffixIcon: trailing, // Set trailing sebagai suffixIcon
+        suffixIcon: trailing,
       ),
     );
   }
