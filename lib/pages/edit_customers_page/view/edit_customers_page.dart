@@ -24,8 +24,7 @@ class EditCustomersPage extends StatelessWidget {
     ctrNameUser.text = customers.name;
     ctrEmailUser.text = customers.email;
     ctrPhoneUser.text = customers.phoneNumber;
-    selectedStatus.value =
-        customers.userVerified == 0 ? 'Terverifikasi' : 'Belum Terverifikasi';
+    selectedStatus.value = customers.userVerified == 0 ? 'Terverifikasi' : 'Belum Terverifikasi';
   }
 
   @override

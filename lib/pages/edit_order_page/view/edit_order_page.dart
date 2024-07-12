@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/model/model_order.dart';
-import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
-import 'package:warmindo_admin_ui/global/widget/textfield.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
+import 'package:warmindo_admin_ui/global/widget/textfield.dart';
+import 'package:warmindo_admin_ui/pages/edit_order_page/controller/edit_order_controller.dart';
+
+const Map<String, String> statusTranslation = {
+  'done': 'Selesai',
+  'in progress': 'Sedang diproses',
+  'cancelled': 'Dibatalkan',
+  'ready': 'Pesanan siap',
+};
+
+const Map<String, String> reverseStatusTranslation = {
+  'Selesai': 'done',
+  'Sedang diproses': 'in progress',
+  'Dibatalkan': 'cancelled',
+  'Pesanan siap': 'ready',
+};
+
+String translateStatusToIndonesian(String status) {
+  return statusTranslation[status] ?? status;
+}
+
+String translateStatusToEnglish(String status) {
+  return reverseStatusTranslation[status] ?? status;
+}
 
 class EditOrderPage extends StatelessWidget {
-  late final Order order;
-  final TextEditingController ctrNameUser = TextEditingController();
+  final Order order;
+  final EditOrderController editOrderController =
+      Get.put(EditOrderController());
+  final TextEditingController ctrUserId = TextEditingController();
   final TextEditingController ctrPrice = TextEditingController();
-  final TextEditingController ctrIdOrder = TextEditingController();
+  final TextEditingController ctrMenuId = TextEditingController();
+  final TextEditingController ctrRefund = TextEditingController();
   final selectedCategory = RxString('');
 
-  // EditOrderPage(this.order) {
-  // ctrNameUser.text = order.nameCustomer;
-  // ctrIdOrder.text = order.id;
-  // selectedCategory.value = order.status;
-  // }
+  EditOrderPage({required this.order}) {
+    ctrUserId.text = order.userId;
+    ctrPrice.text = order.priceOrder.toString();
+    ctrMenuId.text = order.menuId;
+    ctrRefund.text = order.refund == 0 ? 'Ya' : 'Tidak';
+    selectedCategory.value = translateStatusToIndonesian(
+        order.status); // Konversi status ke bahasa Indonesia
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +90,11 @@ class EditOrderPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nama User', style: titleAddProductTextStyle),
+            Text('User ID', style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             CustomTextField(
-              controller: ctrNameUser,
-              hintText: 'Masukkan Nama User',
+              controller: ctrUserId,
+              hintText: 'Masukkan ID User',
               readOnly: true,
             ),
             SizedBox(height: screenHeight * 0.02),
@@ -75,33 +104,50 @@ class EditOrderPage extends StatelessWidget {
               controller: ctrPrice,
               hintText: 'Masukkan Harga',
               readOnly: true,
+              keyboardType: TextInputType.number,
             ),
             SizedBox(height: screenHeight * 0.02),
-            Text('ID Pesanan', style: titleAddProductTextStyle),
+            Text('MenuId', style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             CustomTextField(
-              controller: ctrIdOrder,
-              hintText: 'Masukkan ID Pesanan',
+              controller: ctrMenuId,
+              hintText: 'Masukkan ID Menu',
               readOnly: true,
             ),
             SizedBox(height: screenHeight * 0.02),
-            Text("Kategori Produk", style: titleAddProductTextStyle),
+            Text('Pengembalian', style: titleAddProductTextStyle),
+            SizedBox(height: screenHeight * 0.01),
+            CustomTextField(
+              controller: ctrRefund,
+              hintText: 'Masukkan Pengembalian',
+              readOnly: true,
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Text("Status Pesanan", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: ['Proses', 'Selesai', 'Menunggu Diambil'],
+                  items: statusTranslation.values
+                      .toList(), // Tampilkan status dalam bahasa Indonesia
                   value: selectedCategory.value.isNotEmpty
                       ? selectedCategory.value
                       : null,
                   onChanged: (String? value) {
                     selectedCategory.value = value ?? '';
                   },
-                  dropdownType: DropdownType.Category,
+                  dropdownType: DropdownType.Status,
                 )),
-            SizedBox(height: screenHeight * 0.33),
+            SizedBox(height: screenHeight * 0.20),
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Lakukan penanganan input disini
+                  editOrderController.updateOrder(
+                    orderId: order.orderId.toString(),
+                    userId:  order.userId,
+                    price:  double.parse(order.priceOrder) .toInt(), 
+                    menuId: order.menuId,
+                    status: translateStatusToEnglish(selectedCategory .value),
+                    refund: int.parse(order.refund),
+                  );
                 },
                 child: Text('Ubah Status'),
                 style: ElevatedButton.styleFrom(

@@ -6,6 +6,20 @@ import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 import 'package:warmindo_admin_ui/pages/order_page/widget/order_filter_dropdown.dart';
 
+const Map<String, String> statusTranslation = {
+  'done': 'Selesai',
+  'in progress': 'Dalam Proses',
+  'cancelled': 'Batal',
+  'ready': 'Pesanan Siap',
+};
+
+const Map<String, String> reverseStatusTranslation = {
+  'Selesai': 'done',
+  'Dalam Proses': 'in progress',
+  'Batal': 'cancelled',
+  'Pesanan Siap': 'ready',
+};
+
 class OrderPage extends StatelessWidget {
   final OrderController controller = Get.put(OrderController());
   final TextEditingController searchController = TextEditingController();
@@ -25,7 +39,8 @@ class OrderPage extends StatelessWidget {
     if (selectedStatus == null || selectedStatus == 'Semua') {
       return orders;
     } else {
-      return orders.where((order) => order.status == selectedStatus).toList();
+      String englishStatus = reverseStatusTranslation[selectedStatus] ?? selectedStatus;
+      return orders.where((order) => order.status == englishStatus).toList();
     }
   }
 
@@ -43,53 +58,55 @@ class OrderPage extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.04),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                child: TextField(
-                  controller: searchController,
-                  onChanged: (value) {
-                    // Memperbarui tampilan daftar pesanan berdasarkan pencarian
-                    // (Penggunaan setState tidak diperlukan karena build method tidak mengubah state)
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Cari nama pelanggan',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 0.04),
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 0.04),
-                      borderSide: BorderSide(color: Colors.blue),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          controller.fetchDataOrder();
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(), // Allow scroll for pull to refresh
+          child: Padding(
+            padding: EdgeInsets.all(screenWidth * 0.04),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                  child: TextField(
+                    controller: searchController,
+                    onChanged: (value) {
+                      // UI will automatically update because of Obx
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Cari nama pelanggan',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(screenWidth * 0.04),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(screenWidth * 0.04),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              OrderFilterDropdown(
-                orders: controller.orderList,
-                screenHeight: screenHeight,
-                screenWidth: screenWidth,
-                selectedStatus: selectedStatus,
-                onChanged: (String? newValue) {
-                  selectedStatus.value =
-                      newValue ?? 'Semua'; // Update selectedStatus
-                },
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              // Menampilkan daftar pesanan sesuai filter atau pesan kosong
-              ValueListenableBuilder<String>(
-                valueListenable: selectedStatus,
-                builder: (context, selectedValue, child) {
+                SizedBox(height: screenHeight * 0.02),
+                OrderFilterDropdown(
+                  orders: controller.orderList,
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  selectedStatus: selectedStatus,
+                  onChanged: (String? newValue) {
+                    selectedStatus.value =
+                        newValue ?? 'Semua'; // Update selectedStatus
+                  },
+                ),
+                SizedBox(height: screenHeight * 0.02),
+                // Menampilkan daftar pesanan sesuai filter atau pesan kosong
+                Obx(() {
                   final filteredOrders = getFilteredOrders(
-                      controller.orderList, selectedValue, searchController.text);
+                      controller.orderList, selectedStatus.value, searchController.text);
 
                   if (filteredOrders.isEmpty) {
                     return Center(
@@ -114,9 +131,9 @@ class OrderPage extends StatelessWidget {
                       );
                     }).toList(),
                   );
-                },
-              ),
-            ],
+                }),
+              ],
+            ),
           ),
         ),
       ),

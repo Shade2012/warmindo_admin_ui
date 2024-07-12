@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
@@ -41,89 +42,98 @@ class HomePage extends StatelessWidget {
           }
           if (controller.isLoading.value) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: ColorResources.primaryColor,
+              ),
             );
           }
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: screenHeight * 0.02),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(screenWidth * 0.02),
-                        child: AnalyticBox(
-                          totalSales: 200000,
-                          titleAnalyticBox: 'Total Penjualan',
-                          imagePath: IconThemes.iconCoin,
-                          onTap: () {
-                            Get.toNamed(Routes.DETAIL_SALES_PAGE);
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(screenWidth * 0.02),
-                        child: AnalyticBox(
-                          totalSales: 50,
-                          titleAnalyticBox: 'Produk',
-                          imagePath: IconThemes.iconProduct,
-                          onTap: () {
-                            Get.toNamed(Routes.DETAIL_SALES_PAGE);
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(screenWidth * 0.02),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return RefreshIndicator(
+            onRefresh: () async {
+              await controller.fetchDataOrder(); // Memanggil metode untuk memperbarui pesanan
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(), // Membuat list selalu bisa di-scroll untuk refresh
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: screenHeight * 0.02),
+                  Row(
                     children: [
-                      Text(
-                        'Pesanan',
-                        style: subHeadOrderTextStyle,
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(screenWidth * 0.02),
+                          child: AnalyticBox(
+                            totalSales: 200000,
+                            titleAnalyticBox: 'Total Penjualan',
+                            imagePath: IconThemes.iconCoin,
+                            onTap: () {
+                              Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                            },
+                          ),
+                        ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.ORDER_PAGE);
-                        },
-                        child: Text(
-                          'Lihat Semua',
-                          style: viewAllTextStyle2,
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(screenWidth * 0.02),
+                          child: AnalyticBox(
+                            totalSales: 50,
+                            titleAnalyticBox: 'Produk',
+                            imagePath: IconThemes.iconProduct,
+                            onTap: () {
+                              Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                            },
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  height: screenHeight * 0.9,
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      final order = controller.orderList[index];
-                      final userId = int.tryParse(order.userId.toString()) ?? 0; 
-                      final customer = controller.getCustomerById(userId);
-                      print('Order ID: ${order.orderId}, User ID: ${order.userId}, Customer: ${customer?.name}');
-                      return OrderBox(
-                        order: order,
-                        customerName: customer?.name ?? 'Unknown Customer',
-                      );
-                    }, separatorBuilder: (BuildContext context, int index) { 
-                      return SizedBox(
-                        height: 10,
-                      );
-                     },
+                  Padding(
+                    padding: EdgeInsets.all(screenWidth * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Pesanan',
+                          style: subHeadOrderTextStyle,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.ORDER_PAGE);
+                          },
+                          child: Text(
+                            'Lihat Semua',
+                            style: viewAllTextStyle2,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Container(
+                    height: screenHeight * 0.6,
+                    child: Obx(() => ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(), // Membuat list tidak bisa di-scroll terpisah
+                      scrollDirection: Axis.vertical,
+                      itemCount: controller.orderList.length,
+                      itemBuilder: (context, index) {
+                        final order = controller.orderList[index];
+                        final userId = int.tryParse(order.userId.toString()) ?? 0;
+                        final customer = controller.getCustomerById(userId);
+                        print('Order ID: ${order.orderId}, User ID: ${order.userId}, Customer: ${customer?.name}');
+                        return OrderBox(
+                          order: order,
+                          customerName: customer?.name ?? 'Unknown Customer',
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 10,
+                        );
+                      },
+                    )),
+                  ),
+                ],
+              ),
             ),
           );
         }),

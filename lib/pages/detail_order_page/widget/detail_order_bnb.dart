@@ -68,7 +68,7 @@ class DetailOrderBnb extends StatelessWidget {
               child: IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  Get.toNamed(Routes.EDIT_ORDER_PAGE);
+                  Get.toNamed(Routes.EDIT_ORDER_PAGE, arguments: order);
                 },
               ),
             ),
