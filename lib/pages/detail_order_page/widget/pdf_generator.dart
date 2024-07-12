@@ -1,23 +1,47 @@
 import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:warmindo_admin_ui/global/model/modelorder.dart';
+import 'package:warmindo_admin_ui/global/model/model_order.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/widget/dashed_line.dart';
-
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 
 Future<Uint8List> generateOrderPdf(Order order) async {
   final pdf = pw.Document();
   final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  final OrderController controller = Get.put(OrderController());
 
-  double totalPrice = order.menus.fold(0.0, (sum, menu) => sum + menu.price);
+  double totalPrice = 0.0;
+  final menuItems = <pw.Widget>[];
+
+  for (var orderItem in controller.orderList) {
+    if (orderItem.orderId == order.orderId) {
+      final menu = controller.menuList.firstWhere((menu) => menu.menuId == int.parse(orderItem.menuId));
+      totalPrice += double.parse(menu.price);
+      menuItems.add(pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text(menu.nameMenu, style: pw.TextStyle(fontSize: 16)),
+          pw.Text('1', style: pw.TextStyle(fontSize: 16)),
+          pw.Text(currencyFormat.format(double.parse(menu.price)), style: pw.TextStyle(fontSize: 16)),
+        ],
+      ));
+    }
+  }
+
   final adminFee = 1000.0;
-  final discount = 5000.0;
-  final totalPayment = totalPrice + adminFee - discount;
+  final totalPayment = totalPrice + adminFee;
 
   final ByteData bytes = await rootBundle.load('assets/images/logo.png');
   final Uint8List logo = bytes.buffer.asUint8List();
+
+  // Find customer data related to the order
+  final userData = controller.orderList
+        .where((o) => o.orderId == order.orderId)
+        .map((o) => controller.customersList.firstWhere((customer) => customer.id == int.parse(o.userId)))
+        .toList();
 
   pdf.addPage(
     pw.Page(
@@ -48,19 +72,13 @@ Future<Uint8List> generateOrderPdf(Order order) async {
               color: PdfColors.black,
             ),
             pw.SizedBox(height: 16),
-            pw.Text('Order ID: ${order.id}', style: pw.TextStyle(fontSize: 16)),
-            pw.Text('Date: ${order.dateOrder}', style: pw.TextStyle(fontSize: 16)),
+            pw.Text('Order ID: ${order.orderId}', style: pw.TextStyle(fontSize: 16)),
+            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(order.orderDate)}', style: pw.TextStyle(fontSize: 16)),
             pw.Text('Status: ${order.status}', style: pw.TextStyle(fontSize: 16)),
             pw.SizedBox(height: 16),
             pw.Text('Pesanan', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: 8),
-            ...order.menus.map((menu) => pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text(menu.name, style: pw.TextStyle(fontSize: 16)),
-                    pw.Text('1', style: pw.TextStyle(fontSize: 16)),
-                  ],
-                )),
+            ...menuItems,
             pw.SizedBox(height: 16),
             pw.Divider(),
             pw.SizedBox(height: 16),
@@ -81,13 +99,6 @@ Future<Uint8List> generateOrderPdf(Order order) async {
                 pw.Text(currencyFormat.format(adminFee), style: pw.TextStyle(fontSize: 16)),
               ],
             ),
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                pw.Text('Diskon', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(currencyFormat.format(discount), style: pw.TextStyle(fontSize: 16)),
-              ],
-            ),
             pw.SizedBox(height: 16),
             pw.Divider(),
             pw.SizedBox(height: 16),
@@ -103,7 +114,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
-                pw.Text('Pembayaran ${order.paymentMethod}', style: pw.TextStyle(fontSize: 16)),
+                // pw.Text('Pembayaran ${order.paymentMethod}', style: pw.TextStyle(fontSize: 16)),
                 pw.Text(currencyFormat.format(totalPayment),
                     style: pw.TextStyle(fontSize: 16)),
               ],
@@ -116,21 +127,21 @@ Future<Uint8List> generateOrderPdf(Order order) async {
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text('Nama Pelanggan', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(order.nameCustomer, style: pw.TextStyle(fontSize: 16)),
+                pw.Text(userData[0].name, style: pw.TextStyle(fontSize: 16)),
               ],
             ),
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text('Email', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(order.email ?? '-', style: pw.TextStyle(fontSize: 16)),
+                pw.Text(userData[0].email, style: pw.TextStyle(fontSize: 16)),
               ],
             ),
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text('No. Telepon', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(order.phoneNumber ?? '-', style: pw.TextStyle(fontSize: 16)),
+                pw.Text(userData[0].phoneNumber, style: pw.TextStyle(fontSize: 16)),
               ],
             ),
             pw.Spacer(), // Takes up the remaining space
