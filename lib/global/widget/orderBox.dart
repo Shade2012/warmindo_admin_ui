@@ -1,34 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/model/model_order.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
-import 'package:warmindo_admin_ui/global/model/modelorder.dart';
 import 'package:warmindo_admin_ui/pages/cancel_order_page/widget/dialog_cancel_order.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 
 class OrderBox extends StatelessWidget {
-  const OrderBox({
+  OrderBox({
     Key? key,
     required this.order,
-    required this.nameCustomer,
+    required this.customerName,
   }) : super(key: key);
 
   final Order order;
-  final String nameCustomer;
+  final String customerName;
+  final OrderController controller = Get.find<OrderController>();
 
   Color _getLabelColor(String status) {
     switch (status.toLowerCase()) {
-      case 'selesai':
+      case 'done':
         return ColorResources.labelcomplete;
-      case 'dalam Proses':
+      case 'ready':
+        return ColorResources.labelcomplete;
+      case 'in progress':
         return ColorResources.labelinprogg;
-      case 'permintaan pembatalan':
+      case 'cancellation request':
         return ColorResources.labelcancel;
-      case 'batal':
+      case 'cancelled':
         return ColorResources.labelcancel;
       default:
         return Colors.black;
+    }
+  }
+
+  String _translateStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'done':
+        return 'Selesai';
+      case 'ready':
+        return 'Pesanan Siap';
+      case 'in progress':
+        return 'Sedang Diproses';
+      case 'cancellation request':
+        return 'Permintaan Pembatalan';
+      case 'cancelled':
+        return 'Dibatalkan';
+      default:
+        return status;
     }
   }
 
@@ -38,25 +59,35 @@ class OrderBox extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final labelColor = _getLabelColor(order.status);
     final borderColor = _getLabelColor(order.status);
+    final translatedStatus = _translateStatus(order.status);
+
+    // Find menu items related to the order
+    final menuItems = controller.orderList
+        .where((o) => o.orderId == order.orderId)
+        .map((o) => controller.menuList
+            .firstWhere((menu) => menu.menuId == int.parse(o.menuId)))
+        .toList();
 
     double totalPrice = 0;
-    for (var menu in order.menus) {
-      totalPrice += menu.price;
+    for (var menu in menuItems) {
+      totalPrice += double.parse(menu.price);
     }
 
-    String formattedPrice = totalPrice.toStringAsFixed(
-      totalPrice.truncateToDouble() == totalPrice ? 0 : 2,
+     // Tambahkan admin fee sebesar 1000
+    double totalPriceWithAdminFee = totalPrice + 1000;
+
+    String formattedPrice = totalPriceWithAdminFee.toStringAsFixed(
+      totalPriceWithAdminFee.truncateToDouble() == totalPriceWithAdminFee ? 0 : 2,
     );
 
     return GestureDetector(
       onTap: () {
-        if (order.status.toLowerCase() == 'permintaan pembatalan') {
-          // Tampilkan dialog di sini
+        if (order.status.toLowerCase() == 'cancellation request') {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return DialogCancelOrder(
-                title: 'Alasan: ${order.reason}',
+                title: 'Alasan: -',
                 content:
                     'Jika Anda membatalkan order ini maka uang akan dikembalikan ke user',
                 cancelText: 'Tidak',
@@ -67,10 +98,10 @@ class OrderBox extends StatelessWidget {
                 cancelButtonTextColor: Colors.black,
                 confirmButtonTextColor: Colors.white,
                 onCancelPressed: () {
-                  Navigator.pop(context);
+                  Get.back();
                 },
                 onConfirmPressed: () {
-                  Navigator.pop(context);
+                  Get.back();
                 },
               );
             },
@@ -81,7 +112,7 @@ class OrderBox extends StatelessWidget {
       },
       child: Container(
         width: screenWidth * 1.4,
-        height: screenHeight * 0.18,
+        height: screenHeight * 0.20,
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
           color: ColorResources.orderBox,
@@ -101,14 +132,14 @@ class OrderBox extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${order.id}', style: idOrderBoxTextStyle),
+                Text('#ID ${order.orderId}', style: idOrderBoxTextStyle),
                 Container(
                   padding: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: labelColor,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: Text(order.status, style: labelOrderBoxTextStyle),
+                  child: Text(translatedStatus, style: labelOrderBoxTextStyle),
                 ),
               ],
             ),
@@ -116,27 +147,28 @@ class OrderBox extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: order.menus.length,
+                itemCount: menuItems.length,
                 itemBuilder: (context, index) {
-                  final menu = order.menus[index];
-                  String formattedItemPrice = menu.price.toStringAsFixed(
-                    menu.price.truncateToDouble() == menu.price ? 0 : 2,
+                  final menu = menuItems[index];
+                  double price = double.parse(menuItems[index].price);
+                  String formattedItemPrice = price.toStringAsFixed(
+                    price.truncateToDouble() == price ? 0 : 2,
                   );
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image.asset(
-                          menu.imagePath,
-                          width: 40.0,
-                          height: 40.0,
+                        Image.network(
+                          menu.image,
+                          width: 55.0,
+                          height: 55.0,
                         ),
                         SizedBox(width: 10.0),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(menu.name, style: titleMenuOrderTextStyle),
+                            Text(menu.nameMenu, style: titleMenuOrderTextStyle),
                             SizedBox(height: 4.0),
                             Text('Rp $formattedItemPrice',
                                 style: priceMenuOrderTextStyle),
@@ -152,7 +184,7 @@ class OrderBox extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  nameCustomer,
+                  customerName,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Spacer(),

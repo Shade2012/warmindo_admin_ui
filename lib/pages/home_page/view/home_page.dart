@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/global/model/modelorder.dart';
 import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/pages/home_page/controller/home_controller.dart';
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
@@ -17,6 +17,8 @@ class HomePage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final HomeController homeController = Get.put(HomeController());
+    final OrderController controller = Get.put(OrderController());
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55),
@@ -35,6 +37,11 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
+            );
+          }
+          if (controller.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(),
             );
           }
           return SingleChildScrollView(
@@ -93,18 +100,28 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Column(
-                  children: [
-                    OrderBox(
-                      order: order001,
-                      nameCustomer: 'Baratha Wijaya',
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    OrderBox(
-                      order: order002,
-                      nameCustomer: 'Damar Fikri',
-                    ),
-                  ],
+                Container(
+                  height: screenHeight * 0.9,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      final order = controller.orderList[index];
+                      final userId = int.tryParse(order.userId.toString()) ?? 0; 
+                      final customer = controller.getCustomerById(userId);
+                      print('Order ID: ${order.orderId}, User ID: ${order.userId}, Customer: ${customer?.name}');
+                      return OrderBox(
+                        order: order,
+                        customerName: customer?.name ?? 'Unknown Customer',
+                      );
+                    }, separatorBuilder: (BuildContext context, int index) { 
+                      return SizedBox(
+                        height: 10,
+                      );
+                     },
+                  ),
                 ),
               ],
             ),

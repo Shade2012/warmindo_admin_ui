@@ -5,6 +5,7 @@ final String apiUrl = GlobalVariables.apiUri;
 class FoodApi {
   static AuthEndpoint auth = AuthEndpoint();
   static AllCustomers customers = AllCustomers();
+  static OrderApi order = OrderApi();
   static var getallProductList = '$apiUrl/api/menus';
   static var getFoodList = '$apiUrl/api/menus/filter/makanan';
   static var getDrinkList = '$apiUrl/api/menus/filter/minuman';
@@ -23,4 +24,9 @@ class AuthEndpoint {
 class AllCustomers {
   final String customers = '$apiUrl/api/users/users';
   final String updateCustomers = '$apiUrl/api/users/update';
+}
+
+class OrderApi {
+  static var getallOrderList = '$apiUrl/api/orders';
+  static var editStatusOrder = '$apiUrl/api/orders/';
 }

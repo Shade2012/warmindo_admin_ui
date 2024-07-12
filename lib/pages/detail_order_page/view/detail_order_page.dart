@@ -3,26 +3,82 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:warmindo_admin_ui/global/model/modelorder.dart';
+import 'package:warmindo_admin_ui/global/model/model_order.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/widget/detail_order_bnb.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/widget/pdf_generator.dart';
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 
 class DetailOrderPage extends StatelessWidget {
   final Order order;
+  final OrderController controller = Get.put(OrderController());
+
   DetailOrderPage({required this.order});
+
+  Color _getLabelColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'done':
+        return ColorResources.labelcomplete;
+      case 'ready':
+        return ColorResources.labelcomplete;
+      case 'in progress':
+        return ColorResources.labelinprogg;
+      case 'cancellation request':
+        return ColorResources.labelcancel;
+      case 'cancelled':
+        return ColorResources.labelcancel;
+      default:
+        return Colors.black;
+    }
+  }
+
+  String _translateStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'done':
+        return 'Selesai';
+      case 'ready':
+        return 'Siap';
+      case 'in progress':
+        return 'Sedang Diproses';
+      case 'cancellation request':
+        return 'Permintaan Pembatalan';
+      case 'cancelled':
+        return 'Dibatalkan';
+      default:
+        return status;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    double totalPrice = order.menus.fold(0, (sum, menu) => sum + menu.price);
-    final currencyFormat =
-        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final adminFee = 1000;
-    final discount = 5000;
-    final totalPayment = totalPrice + adminFee - discount;
+
+    // Calculate total price
+    double totalPrice = controller.orderList
+        .where((o) => o.orderId == order.orderId)
+        .fold(0, (sum, o) => sum + double.parse(o.priceOrder));
+
+    final totalPayment = totalPrice + adminFee;
+
+    // Find menu items related to the order
+    final menuItems = controller.orderList
+        .where((o) => o.orderId == order.orderId)
+        .map((o) => controller.menuList.firstWhere((menu) => menu.menuId == int.parse(o.menuId)))
+        .toList();
+
+    // find customerdata related to the order
+    final userData = controller.orderList
+        .where((o) => o.orderId == order.orderId)
+        .map((o) => controller.customersList.firstWhere((customer) => customer.id == int.parse(o.userId)))
+        .toList();
+
+    final labelColor = _getLabelColor(order.status);
+    final translatedStatus = _translateStatus(order.status);
+    final formattedDate = DateFormat('dd-MM-yyyy').format(order.orderDate);
 
     return Scaffold(
       appBar: AppBar(
@@ -75,14 +131,13 @@ class DetailOrderPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Warmindo Anggrek Muria',
-                            style: nameRestoTextStyle),
+                        Text('Warmindo Anggrek Muria', style: nameRestoTextStyle),
                         SizedBox(height: screenHeight * 0.0110),
-                        Text(order.id, style: idOrderTextStyle),
+                        Text(order.orderId.toString(), style: idOrderTextStyle),
                         SizedBox(height: screenHeight * 0.0110),
-                        Text(order.dateOrder, style: dateOrderTextStyle),
+                        Text(formattedDate, style: dateOrderTextStyle), // Updated line
                         SizedBox(height: screenHeight * 0.0125),
-                        Text(order.status, style: statusOrderTextStyle),
+                        Text(translatedStatus, style: statusOrderTextStyle.copyWith(color: labelColor)),
                       ],
                     ),
                   ),
@@ -93,37 +148,29 @@ class DetailOrderPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Pesanan',
-                  style: receiptheaderTextStyle,
-                ),
+                Text('Pesanan', style: receiptheaderTextStyle),
                 SizedBox(height: 16.0),
-                ...order.menus
-                    .map((menu) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(menu.name, style: receiptcontentTextStyle),
-                              Text('1', style: receiptcontentTextStyle),
-                            ],
-                          ),
-                        ))
-                    .toList(),
+                ...menuItems.map((menu) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(menu.nameMenu, style: receiptcontentTextStyle),
+                      Text('1', style: receiptcontentTextStyle),
+                      Text(currencyFormat.format(double.parse(menu.price)), style: receiptcontentTextStyle),
+                    ],
+                  ),
+                )).toList(),
                 SizedBox(height: 16.0),
                 Divider(),
                 SizedBox(height: 16.0),
-                Text(
-                  'Detail Pembayaran',
-                  style: receiptheaderTextStyle,
-                ),
+                Text('Detail Pembayaran', style: receiptheaderTextStyle),
                 SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Harga', style: receiptcontentTextStyle),
-                    Text(currencyFormat.format(totalPrice),
-                        style: receiptcontentTextStyle), // Corrected line
+                    Text(currencyFormat.format(totalPrice), style: receiptcontentTextStyle),
                   ],
                 ),
                 SizedBox(height: 8.0),
@@ -131,19 +178,10 @@ class DetailOrderPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Biaya Admin', style: receiptcontentTextStyle),
-                    Text(currencyFormat.format(adminFee),
-                        style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(adminFee), style: receiptcontentTextStyle),
                   ],
                 ),
                 SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Diskon', style: receiptcontentTextStyle),
-                    Text(currencyFormat.format(discount),
-                        style: receiptcontentTextStyle),
-                  ],
-                ),
                 SizedBox(height: 16.0),
                 Divider(),
                 SizedBox(height: 16.0),
@@ -151,32 +189,18 @@ class DetailOrderPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Total', style: receiptcontentTextStyle),
-                    Text(currencyFormat.format(totalPayment),
-                        style: receiptcontentTextStyle), // Corrected line
-                  ],
-                ),
-                SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Pembayaran ${order.paymentMethod}',
-                        style: receiptcontentTextStyle),
-                    Text(currencyFormat.format(totalPayment),
-                        style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(totalPayment), style: receiptcontentTextStyle),
                   ],
                 ),
                 SizedBox(height: 16.0),
                 Divider(),
-                Text(
-                  'Detail Pelanggan',
-                  style: receiptheaderTextStyle,
-                ),
+                Text('Detail Pelanggan', style: receiptheaderTextStyle),
                 SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Nama Pelanggan', style: receiptcontentTextStyle),
-                    Text(order.nameCustomer, style: receiptcontentTextStyle),
+                    Text(userData[0].name, style: receiptcontentTextStyle),
                   ],
                 ),
                 SizedBox(height: 10.0),
@@ -184,7 +208,7 @@ class DetailOrderPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Email', style: receiptcontentTextStyle),
-                    Text(order.email ?? '-', style: receiptcontentTextStyle),
+                    Text(userData[0].email, style: receiptcontentTextStyle),
                   ],
                 ),
                 SizedBox(height: 10.0),
@@ -192,8 +216,7 @@ class DetailOrderPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('No. Telepon', style: receiptcontentTextStyle),
-                    Text(order.phoneNumber ?? '-',
-                        style: receiptcontentTextStyle),
+                    Text(userData[0].phoneNumber, style: receiptcontentTextStyle),
                   ],
                 ),
               ],
@@ -213,7 +236,7 @@ class DetailOrderPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: DetailOrderBnb(),
+      bottomNavigationBar: DetailOrderBnb(order: order),
     );
   }
 }

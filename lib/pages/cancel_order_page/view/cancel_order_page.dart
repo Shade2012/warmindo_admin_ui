@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/global/model/modelorder.dart';
+import 'package:warmindo_admin_ui/global/model/model_order.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
-import 'package:warmindo_admin_ui/pages/cancel_order_page/controller/cancel_order_controller.dart'; // Import DataController
+import 'package:warmindo_admin_ui/pages/cancel_order_page/controller/cancel_order_controller.dart';
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart'; // Import DataController
 
 class CancelOrderPage extends StatelessWidget {
   CancelOrderPage({Key? key}) : super(key: key);
   final CancelOrderController dataController = Get.put(CancelOrderController());
+  final OrderController controller = Get.put(OrderController());
 
   @override
   Widget build(BuildContext context) {
-    // Mendapatkan ukuran layar
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // Daftar pesanan
-    final List<Order> orders = [
-      order001,
-      order002,
-      order003,
-      // Tambahkan daftar pesanan lainnya di sini
-    ];
-
     // Filter pesanan dengan status permintaan pembatalan
-    List<Order> cancelOrders = orders
+    List<Order> cancelOrders = controller.orderList
         .where((order) => order.status == 'Permintaan Pembatalan')
         .toList();
 
@@ -44,6 +37,17 @@ class CancelOrderPage extends StatelessWidget {
             ),
           );
         }
+
+        if (cancelOrders.isEmpty) {
+          return Center(
+            child: Text(
+              'Tidak ada pesanan dengan permintaan pembatalan',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
@@ -55,8 +59,9 @@ class CancelOrderPage extends StatelessWidget {
                       height: screenHeight * 0.2,
                       width: screenWidth,
                       child: OrderBox(
-                        order: order,
-                        nameCustomer: order.nameCustomer,
+                        order: order, 
+                        customerName: controller.getCustomerById(int.tryParse(order.userId) ?? 0)?.name ?? '', 
+                        
                       ),
                     ),
                   )

@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:warmindo_admin_ui/global/model/modelorder.dart';
+import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/model/model_order.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 import 'package:warmindo_admin_ui/pages/order_page/widget/order_filter_dropdown.dart';
 
 class OrderPage extends StatelessWidget {
-  final List<Order> orders = [
-    order001,
-    order002,
-    // Tambahkan daftar pesanan lainnya di sini
-  ];
-
+  final OrderController controller = Get.put(OrderController());
   final TextEditingController searchController = TextEditingController();
   final ValueNotifier<String> selectedStatus = ValueNotifier<String>('Semua');
 
-  List<Order> getFilteredOrders(List<Order> orders, String? selectedStatus, String searchTerm) {
+  List<Order> getFilteredOrders(
+      List<Order> orders, String? selectedStatus, String searchTerm) {
     orders = getFilteredOrdersByStatus(orders, selectedStatus);
-    return orders.where((order) => order.nameCustomer.toLowerCase().contains(searchTerm.toLowerCase())).toList();
+    return orders.where((order) {
+      final customer = controller.getCustomerById(int.tryParse(order.userId) ?? 0);
+      return customer?.name.toLowerCase().contains(searchTerm.toLowerCase()) ?? false;
+    }).toList();
   }
 
-  List<Order> getFilteredOrdersByStatus(List<Order> orders, String? selectedStatus) {
+  List<Order> getFilteredOrdersByStatus(
+      List<Order> orders, String? selectedStatus) {
     if (selectedStatus == null || selectedStatus == 'Semua') {
       return orders;
     } else {
@@ -72,12 +74,13 @@ class OrderPage extends StatelessWidget {
               ),
               SizedBox(height: screenHeight * 0.02),
               OrderFilterDropdown(
-                orders: orders,
+                orders: controller.orderList,
                 screenHeight: screenHeight,
                 screenWidth: screenWidth,
                 selectedStatus: selectedStatus,
                 onChanged: (String? newValue) {
-                  selectedStatus.value = newValue ?? 'Semua'; // Update selectedStatus
+                  selectedStatus.value =
+                      newValue ?? 'Semua'; // Update selectedStatus
                 },
               ),
               SizedBox(height: screenHeight * 0.02),
@@ -85,26 +88,32 @@ class OrderPage extends StatelessWidget {
               ValueListenableBuilder<String>(
                 valueListenable: selectedStatus,
                 builder: (context, selectedValue, child) {
-                  return getFilteredOrders(orders, selectedValue, searchController.text).isEmpty
-                      ? Center(
-                          child: Text(
-                            'Tidak ada pesanan yang tersedia.',
-                            style: TextStyle(fontSize: 16, color: Colors.black),
+                  final filteredOrders = getFilteredOrders(
+                      controller.orderList, selectedValue, searchController.text);
+
+                  if (filteredOrders.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'Tidak ada pesanan yang tersedia.',
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                    );
+                  }
+
+                  return Column(
+                    children: filteredOrders.map((order) {
+                      final customer = controller.getCustomerById(int.tryParse(order.userId) ?? 0);
+                      return Column(
+                        children: [
+                          OrderBox(
+                            order: order,
+                            customerName: customer?.name ?? 'Unknown Customer',
                           ),
-                        )
-                      : Column(
-                          children: getFilteredOrders(orders, selectedValue, searchController.text).map((order) {
-                            return Column(
-                              children: [
-                                OrderBox(
-                                  order: order,
-                                  nameCustomer: order.nameCustomer,
-                                ),
-                                SizedBox(height: screenHeight * 0.01),
-                              ],
-                            );
-                          }).toList(),
-                        );
+                          SizedBox(height: 10), // Add SizedBox with height 10
+                        ],
+                      );
+                    }).toList(),
+                  );
                 },
               ),
             ],

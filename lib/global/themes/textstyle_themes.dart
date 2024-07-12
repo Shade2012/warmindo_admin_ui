@@ -306,7 +306,7 @@ TextStyle dateOrderTextStyle = GoogleFonts.oxygen(
 
 TextStyle statusOrderTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
-        color: yellowTextColor,
+        color: secondaryTextColor,
         fontWeight: FontWeight.bold,
         fontSize: figmaFontsize(12)));
 
