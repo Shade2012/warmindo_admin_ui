@@ -191,7 +191,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.EDIT_ORDER_PAGE,
-        page: () => EditOrderPage(),
+        page: () => EditOrderPage(order: Get.arguments), 
         binding: EditOrderBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
