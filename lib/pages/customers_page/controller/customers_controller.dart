@@ -18,11 +18,6 @@ class CustomersController extends GetxController {
   void onInit() {
     _internetService.connectionChange.listen(_updateConnectionStatus);
     _checkInternetConnection();
-    timer = Timer.periodic(Duration(seconds: 10), (timer) {
-      if (isConnected.value) {
-        fetchDataCustomer();
-      }
-    });
     super.onInit();
   }
 

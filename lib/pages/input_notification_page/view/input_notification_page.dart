@@ -116,7 +116,7 @@ class InputNotificationPage extends StatelessWidget {
             ),
             SizedBox(height: screenHeight * 0.025),
             Text(
-              'Pratinjau Perangkat',
+              'Pratinjau Notifikasi',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: screenHeight * 0.015),

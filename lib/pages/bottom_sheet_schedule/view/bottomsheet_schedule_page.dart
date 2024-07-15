@@ -148,7 +148,7 @@ class BottomSheetSchedule extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.09),
+            SizedBox(height: screenHeight * 0.085),
             Row(
               children: [
                 Expanded(
