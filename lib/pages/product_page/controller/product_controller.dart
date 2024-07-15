@@ -32,11 +32,6 @@ class ProductController extends GetxController {
     super.onInit();
     _internetService.connectionChange.listen(_updateConnectionStatus);
     _checkInternetConnection();
-    timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      if (isConnected.value) {
-        fetchAllData();
-      }
-    });
     search.addListener(() {
       searchObx.value = search.text;
       searchFilter(search.text);

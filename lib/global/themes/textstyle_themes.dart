@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 
 //figma font size
 figmaFontsize(double fontSize) {
@@ -15,6 +16,18 @@ const Color yellowTextColor = Color(0xFFFFA41D);
 const Color redTextColor = Color(0xFFC62828);
 const Color blueTextColor = Color(0xFF4282FF);
 const Color greyTextColor2 = Color(0xFF9B9B9B);
+
+TextStyle BottomNavbarSelectedTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: redTextColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
+
+TextStyle BottomNavbarUnselectedTextStyle = GoogleFonts.oxygen(
+    textStyle: TextStyle(
+        color: ColorResources.unselectedItemColor,
+        fontWeight: FontWeight.bold,
+        fontSize: figmaFontsize(12)));
 
 TextStyle appBarTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(

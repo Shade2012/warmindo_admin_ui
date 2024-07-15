@@ -49,10 +49,10 @@ class HomePage extends StatelessWidget {
           }
           return RefreshIndicator(
             onRefresh: () async {
-              await controller.fetchDataOrder(); // Memanggil metode untuk memperbarui pesanan
+              await controller.fetchDataOrder(); 
             },
             child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(), // Membuat list selalu bisa di-scroll untuk refresh
+              physics: const AlwaysScrollableScrollPhysics(), 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -112,7 +112,7 @@ class HomePage extends StatelessWidget {
                     height: screenHeight * 0.6,
                     child: Obx(() => ListView.separated(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(), // Membuat list tidak bisa di-scroll terpisah
+                      physics: const AlwaysScrollableScrollPhysics(), 
                       scrollDirection: Axis.vertical,
                       itemCount: controller.orderList.length,
                       itemBuilder: (context, index) {

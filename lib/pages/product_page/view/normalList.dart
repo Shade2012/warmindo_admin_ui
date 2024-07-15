@@ -81,7 +81,6 @@ class ProductList extends StatelessWidget {
           color: ColorResources.primaryColor,
           backgroundColor: ColorResources.primaryColorLight,
           onRefresh: () {
-            productController.isLoading.value = true;
             return productController.fetchAllData();
           },
           child: ListView.builder(
