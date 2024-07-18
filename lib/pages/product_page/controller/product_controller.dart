@@ -20,7 +20,7 @@ class ProductController extends GetxController {
   var selectedCategory = ''.obs;
   var filteredProductList = <model.Menu>[].obs;
   Timer? timer;
-  RxBool isLoading = false.obs;
+  RxBool isLoading = true.obs;
   final TextEditingController search = TextEditingController();
   RxString searchObx = ''.obs;
   RxBool isConnected = true.obs;

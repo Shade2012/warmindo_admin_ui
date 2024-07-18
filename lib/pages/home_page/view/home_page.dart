@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/pages/home_page/controller/home_controller.dart';
+import 'package:warmindo_admin_ui/pages/home_page/widget/homepage_shimmer.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
@@ -41,18 +41,14 @@ class HomePage extends StatelessWidget {
             );
           }
           if (controller.isLoading.value) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: ColorResources.primaryColor,
-              ),
-            );
+            return HomepageShimmer();
           }
           return RefreshIndicator(
             onRefresh: () async {
-              await controller.fetchDataOrder(); 
+              await controller.fetchDataOrder();
             },
             child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(), 
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -111,26 +107,29 @@ class HomePage extends StatelessWidget {
                   Container(
                     height: screenHeight * 0.6,
                     child: Obx(() => ListView.separated(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(), 
-                      scrollDirection: Axis.vertical,
-                      itemCount: controller.orderList.length,
-                      itemBuilder: (context, index) {
-                        final order = controller.orderList[index];
-                        final userId = int.tryParse(order.userId.toString()) ?? 0;
-                        final customer = controller.getCustomerById(userId);
-                        print('Order ID: ${order.orderId}, User ID: ${order.userId}, Customer: ${customer?.name}');
-                        return OrderBox(
-                          order: order,
-                          customerName: customer?.name ?? 'Unknown Customer',
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          height: 10,
-                        );
-                      },
-                    )),
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount: controller.orderList.length.clamp(0, 3),
+                          itemBuilder: (context, index) {
+                            final order = controller.orderList[index];
+                            final userId =
+                                int.tryParse(order.userId.toString()) ?? 0;
+                            final customer = controller.getCustomerById(userId);
+                            print(
+                                'Order ID: ${order.orderId}, User ID: ${order.userId}, Customer: ${customer?.name}');
+                            return OrderBox(
+                              order: order,
+                              customerName:
+                                  customer?.name ?? 'Unknown Customer',
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                        )),
                   ),
                 ],
               ),
@@ -141,3 +140,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
