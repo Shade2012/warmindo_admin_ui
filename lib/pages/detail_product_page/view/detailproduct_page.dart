@@ -12,6 +12,7 @@ import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class DetailProductPage extends StatelessWidget {
   final Menu product;
+
   const DetailProductPage({Key? key, required this.product}) : super(key: key);
 
   @override
@@ -20,8 +21,14 @@ class DetailProductPage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final ProductController productController = Get.put(ProductController());
-    double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
-    double adjustedPrice = priceAsDouble! / 100;
+
+    // Handle potential null or invalid ratings
+    double? priceAsDouble = double.tryParse(product.price?.replaceAll(',', '').replaceAll('.', '') ?? '');
+    double adjustedPrice = (priceAsDouble ?? 0.0) / 100;
+
+    // Handle potential null or invalid ratings
+    double? ratingAsDouble = double.tryParse(product.ratings ?? '');
+    String ratingString = ratingAsDouble?.toString() ?? 'N/A';
 
     return Scaffold(
       appBar: AppBar(
@@ -64,8 +71,11 @@ class DetailProductPage extends StatelessWidget {
                 width: screenWidth * 0.8,
                 height: screenHeight * 0.25,
                 child: Image.network(
-                  product.image,
+                  product.image ?? '', // Handle null image URL
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(Icons.error, color: Colors.red);
+                  },
                 ),
               ),
             ),
@@ -74,12 +84,12 @@ class DetailProductPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.nameMenu,
+                  product.nameMenu ?? 'No Name', // Handle null name
                   style: nameProductDetailTextStyle,
                 ),
                 SizedBox(height: screenHeight * 0.002),
                 Text(
-                  product.category,
+                  product.category ?? 'No Category', // Handle null category
                   style: categoryProductDetailTextStyle,
                 ),
               ],
@@ -90,7 +100,7 @@ class DetailProductPage extends StatelessWidget {
                 Icon(Icons.star, color: Colors.amber),
                 SizedBox(width: screenWidth * 0.02),
                 Text(
-                  double.parse(product.ratings).toString(),
+                  ratingString,
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -106,7 +116,7 @@ class DetailProductPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  product.description,
+                  product.description ?? 'No Description', // Handle null description
                   style: desccontentProductDetailTextStyle,
                 ),
               ],

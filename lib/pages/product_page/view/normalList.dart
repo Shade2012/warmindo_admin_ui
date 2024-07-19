@@ -10,19 +10,18 @@ import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
-
 class ProductList extends StatelessWidget {
   final List<Menu> productList;
 
-   ProductList({
+  ProductList({
     Key? key,
     required this.productList,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final ProductController productController = Get.put(ProductController());
@@ -89,7 +88,7 @@ class ProductList extends StatelessWidget {
               final product = productList[index];
               double? priceAsDouble = double.tryParse(
                   product.price.replaceAll(',', '').replaceAll('.', ''));
-              double adjustedPrice = priceAsDouble! / 100;
+              double adjustedPrice = (priceAsDouble ?? 0) / 100;
 
               return ListTile(
                 leading: GestureDetector(
@@ -102,9 +101,12 @@ class ProductList extends StatelessWidget {
                       width: screenWidth * 0.15,
                       height: screenHeight * 0.15,
                       child: FadeInImage(
-                        placeholder: AssetImage(Images.mieAyam),
+                        placeholder: AssetImage(Images.mieAyam), 
                         image: NetworkImage(product.image),
                         fit: BoxFit.cover,
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return Icon(Icons.error, color: Colors.red);
+                        },
                       ),
                     ),
                   ),
@@ -148,7 +150,8 @@ class ProductList extends StatelessWidget {
                                 Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
                                     arguments: product);
                               },
-                              cancelButtonColor: ColorResources.primaryColorLight,
+                              cancelButtonColor:
+                                  ColorResources.primaryColorLight,
                               confirmButtonColor: ColorResources.buttonedit,
                               dialogImage: Image.asset(Images.askDialog),
                             );
@@ -164,18 +167,26 @@ class ProductList extends StatelessWidget {
                           builder: (BuildContext context) {
                             return ReusableDialog(
                               title: "Delete",
-                              content: "Apakah Kamu yakin ingin menghapus data?",
+                              content:
+                                  "Apakah Kamu yakin ingin menghapus data?",
                               cancelText: "Tidak",
                               confirmText: "Iya",
                               onCancelPressed: () {
                                 Get.back();
                               },
                               onConfirmPressed: () {
-                                productController.deleteProduct(product.menuId);
+                                if (product.category == 'Topping') {
+                                  productController.deleteToppings(product.menuId);
+                                } if (product.category == 'Variant') {
+                                  productController.deleteVariant(product.menuId); 
+                                }else {
+                                  productController.deleteProduct(product.menuId);
+                                }
                                 productController.fetchAllData();
                                 Get.back();
                               },
-                              cancelButtonColor: ColorResources.primaryColorLight,
+                              cancelButtonColor:
+                                  ColorResources.primaryColorLight,
                               confirmButtonColor: ColorResources.buttondelete,
                               dialogImage: Image.asset(Images.askDialog),
                             );

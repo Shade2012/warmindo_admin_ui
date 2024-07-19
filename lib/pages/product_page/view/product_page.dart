@@ -13,6 +13,7 @@ import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 
 class ProductPage extends StatelessWidget {
   ProductPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ProductController productController = Get.put(ProductController());
@@ -22,12 +23,13 @@ class ProductPage extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Kelola Produk',onChanged: (query){
-        print(query);{
+        title: 'Kelola Produk',
+        onChanged: (query) {
+          print(query);
           productController.searchFilter(query);
           print(productController.searchResults);
-        }
-      }, controller: productController.search,
+        },
+        controller: productController.search,
       ),
       body: Column(
         children: [
@@ -52,12 +54,17 @@ class ProductPage extends StatelessWidget {
           SizedBox(height: 10),
           Expanded(
             child: Obx(() {
-                if(productController.searchObx.isNotEmpty){
-                  return Search();
-                }
-                else{
-                  return ProductList(productList: productController.filteredProductList);
-                }
+              if (productController.searchObx.isNotEmpty) {
+                return Search();
+              } else if (productController.filteredProductList.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Data kosong',
+                  ),
+                );
+              } else {
+                return ProductList(productList: productController.filteredProductList);
+              }
             }),
           ),
         ],
@@ -79,10 +86,10 @@ class ProductPage extends StatelessWidget {
                 onConfirmPressed: () {
                   Navigator.of(context).pop();
                   showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return PopupAddProducts();
-                      }
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PopupAddProducts();
+                    },
                   );
                 },
                 cancelButtonColor: ColorResources.primaryColorLight,
