@@ -10,11 +10,26 @@ class FoodApi {
   static var getFoodList = '$apiUrl/api/menus/filter/makanan';
   static var getDrinkList = '$apiUrl/api/menus/filter/minuman';
   static var getSnackList = '$apiUrl/api/menus/filter/snack';
-  static var getToppingList = '$apiUrl/api/menus/filter/topping';
-  static var getVariantList = '$apiUrl/api/menus/filter/varian';
   static String storeProduct = '$apiUrl/api/menus/store';
   static String updateProduct = '$apiUrl/api/menus/';
   static String deleteProduct = '$apiUrl/api/menus';
+}
+
+class ToppingsApi {
+  static var getallToppingsList = '$apiUrl/api/toppings';
+  static var storeToppings = '$apiUrl/api/toppings/store';
+  static var updateToppings = '$apiUrl/api/toppings/';
+  static var deleteToppings = '$apiUrl/api/toppings';
+  static var detailToppings = '$apiUrl/api/toppings/';
+  
+}
+
+class VariantApi {
+  static var getallVariantList = '$apiUrl/api/variants';
+  static var storeVariant = '$apiUrl/api/variants/store';
+  static var updateVariant = '$apiUrl/api/variants/';
+  static var deleteVariant = '$apiUrl/api/variants';
+  static var detailVariant = '$apiUrl/api/variants/';
 }
 
 class AuthEndpoint {
