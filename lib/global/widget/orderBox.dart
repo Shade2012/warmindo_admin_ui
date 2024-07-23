@@ -21,37 +21,37 @@ class OrderBox extends StatelessWidget {
 
   Color _getLabelColor(String status) {
     switch (status.toLowerCase()) {
-      case 'done':
+      case 'Selesai':
         return ColorResources.labelcomplete;
-      case 'ready':
+      case 'Pesanan Siap':
         return ColorResources.labelcomplete;
-      case 'in progress':
+      case 'Sedang Diproses':
         return ColorResources.labelinprogg;
-      case 'cancellation request':
+      case 'Permintaan Pembatalan':
         return ColorResources.labelcancel;
-      case 'cancelled':
+      case 'Dibatalkan':
         return ColorResources.labelcancel;
       default:
         return Colors.black;
     }
   }
 
-  String _translateStatus(String status) {
-    switch (status.toLowerCase()) {
-      case 'done':
-        return 'Selesai';
-      case 'ready':
-        return 'Pesanan Siap';
-      case 'in progress':
-        return 'Sedang Diproses';
-      case 'cancellation request':
-        return 'Permintaan Pembatalan';
-      case 'cancelled':
-        return 'Dibatalkan';
-      default:
-        return status;
-    }
-  }
+  // String _translateStatus(String status) {
+  //   switch (status.toLowerCase()) {
+  //     case 'done':
+  //       return 'Selesai';
+  //     case 'ready':
+  //       return 'Pesanan Siap';
+  //     case 'in progress':
+  //       return 'Sedang Diproses';
+  //     case 'cancellation request':
+  //       return 'Permintaan Pembatalan';
+  //     case 'cancelled':
+  //       return 'Dibatalkan';
+  //     default:
+  //       return status;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,6 @@ class OrderBox extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final labelColor = _getLabelColor(order.status);
     final borderColor = _getLabelColor(order.status);
-    final translatedStatus = _translateStatus(order.status);
 
     // Find menu items related to the order
     final menuItems = controller.orderList
@@ -139,7 +138,7 @@ class OrderBox extends StatelessWidget {
                     color: labelColor,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: Text(translatedStatus, style: labelOrderBoxTextStyle),
+                  child: Text(order.status, style: labelOrderBoxTextStyle),
                 ),
               ],
             ),

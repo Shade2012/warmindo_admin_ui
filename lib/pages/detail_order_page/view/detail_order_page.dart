@@ -19,37 +19,21 @@ class DetailOrderPage extends StatelessWidget {
 
   Color _getLabelColor(String status) {
     switch (status.toLowerCase()) {
-      case 'done':
+      case 'Selesai':
         return ColorResources.labelcomplete;
-      case 'ready':
+      case 'Pesanan Siap':
         return ColorResources.labelcomplete;
-      case 'in progress':
+      case 'Sedang Diproses':
         return ColorResources.labelinprogg;
-      case 'cancellation request':
+      case 'Permintaan Pembatalan':
         return ColorResources.labelcancel;
-      case 'cancelled':
+      case 'Dibatalkan':
         return ColorResources.labelcancel;
       default:
         return Colors.black;
     }
   }
 
-  String _translateStatus(String status) {
-    switch (status.toLowerCase()) {
-      case 'done':
-        return 'Selesai';
-      case 'ready':
-        return 'Siap';
-      case 'in progress':
-        return 'Sedang Diproses';
-      case 'cancellation request':
-        return 'Permintaan Pembatalan';
-      case 'cancelled':
-        return 'Dibatalkan';
-      default:
-        return status;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +61,6 @@ class DetailOrderPage extends StatelessWidget {
         .toList();
 
     final labelColor = _getLabelColor(order.status);
-    final translatedStatus = _translateStatus(order.status);
     final formattedDate = DateFormat('dd-MM-yyyy').format(order.orderDate);
 
     return Scaffold(
@@ -137,7 +120,7 @@ class DetailOrderPage extends StatelessWidget {
                         SizedBox(height: screenHeight * 0.0110),
                         Text(formattedDate, style: dateOrderTextStyle), // Updated line
                         SizedBox(height: screenHeight * 0.0125),
-                        Text(translatedStatus, style: statusOrderTextStyle.copyWith(color: labelColor)),
+                        Text(order.status, style: statusOrderTextStyle.copyWith(color: labelColor)),
                       ],
                     ),
                   ),

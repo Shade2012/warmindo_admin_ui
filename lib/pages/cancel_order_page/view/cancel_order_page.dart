@@ -37,7 +37,6 @@ class CancelOrderPage extends StatelessWidget {
             ),
           );
         }
-
         if (cancelOrders.isEmpty) {
           return Center(
             child: Text(
@@ -47,7 +46,6 @@ class CancelOrderPage extends StatelessWidget {
             ),
           );
         }
-
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(

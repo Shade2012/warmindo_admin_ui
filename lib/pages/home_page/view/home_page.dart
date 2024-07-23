@@ -113,15 +113,13 @@ class HomePage extends StatelessWidget {
                           itemCount: controller.orderList.length.clamp(0, 3),
                           itemBuilder: (context, index) {
                             final order = controller.orderList[index];
-                            final userId =
-                                int.tryParse(order.userId.toString()) ?? 0;
+                            final userId = int.tryParse(order.userId.toString()) ?? 0;
                             final customer = controller.getCustomerById(userId);
-                            print(
-                                'Order ID: ${order.orderId}, User ID: ${order.userId}, Customer: ${customer?.name}');
+                            print('Order ID: ${order.orderId}, User ID: ${order.userId}, Customer: ${customer?.name}');
                             return OrderBox(
                               order: order,
                               customerName:
-                                  customer?.name ?? 'Unknown Customer',
+                              customer?.name ?? 'Unknown Customer',
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) {
