@@ -101,12 +101,15 @@ class OrderController extends GetxController {
           isLoading.value = false;
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
+          isLoading.value = false;
         }
       } else {
         print('Gagal mengambil data pesanan.');
+        isLoading.value = false;
       }
     } catch (e) {
       print('Terjadi kesalahan: $e');
+      isLoading.value = false;
     }
   }
 

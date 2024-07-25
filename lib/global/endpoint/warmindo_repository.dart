@@ -45,3 +45,9 @@ class OrderApi {
   static var getallOrderList = '$apiUrl/api/orders';
   static var editStatusOrder = '$apiUrl/api/orders/';
 }
+
+class ScheduleApi {
+  static var getallScheduleList = '$apiUrl/api/store-statuses';
+  static var storeSchedule = '$apiUrl/api/store-statuses/store';
+  static var updateSchedule = '$apiUrl/api/store-statuses/1';
+}

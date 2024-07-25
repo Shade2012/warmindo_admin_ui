@@ -11,7 +11,6 @@ class BottomSheetShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScheduleController statusController = Get.put(ScheduleController());
-
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
@@ -27,7 +26,7 @@ class BottomSheetShop extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Get.back();
                 },
                 icon: Icon(Icons.close),
               ),
@@ -178,44 +177,51 @@ class BottomSheetShop extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Jadwal Khusus',
-                        style: contentBoldBtsShopTextStyle,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Jadwal Khusus',
+                            style: contentBoldBtsShopTextStyle,
+                          ),
+                          Text(
+                            'Buat jadwal khusus untuk restoran Anda',
+                            style: contentSmallBtsShopTextStyle,
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Buat jadwal khusus untuk restoran Anda',
-                        style: contentSmallBtsShopTextStyle,
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Radio<String>(
+                          value: 'Jadwal Khusus',
+                          groupValue: statusController.selectedStatus.value,
+                          onChanged: (String? value) {
+                            statusController.setStatus(value!);
+                          },
+                        ),
                       ),
                     ],
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () {
-                        Get.back();
-                        Get.toNamed(Routes.SCHEDULE_PAGE);
-                      },
-                      icon: Icon(Icons.arrow_forward_ios_rounded),
-                    ),
-                  ),
-                ],
-              ),
+                  )),
             ],
           ),
           Spacer(),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                // Save the selected status and chip here
-                print('Selected status: ${statusController.selectedStatus.value}');
-                print('Selected chip: ${statusController.selectedChip.value}');
-                Navigator.pop(context);
+              onPressed: () async {
+                if (statusController.selectedStatus.value == 'Jadwal Khusus') {
+                  Get.back();
+                  Get.toNamed(Routes.SCHEDULE_PAGE);
+                } else {
+                  await statusController.updateStatusSchedule(
+                    isOpen: statusController.selectedStatus.value == 'Beroperasi Normal' ? '1' : '0',
+                    temporaryClosureDuration: statusController.selectedChip.value,
+                  );
+                  print('Selected status: ${statusController.selectedStatus.value}');
+                  print('Selected chip: ${statusController.selectedChip.value}');
+                }
               },
               child: Text('Ubah Status'),
               style: ElevatedButton.styleFrom(

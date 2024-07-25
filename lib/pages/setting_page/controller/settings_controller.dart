@@ -30,4 +30,6 @@ class SettingsController extends GetxController {
     Get.offAllNamed(Routes.SPLASH_PAGE);
     navigatorController.goToHomePage();
   }
+
+  
 }

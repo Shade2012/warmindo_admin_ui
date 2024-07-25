@@ -1,46 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottomsheet_schedule_controller.dart';
-import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
-
-enum Day {
-  Sunday,
-  Monday,
-  Tuesday,
-  Wednesday,
-  Thursday,
-  Friday,
-  Saturday,
-}
-
-extension DayExtension on Day {
-  String get name {
-    switch (this) {
-      case Day.Sunday:
-        return 'Minggu';
-      case Day.Monday:
-        return 'Senin';
-      case Day.Tuesday:
-        return 'Selasa';
-      case Day.Wednesday:
-        return 'Rabu';
-      case Day.Thursday:
-        return 'Kamis';
-      case Day.Friday:
-        return 'Jumat';
-      case Day.Saturday:
-        return 'Sabtu';
-      default:
-        return '';
-    }
-  }
-}
+import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
+import 'package:warmindo_admin_ui/pages/schedule_page/controller/schedule_controller.dart';
 
 class SchedulePage extends StatelessWidget {
-  final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
+  final ScheduleController scheduleController = Get.put(ScheduleController());
 
   SchedulePage({Key? key}) : super(key: key);
 
@@ -54,8 +21,6 @@ class SchedulePage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new),
           onPressed: () {
-            // Get.find<NavigatorController>().goToSettingsPage();
-            // Get.toNamed(Routes.BOTTOM_NAVIGATION);
             Get.back();
           },
         ),
@@ -69,7 +34,7 @@ class SchedulePage extends StatelessWidget {
             vertical: screenHeight * 0.03,
           ),
           child: Obx(() {
-            final schedules = _controller.schedules;
+            final schedules = scheduleController.schedules;
             final isScheduleEmpty = schedules.isEmpty;
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -114,30 +79,26 @@ class SchedulePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${schedule.days.map((day) => day.name).join(', ')}',
+                                    schedule.days,
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(height: 4),
-                                  if (schedule.is24Hours)
-                                    Text(
-                                      '24 Jam',
-                                    ),
-                                  if (!schedule.is24Hours && schedule.isClosed)
-                                    Text(
-                                      'Tutup',
-                                    ),
-                                  if (!schedule.is24Hours && !schedule.isClosed && schedule.openingTime != null && schedule.closingTime != null)
-                                    Text(
-                                      '${(schedule.formattedOpeningTime())} - ${(schedule.formattedClosingTime())}',
-                                    ),
+                                  Text(schedule.hours),
+                                  SizedBox(height: 4),
+                                  Text('Temporary Closure: ${schedule.temporaryClosureDuration}'),
+                                  SizedBox(height: 4),
+                                  Text('Status: ${schedule.isOpen ? 'Open' : 'Closed'}'),
                                 ],
                               ),
                               Switch(
-                                value: schedule.isActive,
+                                value: schedule.isOpen,
                                 onChanged: (newValue) {
-
-                                  _controller.updateScheduleStatus(index, newValue);
-                                  print('isActive value changed to: $newValue');
+                                  // Update the schedule status
+                                  scheduleController.updateStatusSchedule(
+                                    isOpen: newValue ? '1' : '0',
+                                    temporaryClosureDuration: schedule.temporaryClosureDuration,
+                                  );
+                                  print('isOpen value changed to: $newValue');
                                 },
                                 activeColor: Colors.green,
                                 inactiveThumbColor: Colors.grey,
@@ -160,7 +121,10 @@ class SchedulePage extends StatelessWidget {
                       builder: (BuildContext context) {
                         return BottomSheetSchedule();
                       },
-                    );
+                    ).whenComplete(() {
+                      // Optionally refresh schedule list after adding new schedule
+                      scheduleController.fetchScheduleList();
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
@@ -171,9 +135,7 @@ class SchedulePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(11),
                     ),
                   ),
-                  child: Text(
-                    'Tambah Jadwal Khusus',
-                  ),
+                  child: Text('Tambah Jadwal Khusus'),
                 ),
               ],
             );
