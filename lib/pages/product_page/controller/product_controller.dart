@@ -5,16 +5,16 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:warmindo_admin_ui/global/model/product_response.dart' as model;
+import 'package:warmindo_admin_ui/global/model/topping_model.dart';
 import 'package:warmindo_admin_ui/global/model/varian_model.dart';
 import 'package:warmindo_admin_ui/global/services/intenet_service.dart';
-import '../../../global/model/topping_model.dart' as topping;
 
 class ProductController extends GetxController {
   var allProductList = <model.Menu>[].obs;
   var foodList = <model.Menu>[].obs;
   var drinklist = <model.Menu>[].obs;
   var snackList = <model.Menu>[].obs;
-  var toppingList = <topping.Menu>[].obs;
+  var toppingList = <Topping>[].obs;
   var variantList = <Datum>[].obs;
   var selectedCategory = ''.obs;
   var filteredProductList = <model.Menu>[].obs;
@@ -217,9 +217,8 @@ class ProductController extends GetxController {
             responseData['data'] is Map<String, dynamic> &&
             responseData['data']['menu'] is List) {
           final List<dynamic> toppingListData = responseData['data']['menu'];
-          toppingList.value = toppingListData
-              .map((json) => topping.Menu.fromJson(json))
-              .toList();
+          toppingList.value =
+              toppingListData.map((json) => Topping.fromJson(json)).toList();
           filterProducts();
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');

@@ -147,8 +147,16 @@ class ProductList extends StatelessWidget {
                                 Get.back();
                               },
                               onConfirmPressed: () {
-                                Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
-                                    arguments: product);
+                                Get.toNamed(Routes.EDIT_TOPPING_PAGE, arguments: product);
+                                // if (product.category == 'Topping') {
+                                //   Get.toNamed(Routes.EDIT_TOPPING_PAGE, arguments: product);
+                                // } if (product.category == 'Variant') {
+                                //   Get.toNamed(Routes.EDIT_VARIAN_PAGE,  arguments: product);
+                                // }else {
+                                //   Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
+                                // }
+                                productController.fetchAllData();
+                                // Get.back();
                               },
                               cancelButtonColor:
                                   ColorResources.primaryColorLight,

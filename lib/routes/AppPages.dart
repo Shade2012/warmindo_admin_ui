@@ -49,7 +49,6 @@ import 'package:warmindo_admin_ui/pages/schedule_page/binding/schedule_binding.d
 import 'package:warmindo_admin_ui/pages/schedule_page/view/schedule_page.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/binding/splash_binding.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/view/splash_page.dart';
-
 import '../pages/detail_customers_page/binding/detail_customers_binding.dart';
 import '../pages/detail_customers_page/view/detail_customers_page.dart';
 part 'AppRoutes.dart';
@@ -203,7 +202,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.EDIT_TOPPING_PAGE,
-        page: () => EditToppingPage(),
+        page: () => EditToppingPage(topping: Get.arguments),
         binding: EditToppingBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
