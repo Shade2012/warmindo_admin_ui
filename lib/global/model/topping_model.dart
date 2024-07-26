@@ -30,7 +30,7 @@ class ToppingList {
 class Data {
     bool success;
     String message;
-    List<Menu> menu;
+    List<Topping> menu;
 
     Data({
         required this.success,
@@ -41,7 +41,7 @@ class Data {
     Data copyWith({
         bool? success,
         String? message,
-        List<Menu>? menu,
+        List<Topping>? menu,
     }) => 
         Data(
             success: success ?? this.success,
@@ -52,7 +52,7 @@ class Data {
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         success: json["success"],
         message: json["message"],
-        menu: List<Menu>.from(json["menu"].map((x) => Menu.fromJson(x))),
+        menu: List<Topping>.from(json["menu"].map((x) => Topping.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -62,7 +62,7 @@ class Data {
     };
 }
 
-class Menu {
+class Topping {
     int toppingId;
     String nameTopping;
     String price;
@@ -71,7 +71,7 @@ class Menu {
     DateTime createdAt;
     DateTime updatedAt;
 
-    Menu({
+    Topping({
         required this.toppingId,
         required this.nameTopping,
         required this.price,
@@ -81,7 +81,7 @@ class Menu {
         required this.updatedAt,
     });
 
-    Menu copyWith({
+    Topping copyWith({
         int? toppingId,
         String? nameTopping,
         String? price,
@@ -90,7 +90,7 @@ class Menu {
         DateTime? createdAt,
         DateTime? updatedAt,
     }) => 
-        Menu(
+        Topping(
             toppingId: toppingId ?? this.toppingId,
             nameTopping: nameTopping ?? this.nameTopping,
             price: price ?? this.price,
@@ -100,7 +100,7 @@ class Menu {
             updatedAt: updatedAt ?? this.updatedAt,
         );
 
-    factory Menu.fromJson(Map<String, dynamic> json) => Menu(
+    factory Topping.fromJson(Map<String, dynamic> json) => Topping(
         toppingId: json["topping_id"],
         nameTopping: json["name_topping"],
         price: json["price"],
