@@ -1,19 +1,7 @@
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottomsheet_schedule_controller.dart';
 import 'dart:developer';
-import 'package:warmindo_admin_ui/global/widget/custom_dropdown_multi.dart';
-
-const List<Day> _dayItems = [
-  Day('Senin'),
-  Day('Selasa'),
-  Day('Rabu'),
-  Day('Kamis'),
-  Day('Jumat'),
-  Day('Sabtu'),
-  Day('Minggu'),
-];
 
 class BottomSheetSchedule extends StatelessWidget {
   final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
@@ -30,34 +18,10 @@ class BottomSheetSchedule extends StatelessWidget {
       child: Container(
         color: Colors.white60,
         width: screenWidth,
-        height: screenHeight * 0.45,
+        height: screenHeight * 0.35,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Pilih Hari'),
-            SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ]),
-              child: Obx(() {
-                return CustomDropdown<Day>.multiSelect(
-                  hintText: 'Pilih Hari',
-                  items: _dayItems,
-                  initialItems: _controller.selectedDays.toList(),
-                  onListChanged: (value) {
-                    log('changing value to: $value');
-                    _controller.selectedDays.value = value;
-                  },
-                );
-              }),
-            ),
-            SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
@@ -148,7 +112,7 @@ class BottomSheetSchedule extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.085),
+            SizedBox(height: screenHeight * 0.11),
             Row(
               children: [
                 Expanded(
