@@ -86,9 +86,7 @@ class ProductList extends StatelessWidget {
             itemCount: productList.length,
             itemBuilder: (context, index) {
               final product = productList[index];
-              double? priceAsDouble = double.tryParse(
-                  product.price.replaceAll(',', '').replaceAll('.', ''));
-              double adjustedPrice = (priceAsDouble ?? 0) / 100;
+              double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
 
               return ListTile(
                 leading: GestureDetector(
@@ -125,7 +123,7 @@ class ProductList extends StatelessWidget {
                     Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
                   },
                   child: Text(
-                    '${currencyFormat.format(adjustedPrice)} | ${product.stock} in stock',
+                    '${currencyFormat.format(priceAsDouble)} | ${product.stock} in stock',
                     style: titleproductTextStyle,
                   ),
                 ),
@@ -148,13 +146,13 @@ class ProductList extends StatelessWidget {
                               },
                               onConfirmPressed: () {
                                 Get.toNamed(Routes.EDIT_TOPPING_PAGE, arguments: product);
-                                // if (product.category == 'Topping') {
-                                //   Get.toNamed(Routes.EDIT_TOPPING_PAGE, arguments: product);
-                                // } if (product.category == 'Variant') {
-                                //   Get.toNamed(Routes.EDIT_VARIAN_PAGE,  arguments: product);
-                                // }else {
-                                //   Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
-                                // }
+                                if (product.category == 'Topping') {
+                                  Get.toNamed(Routes.EDIT_TOPPING_PAGE, arguments: product);
+                                } if (product.category == 'Variant') {
+                                  Get.toNamed(Routes.EDIT_VARIAN_PAGE,  arguments: product);
+                                }else {
+                                  Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
+                                }
                                 productController.fetchAllData();
                                 // Get.back();
                               },
@@ -184,11 +182,11 @@ class ProductList extends StatelessWidget {
                               },
                               onConfirmPressed: () {
                                 if (product.category == 'Topping') {
-                                  productController.deleteToppings(product.menuId);
+                                  productController.deleteToppings(product.id);
                                 } if (product.category == 'Variant') {
-                                  productController.deleteVariant(product.menuId); 
+                                  productController.deleteVariant(product.id); 
                                 }else {
-                                  productController.deleteProduct(product.menuId);
+                                  productController.deleteProduct(product.id);
                                 }
                                 productController.fetchAllData();
                                 Get.back();

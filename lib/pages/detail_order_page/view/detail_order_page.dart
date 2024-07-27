@@ -51,7 +51,7 @@ class DetailOrderPage extends StatelessWidget {
     // Find menu items related to the order
     final menuItems = controller.orderList
         .where((o) => o.orderId == order.orderId)
-        .map((o) => controller.menuList.firstWhere((menu) => menu.menuId == int.parse(o.menuId)))
+        .map((o) => controller.menuList.firstWhere((menu) => menu.id == int.parse(o.menuId)))
         .toList();
 
     // find customerdata related to the order

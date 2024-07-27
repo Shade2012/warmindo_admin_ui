@@ -66,7 +66,7 @@ class ProductController extends GetxController {
       searchResults.addAll(toppingList.where((topping) {
         return topping.nameTopping.toLowerCase().contains(enteredKeyword);
       }).map((topping) => model.Menu(
-          menuId: topping.toppingId,
+          id: topping.toppingId,
           nameMenu: topping.nameTopping,
           price: topping.price,
           image: topping.image, 
@@ -81,7 +81,7 @@ class ProductController extends GetxController {
       searchResults.addAll(variantList.where((variant) {
         return variant.nameVarian.toLowerCase().contains(enteredKeyword);
       }).map((variant) => model.Menu(
-          menuId: variant.idVarian,
+          id: variant.idVarian,
           nameMenu: variant.nameVarian,
           price: '0', 
           image: variant.image ?? '', // Handle null value
@@ -215,8 +215,8 @@ class ProductController extends GetxController {
         final responseData = json.decode(response.body);
         if (responseData is Map<String, dynamic> &&
             responseData['data'] is Map<String, dynamic> &&
-            responseData['data']['menu'] is List) {
-          final List<dynamic> toppingListData = responseData['data']['menu'];
+            responseData['data'] is List) {
+          final List<dynamic> toppingListData = responseData['data'];
           toppingList.value =
               toppingListData.map((json) => Topping.fromJson(json)).toList();
           filterProducts();
@@ -263,7 +263,7 @@ class ProductController extends GetxController {
     if (selectedCategory.value == 'Semua') {
       filteredProductList.assignAll(allProductList);
       filteredProductList.addAll(toppingList.map((topping) => model.Menu(
-        menuId: topping.toppingId,
+        id: topping.toppingId,
         nameMenu: topping.nameTopping,
         price: topping.price,
         image: topping.image ?? '', // Handle null value
@@ -276,7 +276,7 @@ class ProductController extends GetxController {
         secondCategory: '',
       )).toList());
       filteredProductList.addAll(variantList.map((variant) => model.Menu(
-        menuId: variant.idVarian,
+        id: variant.idVarian,
         nameMenu: variant.nameVarian,
         price: '', 
         image: variant.image ?? '', 
@@ -296,7 +296,7 @@ class ProductController extends GetxController {
       filteredProductList.assignAll(snackList);
     } else if (selectedCategory.value == 'Topping') {
       filteredProductList.assignAll(toppingList.map((topping) => model.Menu(
-        menuId: topping.toppingId,
+        id: topping.toppingId,
         nameMenu: topping.nameTopping,
         price: topping.price,
         image: topping.image ?? '', // Handle null value
@@ -310,7 +310,7 @@ class ProductController extends GetxController {
       )).toList());
     } else if (selectedCategory.value == 'Varian') {
       filteredProductList.assignAll(variantList.map((variant) => model.Menu(
-        menuId: variant.idVarian,
+        id: variant.idVarian,
         nameMenu: variant.nameVarian,
         price: '', // You might need to update this according to your needs
         image: variant.image ?? '', // Handle null value

@@ -196,7 +196,7 @@ class EditToppingPage extends StatelessWidget {
 
                       if (selectedImage != null) {
                         editToppingController.updateTopping(
-                          toppingId: topping.menuId.toString(),
+                          toppingId: topping.id.toString(),
                           nameTopping: ctrToppingName.text,
                           price: double.tryParse(ctrToppingPrice.text) ?? 0.0,
                           stock: int.tryParse(ctrToppingStock.text) ?? 0,
@@ -204,7 +204,7 @@ class EditToppingPage extends StatelessWidget {
                         );
                       } else {
                         editToppingController.updateTopping(
-                          toppingId: topping.menuId.toString(),
+                          toppingId: topping.id.toString(),
                           nameTopping: ctrToppingName.text,
                           price: double.tryParse(ctrToppingPrice.text) ?? 0.0,
                           stock: int.tryParse(ctrToppingStock.text) ?? 0,

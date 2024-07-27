@@ -118,6 +118,6 @@ class OrderController extends GetxController {
   }
 
   Menu? getMenuById(int id) {
-    return menuList.firstWhereOrNull((menu) => menu.menuId == id);
+    return menuList.firstWhereOrNull((menu) => menu.id == id);
   }
 }

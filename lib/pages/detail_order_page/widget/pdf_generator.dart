@@ -18,7 +18,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
 
   for (var orderItem in controller.orderList) {
     if (orderItem.orderId == order.orderId) {
-      final menu = controller.menuList.firstWhere((menu) => menu.menuId == int.parse(orderItem.menuId));
+      final menu = controller.menuList.firstWhere((menu) => menu.id == int.parse(orderItem.menuId));
       totalPrice += double.parse(menu.price);
       menuItems.add(pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,

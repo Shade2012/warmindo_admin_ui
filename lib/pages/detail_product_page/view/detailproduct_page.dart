@@ -208,7 +208,7 @@ class DetailProductPage extends StatelessWidget {
                                 Get.back();
                               },
                               onConfirmPressed: () {
-                                productController.deleteProduct(product.menuId);
+                                productController.deleteProduct(product.id);
                                 productController.fetchAllData();
                                 Get.back();
                               },

@@ -247,7 +247,7 @@ class EditProductPage extends StatelessWidget {
 
                       if (selectedImage != null) {
                         editProductController.updateProduct(
-                          menuId: product.menuId.toString(),
+                          menuId: product.id.toString(),
                           nameMenu: ctrProductName.text,
                           price: int.parse(ctrProductPrice.text),
                           category: selectedCategory.value,
@@ -258,7 +258,7 @@ class EditProductPage extends StatelessWidget {
                         );
                       } else {
                         editProductController.updateProduct(
-                          menuId: product.menuId.toString(),
+                          menuId: product.id.toString(),
                           nameMenu: ctrProductName.text,
                           price: int.parse(ctrProductPrice.text),
                           category: selectedCategory.value,
