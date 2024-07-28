@@ -64,7 +64,7 @@ class OrderBox extends StatelessWidget {
     final menuItems = controller.orderList
         .where((o) => o.orderId == order.orderId)
         .map((o) => controller.menuList
-            .firstWhere((menu) => menu.menuId == int.parse(o.menuId)))
+            .firstWhere((menu) => menu.id == int.parse(o.menuId)))
         .toList();
 
     double totalPrice = 0;
