@@ -24,7 +24,6 @@ class DetailProductPage extends StatelessWidget {
 
     // Handle potential null or invalid ratings
     double? priceAsDouble = double.tryParse(product.price?.replaceAll(',', '').replaceAll('.', '') ?? '');
-    double adjustedPrice = (priceAsDouble ?? 0.0) / 100;
 
     // Handle potential null or invalid ratings
     double? ratingAsDouble = double.tryParse(product.ratings ?? '');
@@ -142,7 +141,7 @@ class DetailProductPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    '${currencyFormat.format(adjustedPrice)}',
+                    '${currencyFormat.format(priceAsDouble)}',
                     style: priceCProductDetailTextStyle,
                   ),
                 ],

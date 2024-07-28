@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/view/bottomsheet_schedule_page.dart';
@@ -30,7 +29,7 @@ class SchedulePage extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.1,
+            horizontal: screenWidth * 0.05,
             vertical: screenHeight * 0.03,
           ),
           child: Obx(() {
@@ -65,78 +64,62 @@ class SchedulePage extends StatelessWidget {
                       itemCount: schedules.length,
                       itemBuilder: (context, index) {
                         var schedule = schedules[index];
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    schedule.days,
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(schedule.hours),
-                                  SizedBox(height: 4),
-                                  Text('Temporary Closure: ${schedule.temporaryClosureDuration}'),
-                                  SizedBox(height: 4),
-                                  Text('Status: ${schedule.isOpen ? 'Open' : 'Closed'}'),
-                                ],
-                              ),
-                              Switch(
-                                value: schedule.isOpen,
-                                onChanged: (newValue) {
-                                  // Update the schedule status
-                                  scheduleController.updateStatusSchedule(
-                                    isOpen: newValue ? '1' : '0',
-                                    temporaryClosureDuration: schedule.temporaryClosureDuration,
-                                  );
-                                  print('isOpen value changed to: $newValue');
-                                },
-                                activeColor: Colors.green,
-                                inactiveThumbColor: Colors.grey,
-                              ),
-                            ],
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BottomSheetSchedule();
+                              },
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      schedule.days,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 16),
+                                    Text(schedule.hours),
+                                    SizedBox(height: 16),
+                                    // Text('Temporary Closure: ${schedule.temporaryClosureDuration}'),
+                                    // SizedBox(height: 4),
+                                    // Text('Status: ${schedule.isOpen ? 'Open' : 'Closed'}'),
+                                  ],
+                                ),
+                                // Switch(
+                                // value: schedule.isOpen,
+                                // onChanged: (newValue) {
+                                // Update the schedule status
+                                // scheduleController.updateStatusSchedule(
+                                // isOpen: newValue ? '1' : '0',
+                                // temporaryClosureDuration: schedule.temporaryClosureDuration,
+                                // );
+                                // print('isOpen value changed to: $newValue');
+                                // },
+                                // activeColor: Colors.green,
+                                // inactiveThumbColor: Colors.grey,
+                                // ),
+                              ],
+                            ),
                           ),
                         );
                       },
                     ),
                   ),
                 SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      builder: (BuildContext context) {
-                        return BottomSheetSchedule();
-                      },
-                    ).whenComplete(() {
-                      // Optionally refresh schedule list after adding new schedule
-                      scheduleController.fetchScheduleList();
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: ColorResources.primaryColor,
-                    foregroundColor: ColorResources.primaryColorLight,
-                    minimumSize: Size(screenWidth * 0.6, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(11),
-                    ),
-                  ),
-                  child: Text('Tambah Jadwal Khusus'),
-                ),
               ],
             );
           }),

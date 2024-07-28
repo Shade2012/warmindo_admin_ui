@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:warmindo_admin_ui/pages/sales_detail_page/controller/sales_detail_controller.dart';
 import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
-import '../model/sales_model.dart';
 
 class SalesDetailPage extends StatelessWidget {
   SalesDetailPage({Key? key}) : super(key: key);
@@ -110,56 +109,100 @@ class SalesDetailPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(
-                        title: AxisTitle(
-                          text: 'Waktu',
-                          textStyle: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+                    child: BarChart(
+                      BarChartData(
+                        alignment: BarChartAlignment.spaceAround,
+                        titlesData: FlTitlesData(
+                          show: true,
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              getTitlesWidget: (value, meta) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    controller.chartData[value.toInt()].year,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                );
+                              },
+                              reservedSize: 28,
+                            ),
+                          ),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              interval: 80,
+                              showTitles: true,
+                              getTitlesWidget: (value, meta) {
+                                return Text(
+                                  controller.yAxisTitle.value,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 8,
+                                  ),
+                                );
+                              },
+                              reservedSize: 50,
+                            ),
+                          ),
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        barGroups: controller.chartData
+                            .asMap()
+                            .entries
+                            .map((entry) => BarChartGroupData(
+                                  x: entry.key,
+                                  barRods: [
+                                    BarChartRodData(
+                                      toY: entry.value.sales,
+                                      color: Colors.black87,
+                                      width: screenWidth * 0.06,
+                                    ),
+                                  ],
+                                ))
+                            .toList(),
+                        barTouchData: BarTouchData(
+                          touchTooltipData: BarTouchTooltipData(
+                            tooltipRoundedRadius: 8,
+                            tooltipPadding: const EdgeInsets.all(8),
+                            getTooltipItem: (
+                              group,
+                              groupIndex,
+                              rod,
+                              rodIndex,
+                            ) {
+                              return BarTooltipItem(
+                                rod.toY.toStringAsFixed(0),
+                                TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text:
+                                        ' ${controller.chartData[groupIndex].year}',
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            getTooltipColor: (barChartGroupData) =>
+                                Colors.white,
+                            tooltipMargin: 10,
+                            fitInsideVertically: true,
+                            fitInsideHorizontally: true,
                           ),
                         ),
                       ),
-                      primaryYAxis: NumericAxis(
-                        title: AxisTitle(
-                          text: controller.yAxisTitle.value,
-                          textStyle: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      trackballBehavior: TrackballBehavior(
-                        enable: true,
-                        activationMode: ActivationMode.singleTap,
-                        lineType: TrackballLineType.vertical,
-                        tooltipSettings: InteractiveTooltip(
-                          enable: true,
-                          color: Colors.white,
-                          textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                          // format: 'point.x : point.y',
-                          borderColor: Colors.black,
-                          borderWidth: 1,
-                        ),
-                      ),
-                      legend: Legend(
-                        isVisible: true,
-                        alignment: ChartAlignment.center,
-                        position: LegendPosition.bottom,
-                      ),
-                      series: <ColumnSeries<SalesData, String>>[
-                        ColumnSeries<SalesData, String>(
-                          dataSource: controller.chartData,
-                          xValueMapper: (SalesData sales, _) => sales.year, // Use 'date' here
-                          yValueMapper: (SalesData sales, _) => sales.sales,
-                          color: Colors.black87,
-                          animationDuration: 0,
-                          name: 'Data Penjualan',
-                        ),
-                      ],
                     ),
                   ),
                 ),
