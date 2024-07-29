@@ -29,7 +29,7 @@ class AddToppingController extends GetxController {
       try {
         isLoading.value = true;
         var request = http.MultipartRequest('POST', Uri.parse(ToppingsApi.storeToppings))
-          ..fields['name_topping'] = nameTopping // Mengubah menjadi 'name_topping'
+          ..fields['name_topping'] = nameTopping 
           ..fields['price'] = price.toString()
           ..fields['stock'] = stock.toString();
         

@@ -20,9 +20,9 @@ class DetailProductPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
-    final ProductController productController = Get.put(ProductController());
+    final ProductController productController = Get.find<ProductController>();
 
-    // Handle potential null or invalid ratings
+    // Handle potential null or invalid price
     double? priceAsDouble = double.tryParse(product.price?.replaceAll(',', '').replaceAll('.', '') ?? '');
 
     // Handle potential null or invalid ratings
@@ -141,7 +141,9 @@ class DetailProductPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    '${currencyFormat.format(priceAsDouble)}',
+                    priceAsDouble != null
+                        ? '${currencyFormat.format(priceAsDouble)}'
+                        : 'Tidak ada harga',
                     style: priceCProductDetailTextStyle,
                   ),
                 ],

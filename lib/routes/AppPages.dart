@@ -184,7 +184,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.EDIT_VARIAN_PAGE,
-        page: () => EditVarianPage(),
+        page: () => EditVarianPage(varian: Get.arguments),
         binding: EditVariantBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
