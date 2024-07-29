@@ -1,51 +1,48 @@
-import 'dart:convert';
-
-CustomerList customerListFromJson(String str) => CustomerList.fromJson(json.decode(str));
-
-String customerListToJson(CustomerList data) => json.encode(data.toJson());
-
 class CustomerList {
-    bool success;
-    String message;
-    List<CustomerData> data;
+  bool success;
+  String message;
+  List<CustomerData> data;
 
-    CustomerList({
-        required this.success,
-        required this.message,
-        required this.data,
-    });
+  CustomerList({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
 
-    factory CustomerList.fromJson(Map<String, dynamic> json) => CustomerList(
-        success: json["success"],
-        message: json["message"],
-        data: List<CustomerData>.from(json["data"].map((x) => CustomerData.fromJson(x))),
-    );
+  factory CustomerList.fromJson(Map<String, dynamic> json) => CustomerList(
+    success: json['success'] ?? false,
+    message: json['message'] ?? '',
+    data: json['data'] != null
+        ? List<CustomerData>.from(json['data'].map((x) => CustomerData.fromJson(x)))
+        : [],
+  );
 
-    Map<String, dynamic> toJson() => {
-        "success": success,
-        "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-    };
+  Map<String, dynamic> toJson() => {
+    'success': success,
+    'message': message,
+    'data': List<dynamic>.from(data.map((x) => x.toJson())),
+  };
 }
 
 class CustomerData {
   int id;
   String name;
-  String? profilePicture;
+  String profilePicture;
   String username;
   String email;
-  String? emailVerifiedAt;
+  DateTime? emailVerifiedAt;
   String userVerified;
   String role;
   String phoneNumber;
   DateTime? phoneVerifiedAt;
+  String googleId;
   DateTime createdAt;
   DateTime updatedAt;
 
   CustomerData({
     required this.id,
     required this.name,
-    this.profilePicture,
+    required this.profilePicture,
     required this.username,
     required this.email,
     this.emailVerifiedAt,
@@ -53,37 +50,44 @@ class CustomerData {
     required this.role,
     required this.phoneNumber,
     this.phoneVerifiedAt,
+    required this.googleId,
     required this.createdAt,
     required this.updatedAt,
   });
 
   factory CustomerData.fromJson(Map<String, dynamic> json) => CustomerData(
-    id: json["id"],
-    name: json["name"],
-    profilePicture: json["profile_picture"],
-    username: json["username"],
-    email: json["email"],
-    emailVerifiedAt: json["email_verified_at"],
-    userVerified: json["user_verified"],
-    role: json["role"],
-    phoneNumber: json["phone_number"],
-    phoneVerifiedAt: json["phone_verified_at"] != null ? DateTime.parse(json["phone_verified_at"]) : null,
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    id: json['id'] ?? 0,
+    name: json['name'] ?? '',
+    profilePicture: json['profilePicture'] ?? '',
+    username: json['username'] ?? '',
+    email: json['email'] ?? '',
+    emailVerifiedAt: json['emailVerifiedAt'] != null
+        ? DateTime.parse(json['emailVerifiedAt'])
+        : null,
+    userVerified: json['userVerified'] ?? '',
+    role: json['role'] ?? '',
+    phoneNumber: json['phoneNumber'] ?? '',
+    phoneVerifiedAt: json['phoneVerifiedAt'] != null
+        ? DateTime.parse(json['phoneVerifiedAt'])
+        : null,
+    googleId: json['googleId'] ?? '',
+    createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json['updatedAt'] ?? DateTime.now().toIso8601String()),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "profile_picture": profilePicture,
-    "username": username,
-    "email": email,
-    "email_verified_at": emailVerifiedAt,
-    "user_verified": userVerified,
-    "role": role,
-    "phone_number": phoneNumber,
-    "phone_verified_at": phoneVerifiedAt?.toIso8601String(),
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    'id': id,
+    'name': name,
+    'profilePicture': profilePicture,
+    'username': username,
+    'email': email,
+    'emailVerifiedAt': emailVerifiedAt?.toIso8601String(),
+    'userVerified': userVerified,
+    'role': role,
+    'phoneNumber': phoneNumber,
+    'phoneVerifiedAt': phoneVerifiedAt?.toIso8601String(),
+    'googleId': googleId,
+    'createdAt': createdAt.toIso8601String(),
+    'updatedAt': updatedAt.toIso8601String(),
   };
 }
