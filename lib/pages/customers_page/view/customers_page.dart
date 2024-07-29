@@ -26,12 +26,12 @@ class CustomersPage extends StatelessWidget {
       body: Obx(() {
         if (!controller.isConnected.value) {
           return Center(
-          child: Text(
-            'Tidak ada koneksi internet mohon cek internet anda',
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        );
+            child: Text(
+              'Tidak ada koneksi internet mohon cek internet anda',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          );
         }
         if (controller.isLoading.value) {
           return buildShimmerList(screenWidth, screenHeight);
@@ -48,14 +48,17 @@ class CustomersPage extends StatelessWidget {
                 children: controller.searchResults.map((customer) {
                   return GestureDetector(
                     onTap: () {
-                     Get.toNamed(Routes.DETAIL_CUSTOMERS_PAGE, arguments: customer);
+                      Get.toNamed(Routes.DETAIL_CUSTOMERS_PAGE,
+                          arguments: customer);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        margin: EdgeInsets.only(top: 10, bottom: 5), 
-                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05,vertical: screenHeight * 0.015),
-                        width: screenWidth * 0.95, 
+                        margin: EdgeInsets.only(top: 10, bottom: 5),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                            vertical: screenHeight * 0.015),
+                        width: screenWidth * 0.95,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(6),
@@ -87,8 +90,7 @@ class CustomersPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                                height: screenHeight * 0.01), 
+                            SizedBox(height: screenHeight * 0.01),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,18 +98,17 @@ class CustomersPage extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.zero,
                                   child: Container(
-                                    width: screenWidth * 0.15, 
-                                    height: screenWidth * 0.15, 
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      image: DecorationImage(
-                                        image: customer.profilePicture != null
-                                            ? NetworkImage(
-                                                customer.profilePicture!)
-                                            : AssetImage(Images.userImage)
-                                                as ImageProvider,
-                                        fit: BoxFit.cover,
-                                      ),
+                                    width: screenWidth * 0.15,
+                                    height: screenWidth * 0.15,
+                                    child: FadeInImage(
+                                      placeholder: AssetImage(Images.mieAyam),
+                                      image: NetworkImage(customer.profilePicture),
+                                      fit: BoxFit.cover,
+                                      imageErrorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Icon(Icons.error,
+                                            color: Colors.red);
+                                      },
                                     ),
                                   ),
                                 ),
@@ -116,8 +117,8 @@ class CustomersPage extends StatelessWidget {
                                         0.02), // Spacer antara gambar dan teks
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.center, // Vertically center the text
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Vertically center the text
                                   children: [
                                     Text(
                                       customer
@@ -129,9 +130,10 @@ class CustomersPage extends StatelessWidget {
                                       customer.userVerified == 'Verifikasi'
                                           ? 'Verifikasi'
                                           : 'Belum Verifikasi',
-                                      style: customer.userVerified == 'Verifikasi'
-                                          ? verificationTextStyle
-                                          : unverificationTextStyle,
+                                      style:
+                                          customer.userVerified == 'Verifikasi'
+                                              ? verificationTextStyle
+                                              : unverificationTextStyle,
                                     ),
                                   ],
                                 ),
