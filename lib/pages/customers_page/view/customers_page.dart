@@ -101,14 +101,13 @@ class CustomersPage extends StatelessWidget {
                                     width: screenWidth * 0.15,
                                     height: screenWidth * 0.15,
                                     child: FadeInImage(
-                                      placeholder: AssetImage(Images.mieAyam),
-                                      image: NetworkImage(customer.profilePicture),
+                                      placeholder:AssetImage(Images.userImage),
+                                      image:NetworkImage(customer.profilePicture),
                                       fit: BoxFit.cover,
-                                      imageErrorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Icon(Icons.error,
-                                            color: Colors.red);
-                                      },
+                                      imageErrorBuilder: (context, error, stackTrace) {
+                                    print('Image load error: $error');
+                                    return Image.asset(Images.userImage);
+                                  },
                                     ),
                                   ),
                                 ),
