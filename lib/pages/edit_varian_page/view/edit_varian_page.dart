@@ -1,24 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:warmindo_admin_ui/global/model/product_response.dart';
 import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
 import 'package:warmindo_admin_ui/global/widget/up_image_bottomsheet.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/edit_varian_page/controller/edit_varian_controller.dart';
 
 class EditVarianPage extends StatelessWidget {
+  final Menu varian;
+  final EditVariantController varianController =
+      Get.put(EditVariantController());
   final TextEditingController ctrProductName = TextEditingController();
-  final TextEditingController ctrProductPrice = TextEditingController();
-  final TextEditingController ctrProductDesc = TextEditingController();
-  final TextEditingController ctrProductStock = TextEditingController();
   final selectedCategory = RxString('');
   final selectedStock = RxString('');
+
+  EditVarianPage({required this.varian}) {
+    ctrProductName.text = varian.nameMenu;
+    selectedCategory.value = varian.secondCategory;
+    selectedStock.value = varian.stock == '0' ? 'Tidak Tersedia' : 'Tersedia';
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
+    void getImage(ImageSource source) async {
+      varianController.getImage(source);
+    }
+
+    final stockItems = ['Tersedia', 'Tidak Tersedia'];
+    final categories = ['Mie', 'Pop Ice'];
+
+    // Ensure the selected values are valid
+    if (!categories.contains(selectedCategory.value)) {
+      selectedCategory.value = categories.first;
+    }
+    if (!stockItems.contains(selectedStock.value)) {
+      selectedStock.value = stockItems.first;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -58,11 +81,16 @@ class EditVarianPage extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  SizedBox(
-                    height: screenHeight * 0.15,
-                    width: screenHeight * 0.15,
-                    child: Image.asset(Images.defaultImage),
-                  ),
+                  Obx(() {
+                    return SizedBox(
+                      height: screenHeight * 0.15,
+                      width: screenHeight * 0.15,
+                      child: varianController.selectedImage.value != null
+                          ? Image.file(varianController.selectedImage.value!,
+                              fit: BoxFit.cover)
+                          : Image.network(varian.image, fit: BoxFit.cover),
+                    );
+                  }),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -70,7 +98,9 @@ class EditVarianPage extends StatelessWidget {
                       onTap: () {
                         showModalBottomSheet(
                           context: context,
-                          builder: (context) => UploadImage(),
+                          builder: (context) => UploadImage(
+                            onImageCapture: getImage,
+                          ),
                         );
                       },
                       child: Container(
@@ -80,8 +110,7 @@ class EditVarianPage extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child:
-                            Icon(Icons.camera_alt, size: screenHeight * 0.05),
+                        child: Icon(Icons.camera_alt, size: screenHeight * 0.05),
                       ),
                     ),
                   ),
@@ -104,10 +133,10 @@ class EditVarianPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Kategori Varian", style: titleAddProductTextStyle),
+                Text("Kategori Produk", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
-                      items: ['Mie', 'Pop Ice'],
+                      items: categories,
                       value: selectedCategory.value.isNotEmpty
                           ? selectedCategory.value
                           : null,
@@ -125,8 +154,8 @@ class EditVarianPage extends StatelessWidget {
                 Text("Stok Produk", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
-                      items: ['Tersedia', 'Tidak Tersedia'],
-                      value: selectedStock.value.isNotEmpty
+                      items: stockItems,
+                      value: stockItems.contains(selectedStock.value)
                           ? selectedStock.value
                           : null,
                       onChanged: (String? value) {
@@ -137,24 +166,29 @@ class EditVarianPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: screenHeight * 0.02),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Deskripsi Varian", style: titleAddProductTextStyle),
-                SizedBox(height: screenHeight * 0.01),
-                CustomTextField(
-                  controller: ctrProductDesc,
-                  hintText: "Ex: Mie Ayam Pedas Mantap",
-                  minLines: 3,
-                  maxLines: 5,
-                ),
-              ],
-            ),
-            SizedBox(height: screenHeight * 0.02),
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Update product in database
+                  if (ctrProductName.text.isEmpty ||
+                      selectedCategory.value.isEmpty ||
+                      selectedStock.value.isEmpty) {
+                    Get.snackbar(
+                      'Warning',
+                      'Semua data harus diisi dan valid',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.orange,
+                      colorText: Colors.white,
+                    );
+                    return;
+                  }
+
+                  varianController.updateVarian(
+                    varianId: varian.id.toString(),
+                    nameVarian: ctrProductName.text,
+                    category: selectedCategory.value,
+                    stock: selectedStock.value == 'Tersedia' ? 20 : 0,
+                    image: varianController.selectedImage.value,
+                  );
                 },
                 child: Text('Ubah Produk'),
                 style: ElevatedButton.styleFrom(

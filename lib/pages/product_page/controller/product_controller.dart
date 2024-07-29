@@ -71,7 +71,7 @@ class ProductController extends GetxController {
           price: topping.price,
           image: topping.image, 
           stock: topping.stock,
-          category: 'Topping',  // This is just an example, adjust accordingly
+          category: 'Topping',  
           ratings: '',
           description: '',
           createdAt: topping.createdAt,
@@ -86,13 +86,14 @@ class ProductController extends GetxController {
           price: '0', 
           image: variant.image ?? '', // Handle null value
           stock: variant.stockVarian,
-          category: 'Variant',  // This is just an example, adjust accordingly
+          category: variant.category,  
           ratings: '',
           description: '',
           createdAt: DateTime.now(),  // Placeholder, update as needed
           updatedAt: DateTime.now(),  // Placeholder, update as needed
           secondCategory: '',
-      )).toList());
+      )
+      ).toList());
     }
   }
 
@@ -286,7 +287,7 @@ class ProductController extends GetxController {
         description: '',
         createdAt: DateTime.now(),  
         updatedAt: DateTime.now(),  
-        secondCategory: '',
+        secondCategory: variant.category,
       )).toList());
     } else if (selectedCategory.value == 'Makanan') {
       filteredProductList.assignAll(foodList);

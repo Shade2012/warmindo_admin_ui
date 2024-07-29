@@ -36,18 +36,25 @@ class ProductPage extends StatelessWidget {
           CategoryWidget(
             onCategorySelected: (selectedCategory) {
               productController.selectedCategory(selectedCategory);
-              if (selectedCategory == 'Semua') {
-                productController.getAllProductList();
-              } else if (selectedCategory == 'Makanan') {
-                productController.getFoodList();
-              } else if (selectedCategory == 'Minuman') {
-                productController.getDrinkList();
-              } else if (selectedCategory == 'Snack') {
-                productController.getSnackList();
-              } else if (selectedCategory == 'Topping') {
-                productController.getToppingList();
-              } else if (selectedCategory == 'Varian') {
-                productController.getVariantList();
+              switch (selectedCategory) {
+                case 'Semua':
+                  productController.getAllProductList();
+                  break;
+                case 'Makanan':
+                  productController.getFoodList();
+                  break;
+                case 'Minuman':
+                  productController.getDrinkList();
+                  break;
+                case 'Snack':
+                  productController.getSnackList();
+                  break;
+                case 'Topping':
+                  productController.getToppingList();
+                  break;
+                case 'Varian':
+                  productController.getVariantList();
+                  break;
               }
             },
           ),
@@ -56,12 +63,6 @@ class ProductPage extends StatelessWidget {
             child: Obx(() {
               if (productController.searchObx.isNotEmpty) {
                 return Search();
-              } else if (productController.filteredProductList.isEmpty) {
-                return Center(
-                  child: Text(
-                    'Data kosong',
-                  ),
-                );
               } else {
                 return ProductList(productList: productController.filteredProductList);
               }

@@ -11,7 +11,7 @@ import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class EditToppingPage extends StatelessWidget {
-  final Menu topping; // Pastikan tipe data sesuai
+  final Menu topping; 
   final TextEditingController ctrToppingName = TextEditingController();
   final TextEditingController ctrToppingPrice = TextEditingController();
   final TextEditingController ctrToppingStock = TextEditingController();

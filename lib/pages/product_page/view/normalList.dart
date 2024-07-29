@@ -86,7 +86,10 @@ class ProductList extends StatelessWidget {
             itemCount: productList.length,
             itemBuilder: (context, index) {
               final product = productList[index];
-              double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
+              double? priceAsDouble = product.price != null
+                  ? double.tryParse(
+                      product.price.replaceAll(',', '').replaceAll('.', ''))
+                  : null;
 
               return ListTile(
                 leading: GestureDetector(
@@ -99,7 +102,7 @@ class ProductList extends StatelessWidget {
                       width: screenWidth * 0.15,
                       height: screenHeight * 0.15,
                       child: FadeInImage(
-                        placeholder: AssetImage(Images.mieAyam), 
+                        placeholder: AssetImage(Images.mieAyam),
                         image: NetworkImage(product.image),
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
@@ -123,7 +126,7 @@ class ProductList extends StatelessWidget {
                     Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
                   },
                   child: Text(
-                    '${currencyFormat.format(priceAsDouble)} | ${product.stock} in stock',
+                    '${priceAsDouble != null ? currencyFormat.format(priceAsDouble) : 'Rp 0'} | ${product.stock} in stock',
                     style: titleproductTextStyle,
                   ),
                 ),
@@ -145,16 +148,19 @@ class ProductList extends StatelessWidget {
                                 Get.back();
                               },
                               onConfirmPressed: () {
-                                Get.toNamed(Routes.EDIT_TOPPING_PAGE, arguments: product);
                                 if (product.category == 'Topping') {
-                                  Get.toNamed(Routes.EDIT_TOPPING_PAGE, arguments: product);
-                                } if (product.category == 'Variant') {
-                                  Get.toNamed(Routes.EDIT_VARIAN_PAGE,  arguments: product);
-                                }else {
-                                  Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
+                                  Get.toNamed(Routes.EDIT_TOPPING_PAGE,
+                                      arguments: product);
+                                } else if (product.category == 'Variant') {
+                                  Get.toNamed(Routes.EDIT_VARIAN_PAGE,
+                                      arguments: product);
+                                  print(product.category);
+                                } else {
+                                  Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
+                                      arguments: product);
                                 }
                                 productController.fetchAllData();
-                                // Get.back();
+                                
                               },
                               cancelButtonColor:
                                   ColorResources.primaryColorLight,
@@ -173,8 +179,7 @@ class ProductList extends StatelessWidget {
                           builder: (BuildContext context) {
                             return ReusableDialog(
                               title: "Delete",
-                              content:
-                                  "Apakah Kamu yakin ingin menghapus data?",
+                              content: "Apakah Kamu yakin ingin menghapus data?",
                               cancelText: "Tidak",
                               confirmText: "Iya",
                               onCancelPressed: () {
@@ -183,9 +188,9 @@ class ProductList extends StatelessWidget {
                               onConfirmPressed: () {
                                 if (product.category == 'Topping') {
                                   productController.deleteToppings(product.id);
-                                } if (product.category == 'Variant') {
-                                  productController.deleteVariant(product.id); 
-                                }else {
+                                } else if (product.category == 'Variant') {
+                                  productController.deleteVariant(product.id);
+                                } else {
                                   productController.deleteProduct(product.id);
                                 }
                                 productController.fetchAllData();
