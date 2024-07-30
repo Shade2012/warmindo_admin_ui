@@ -7,24 +7,22 @@ import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/customers_page/controller/customers_controller.dart';
 import 'package:warmindo_admin_ui/pages/edit_customers_page/controller/edit_customers_controller.dart';
-import 'package:warmindo_admin_ui/pages/login_page/controller/login_controller.dart';
+import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class EditCustomersPage extends StatelessWidget {
   final CustomerData customers;
   final TextEditingController ctrNameUser = TextEditingController();
   final TextEditingController ctrEmailUser = TextEditingController();
   final TextEditingController ctrPhoneUser = TextEditingController();
-  final EditCustomersController editCustomersController =
-      Get.put(EditCustomersController());
+  final EditCustomersController editCustomersController = Get.put(EditCustomersController());
   final CustomersController dataCustomers = Get.put(CustomersController());
-  final LoginController loginController = Get.put(LoginController());
   final selectedStatus = RxString('');
 
   EditCustomersPage({required this.customers}) {
     ctrNameUser.text = customers.name;
     ctrEmailUser.text = customers.email;
     ctrPhoneUser.text = customers.phoneNumber;
-    selectedStatus.value = customers.userVerified == 0 ? 'Terverifikasi' : 'Belum Terverifikasi';
+    selectedStatus.value = customers.userVerified == 0 ? 'Belum Terverifikasi' : 'Terverifikasi';
   }
 
   @override
@@ -77,13 +75,6 @@ class EditCustomersPage extends StatelessWidget {
                 readOnly: true,
               ),
               SizedBox(height: screenHeight * 0.02),
-              Text("No Telepon", style: titleAddProductTextStyle),
-              SizedBox(height: screenHeight * 0.01),
-              CustomTextField(
-                controller: ctrPhoneUser,
-                readOnly: true,
-              ),
-              SizedBox(height: screenHeight * 0.02),
               Text("Email", style: titleAddProductTextStyle),
               SizedBox(height: screenHeight * 0.01),
               CustomTextField(
@@ -106,21 +97,27 @@ class EditCustomersPage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    editCustomersController.updateCustomers(
-                      id: customers.id.toString(),
-                      userVerified:selectedStatus.value == 'Terverifikasi' ? '1' : '0',
-                    );
+                  onPressed: () async {
+                    try {
+                      if (selectedStatus.value == 'Terverifikasi') {
+                        await editCustomersController.verifyUser(customers.id.toString());
+                      } if (selectedStatus.value == 'Belum Terverifikasi') {
+                        await editCustomersController.unverifyUser(customers.id.toString());
+                      }
+                      Get.toNamed(Routes.BOTTOM_NAVIGATION);
+                      dataCustomers.fetchDataCustomer();
+                    } catch (e) {
+                      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+                    }
                   },
-                  child: Text('Edit Data'),
+                  child: Text('Ubah Data'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorResources.primaryColor,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: screenWidth * 0.35),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.35),
                   ),
                 ),
               ),
