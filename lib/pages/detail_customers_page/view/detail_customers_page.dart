@@ -61,15 +61,15 @@ class DetailCustomersPage extends StatelessWidget {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                TextFormField(
-                  readOnly: true,
-                  initialValue: customerData.phoneNumber,
-                  decoration: InputDecoration(
-                    labelText: "Nomor Telepon",
-                  ),
-                  keyboardType: TextInputType.phone,
-                ),
-                SizedBox(height: screenHeight * 0.02),
+                // TextFormField(
+                //   readOnly: true,
+                //   initialValue: customerData.phoneNumber,
+                //   decoration: InputDecoration(
+                //     labelText: "Nomor Telepon",
+                //   ),
+                //   keyboardType: TextInputType.phone,
+                // ),
+                // SizedBox(height: screenHeight * 0.02),
                 TextFormField(
                   
                   readOnly: true,

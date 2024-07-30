@@ -27,7 +27,7 @@ class CustomerList {
 class CustomerData {
   int id;
   String name;
-  String profilePicture;
+  String? profilePicture;
   String username;
   String email;
   DateTime? emailVerifiedAt;
@@ -35,14 +35,14 @@ class CustomerData {
   String role;
   String phoneNumber;
   DateTime? phoneVerifiedAt;
-  String googleId;
+  String? googleId;
   DateTime createdAt;
   DateTime updatedAt;
 
   CustomerData({
     required this.id,
     required this.name,
-    required this.profilePicture,
+    this.profilePicture,
     required this.username,
     required this.email,
     this.emailVerifiedAt,
@@ -50,7 +50,7 @@ class CustomerData {
     required this.role,
     required this.phoneNumber,
     this.phoneVerifiedAt,
-    required this.googleId,
+    this.googleId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -58,36 +58,68 @@ class CustomerData {
   factory CustomerData.fromJson(Map<String, dynamic> json) => CustomerData(
     id: json['id'] ?? 0,
     name: json['name'] ?? '',
-    profilePicture: json['profilePicture'] ?? '',
+    profilePicture: json['profile_picture'],
     username: json['username'] ?? '',
     email: json['email'] ?? '',
-    emailVerifiedAt: json['emailVerifiedAt'] != null
-        ? DateTime.parse(json['emailVerifiedAt'])
+    emailVerifiedAt: json['email_verified_at'] != null
+        ? DateTime.parse(json['email_verified_at'])
         : null,
-    userVerified: json['userVerified'] ?? '',
+    userVerified: json['user_verified'] ?? '',
     role: json['role'] ?? '',
-    phoneNumber: json['phoneNumber'] ?? '',
-    phoneVerifiedAt: json['phoneVerifiedAt'] != null
-        ? DateTime.parse(json['phoneVerifiedAt'])
+    phoneNumber: json['phone_number'] ?? '',
+    phoneVerifiedAt: json['phone_verified_at'] != null
+        ? DateTime.parse(json['phone_verified_at'])
         : null,
-    googleId: json['googleId'] ?? '',
-    createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
-    updatedAt: DateTime.parse(json['updatedAt'] ?? DateTime.now().toIso8601String()),
+    googleId: json['google_id'],
+    createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),
   );
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
-    'profilePicture': profilePicture,
+    'profile_picture': profilePicture,
     'username': username,
     'email': email,
-    'emailVerifiedAt': emailVerifiedAt?.toIso8601String(),
-    'userVerified': userVerified,
+    'email_verified_at': emailVerifiedAt?.toIso8601String(),
+    'user_verified': userVerified,
     'role': role,
-    'phoneNumber': phoneNumber,
-    'phoneVerifiedAt': phoneVerifiedAt?.toIso8601String(),
-    'googleId': googleId,
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
+    'phone_number': phoneNumber,
+    'phone_verified_at': phoneVerifiedAt?.toIso8601String(),
+    'google_id': googleId,
+    'created_at': createdAt.toIso8601String(),
+    'updated_at': updatedAt.toIso8601String(),
   };
+
+  CustomerData copyWith({
+    int? id,
+    String? name,
+    String? profilePicture,
+    String? username,
+    String? email,
+    DateTime? emailVerifiedAt,
+    String? userVerified,
+    String? role,
+    String? phoneNumber,
+    DateTime? phoneVerifiedAt,
+    String? googleId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return CustomerData(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      profilePicture: profilePicture ?? this.profilePicture,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
+      userVerified: userVerified ?? this.userVerified,
+      role: role ?? this.role,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      phoneVerifiedAt: phoneVerifiedAt ?? this.phoneVerifiedAt,
+      googleId: googleId ?? this.googleId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

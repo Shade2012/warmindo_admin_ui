@@ -10,6 +10,7 @@ class CustomersController extends GetxController {
   var allCustomerList = <CustomerData>[].obs;
   var searchResults = <CustomerData>[].obs;
   RxBool isLoading = true.obs;
+  RxString userVerified = ''.obs;
   RxBool isConnected = true.obs;
   final InternetService _internetService = InternetService();
   Timer? timer;
@@ -42,12 +43,16 @@ class CustomersController extends GetxController {
       final response = await http.get(Uri.parse(AllCustomers().customers));
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body)['data'];
+        final responseDatauser2 = json.decode(response.body)['data'][1]['user_verified'];
+        userVerified.value = responseDatauser2;
         if (responseData != null && responseData is List) {
           final List<dynamic> allCustomerListData = responseData;
           allCustomerList.value = allCustomerListData
               .map((json) => CustomerData.fromJson(json))
               .toList();
           searchResults.value = allCustomerList;
+          print('{userVerified.value}');
+          print(responseData);
           isLoading.value = false;
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
@@ -58,7 +63,7 @@ class CustomersController extends GetxController {
     } catch (error) {
       print("Error while fetching data: $error");
     } finally {
-      print('Selesai fetching data');
+      print('Selesai fetching data user');
     }
   }
 

@@ -38,7 +38,8 @@ class AuthEndpoint {
 
 class AllCustomers {
   final String customers = '$apiUrl/api/users/users';
-  final String updateCustomers = '$apiUrl/api/users/update';
+  final String verifyCustomer = '$apiUrl/api/admins/users/';
+  final String unverifyCustomer = '$apiUrl/api/admins/users/';
 }
 
 class OrderApi {
