@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
-import 'package:warmindo_admin_ui/global/widget/up_image_bottomsheet.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/add_topping_page/controller/add_topping_controller.dart';
 
@@ -16,10 +13,6 @@ class AddToppingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void getImage(ImageSource source) async {
-      toppingController.getImage(source);
-    }
-
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -58,49 +51,6 @@ class AddToppingPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Stack(
-                children: [
-                  Obx(() => SizedBox(
-                        height: screenHeight * 0.15,
-                        width: screenHeight * 0.15,
-                        child: toppingController.selectedImage.value != null &&
-                                toppingController.selectedImage.value!.path.isNotEmpty
-                            ? Image.file(
-                                toppingController.selectedImage.value!,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                Images.defaultImage,
-                                fit: BoxFit.cover,
-                              ),
-                      )),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => UploadImage(
-                            onImageCapture: getImage,
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: screenHeight * 0.04,
-                        height: screenHeight * 0.04,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Icon(Icons.camera_alt, size: screenHeight * 0.05),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: screenHeight * 0.02),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,12 +96,11 @@ class AddToppingPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  final selectedImage = toppingController.selectedImage.value;
                   final toppingName = ctrProductName.text;
                   final toppingPrice = double.tryParse(ctrProductPrice.text);
                   final toppingStock = int.tryParse(ctrProductStock.text);
 
-                  if (selectedImage == null || toppingName.isEmpty || toppingPrice == null || toppingStock == null) {
+                  if (toppingName.isEmpty || toppingPrice == null || toppingStock == null) {
                     Get.snackbar(
                       'Warning',
                       'Semua data harus diisi',
@@ -161,10 +110,10 @@ class AddToppingPage extends StatelessWidget {
                     );
                   } else {
                     toppingController.addToppings(
-                      image: selectedImage,
-                      nameTopping: toppingName, // Mengubah menjadi 'nameTopping'
+                      nameTopping: toppingName, 
                       price: toppingPrice,
                       stock: toppingStock,
+                      menu_id: 4
                     );
                   }
                 },
