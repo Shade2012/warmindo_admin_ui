@@ -4,7 +4,7 @@ import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/history_detail_page/view/detail_history_page.dart';
 import 'package:warmindo_admin_ui/pages/history_order_page/controller/history_controller.dart';
-import 'package:warmindo_admin_ui/global/model/history_order_model.dart';
+import 'package:warmindo_admin_ui/global/model/model_history_order.dart';
 
 class OrderStatusWidget extends StatelessWidget {
   final List<Order> orders;

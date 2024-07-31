@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/global/model/customers.dart';
+import 'package:warmindo_admin_ui/global/model/model_customers.dart';
 import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';

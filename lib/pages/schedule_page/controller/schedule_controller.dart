@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
-import 'package:warmindo_admin_ui/global/model/schedule_model.dart';
+import 'package:warmindo_admin_ui/global/model/model_schedule.dart';
 
 class ScheduleController extends GetxController {
   var isLoading = true.obs;
