@@ -66,17 +66,17 @@ class ProductController extends GetxController {
       searchResults.addAll(toppingList.where((topping) {
         return topping.nameTopping.toLowerCase().contains(enteredKeyword);
       }).map((topping) => model.Menu(
-          id: topping.toppingId,
+          id: topping.id,
           nameMenu: topping.nameTopping,
-          price: topping.price,
-          image: topping.image, 
-          stock: topping.stock,
+          price: topping.price.toString(),
+          image: '', 
+          stock: topping.stockTopping.toString(),
           category: 'Topping',  
           ratings: '',
           description: '',
           createdAt: topping.createdAt,
           updatedAt: topping.updatedAt,
-          secondCategory: '',
+          secondCategory: topping.menuId.toString(),
       )).toList());
       searchResults.addAll(variantList.where((variant) {
         return variant.nameVarian.toLowerCase().contains(enteredKeyword);
@@ -209,31 +209,30 @@ class ProductController extends GetxController {
     }
   }
 
-  Future<void> getToppingList() async {
-    try {
-      final response = await http.get(Uri.parse(ToppingsApi.getallToppingsList));
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        if (responseData is Map<String, dynamic> &&
-            responseData['data'] is Map<String, dynamic> &&
-            responseData['data'] is List) {
-          final List<dynamic> toppingListData = responseData['data'];
-          toppingList.value =
-              toppingListData.map((json) => Topping.fromJson(json)).toList();
-          filterProducts();
-        } else {
-          print('Data yang diterima tidak sesuai format yang diharapkan.');
-        }
+Future<void> getToppingList() async {
+  isLoading.value = true;  // Set loading status before starting the fetch
+  try {
+    final response = await http.get(Uri.parse(ToppingsApi.getallToppingsList));
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      if (responseData is Map<String, dynamic>) {
+        ToppingList toppingListData = ToppingList.fromJson(responseData);
+        toppingList.value = toppingListData.data;
+        filterProducts(); // Make sure this function is defined elsewhere
       } else {
-        print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
+        print('Data yang diterima tidak sesuai format yang diharapkan.');
       }
-    } catch (error) {
-      print("Error while fetching data: $error");
-    } finally {
-      isLoading.value = false;
-      print('Selesai fetching data');
+    } else {
+      print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
     }
+  } catch (error) {
+    print("Error while fetching data: $error");
+  } finally {
+    isLoading.value = false;  // Set loading status after the fetch completes
+    print('Selesai fetching data');
   }
+}
+
 
   Future<void> getVariantList() async {
     try {
@@ -264,17 +263,17 @@ class ProductController extends GetxController {
     if (selectedCategory.value == 'Semua') {
       filteredProductList.assignAll(allProductList);
       filteredProductList.addAll(toppingList.map((topping) => model.Menu(
-        id: topping.toppingId,
+        id: topping.id,
         nameMenu: topping.nameTopping,
-        price: topping.price,
-        image: topping.image ?? '', // Handle null value
-        stock: topping.stock,
+        price: topping.price.toString(),
+        image: '',
+        stock: topping.stockTopping.toString(),
         category: 'Topping',  
         ratings: '',
         description: '',
         createdAt: topping.createdAt,
         updatedAt: topping.updatedAt,
-        secondCategory: '',
+        secondCategory: topping.menuId.toString(),
       )).toList());
       filteredProductList.addAll(variantList.map((variant) => model.Menu(
         id: variant.idVarian,
@@ -297,17 +296,17 @@ class ProductController extends GetxController {
       filteredProductList.assignAll(snackList);
     } else if (selectedCategory.value == 'Topping') {
       filteredProductList.assignAll(toppingList.map((topping) => model.Menu(
-        id: topping.toppingId,
+        id: topping.id,
         nameMenu: topping.nameTopping,
-        price: topping.price,
-        image: topping.image ?? '', // Handle null value
-        stock: topping.stock,
+        price: topping.price.toString(),
+        image: '', // Handle null value
+        stock: topping.stockTopping.toString(),
         category: 'Topping',  // This is just an example, adjust accordingly
         ratings: '',
         description: '',
         createdAt: topping.createdAt,
         updatedAt: topping.updatedAt,
-        secondCategory: '',
+        secondCategory: topping.menuId.toString(),
       )).toList());
     } else if (selectedCategory.value == 'Varian') {
       filteredProductList.assignAll(variantList.map((variant) => model.Menu(

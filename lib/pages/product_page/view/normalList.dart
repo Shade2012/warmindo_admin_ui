@@ -106,7 +106,7 @@ class ProductList extends StatelessWidget {
                         image: NetworkImage(product.image),
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
-                          return Icon(Icons.error, color: Colors.red);
+                          return Image.asset(Images.mieAyam);
                         },
                       ),
                     ),

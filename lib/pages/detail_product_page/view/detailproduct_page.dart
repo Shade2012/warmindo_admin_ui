@@ -22,10 +22,8 @@ class DetailProductPage extends StatelessWidget {
     final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final ProductController productController = Get.find<ProductController>();
 
-    // Handle potential null or invalid price
     double? priceAsDouble = double.tryParse(product.price?.replaceAll(',', '').replaceAll('.', '') ?? '');
 
-    // Handle potential null or invalid ratings
     double? ratingAsDouble = double.tryParse(product.ratings ?? '');
     String ratingString = ratingAsDouble?.toString() ?? 'N/A';
 
@@ -73,7 +71,7 @@ class DetailProductPage extends StatelessWidget {
                   product.image ?? '', // Handle null image URL
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return Icon(Icons.error, color: Colors.red);
+                    return Image.asset(Images.mieAyam);
                   },
                 ),
               ),
@@ -115,7 +113,7 @@ class DetailProductPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  product.description ?? 'No Description', // Handle null description
+                  product.description ?? 'No Description', 
                   style: desccontentProductDetailTextStyle,
                 ),
               ],
