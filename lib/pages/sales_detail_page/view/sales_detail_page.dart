@@ -135,17 +135,25 @@ class SalesDetailPage extends StatelessWidget {
                           ),
                           leftTitles: AxisTitles(
                             sideTitles: SideTitles(
-                              interval: 80,
                               showTitles: true,
                               getTitlesWidget: (value, meta) {
-                                return Text(
-                                  controller.yAxisTitle.value,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 8,
-                                  ),
-                                );
+                                if (value == meta.max) {
+                                  return SideTitleWidget(
+                                    angle: 0,
+                                    space: 0,
+                                    axisSide: meta.axisSide,
+                                    child: Text(
+                                      controller.yAxisTitle.value,
+                                      style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                    ),
+                                    ),
+                                  );
+                                } else {
+                                  return Container();
+                                }
                               },
                               reservedSize: 50,
                             ),
