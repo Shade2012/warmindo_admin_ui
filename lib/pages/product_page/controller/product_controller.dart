@@ -342,8 +342,8 @@ Future<void> getToppingList() async {
         await fetchAllData();
       } else {
         // Error from server
-        Get.snackbar('Error', 'Gagal menghapus produk',
-            snackPosition: SnackPosition.TOP);
+        // Get.snackbar('Error', 'Gagal menghapus produk',
+            // snackPosition: SnackPosition.TOP);
       }
     } catch (e) {
       // Handle error
@@ -366,8 +366,8 @@ Future<void> getToppingList() async {
         await fetchAllData();
       } else {
         // Error from server
-        Get.snackbar('Error', 'Gagal menghapus topping',
-            snackPosition: SnackPosition.TOP);
+        // Get.snackbar('Error', 'Gagal menghapus topping',
+        //     snackPosition: SnackPosition.TOP);
       }
     } catch (e) {
       // Handle error
@@ -390,8 +390,8 @@ Future<void> getToppingList() async {
         await fetchAllData();
       } else {
         // Error from server
-        Get.snackbar('Error', 'Gagal menghapus variant',
-            snackPosition: SnackPosition.TOP);
+        // Get.snackbar('Error', 'Gagal menghapus variant',
+        //     snackPosition: SnackPosition.TOP);
       }
     } catch (e) {
       // Handle error

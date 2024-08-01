@@ -137,7 +137,7 @@ class SalesDetailPage extends StatelessWidget {
                             sideTitles: SideTitles(
                               showTitles: true,
                               getTitlesWidget: (value, meta) {
-                                if (value == meta.max) {
+                                if (value == meta.min) {
                                   return SideTitleWidget(
                                     angle: 0,
                                     space: 0,
