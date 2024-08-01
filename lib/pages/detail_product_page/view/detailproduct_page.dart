@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:warmindo_admin_ui/global/model/product_response.dart';
+import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';

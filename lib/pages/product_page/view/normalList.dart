@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:warmindo_admin_ui/global/model/product_response.dart';
+import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:warmindo_admin_ui/global/widget/reusable_dialog.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';

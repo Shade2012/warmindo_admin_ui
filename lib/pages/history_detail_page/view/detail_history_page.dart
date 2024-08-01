@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/history_detail_page/controller/detail_history_controller.dart';
-import 'package:warmindo_admin_ui/global/model/history_order_model.dart';
+import 'package:warmindo_admin_ui/global/model/model_history_order.dart';
 
 class DetailHistoryPage extends StatelessWidget {
   final DetailHistoryController controller = Get.put(DetailHistoryController());

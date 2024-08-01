@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
-import 'package:warmindo_admin_ui/global/model/customers.dart';
+import 'package:warmindo_admin_ui/global/model/model_customers.dart';
 import 'package:warmindo_admin_ui/global/model/model_order.dart';
-import 'package:warmindo_admin_ui/global/model/product_response.dart';
+import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/global/services/intenet_service.dart';
 import 'package:http/http.dart' as http;
 

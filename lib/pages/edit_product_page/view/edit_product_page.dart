@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/pages/edit_product_page/controller/edit_product_controller.dart';
-import 'package:warmindo_admin_ui/global/model/product_response.dart';
+import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';

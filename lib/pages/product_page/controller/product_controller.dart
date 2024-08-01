@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
-import 'package:warmindo_admin_ui/global/model/product_response.dart' as model;
-import 'package:warmindo_admin_ui/global/model/topping_model.dart';
-import 'package:warmindo_admin_ui/global/model/varian_model.dart';
+import 'package:warmindo_admin_ui/global/model/model_product_response.dart' as model;
+import 'package:warmindo_admin_ui/global/model/model_topping.dart';
+import 'package:warmindo_admin_ui/global/model/model_varian.dart';
 import 'package:warmindo_admin_ui/global/services/intenet_service.dart';
 
 class ProductController extends GetxController {

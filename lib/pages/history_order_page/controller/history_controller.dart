@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/global/model/history_order_model.dart';
+import 'package:warmindo_admin_ui/global/model/model_history_order.dart';
 
 class HistoryController extends GetxController {
   RxBool isConnection = false.obs;
