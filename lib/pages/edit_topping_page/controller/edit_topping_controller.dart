@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
@@ -15,27 +14,16 @@ class EditToppingController extends GetxController {
     required String toppingId,
     required String nameTopping,
     required double price,
-    required int stock,
-    File? image,
+    required String stock,
   }) async {
     try {
       isLoading.value = true;
-      var uri = Uri.parse('${ToppingsApi.updateToppings}$toppingId');
-      var request = http.MultipartRequest('PUT', uri)
+      var uri = Uri.parse('${ToppingsApi.updateToppings}$toppingId?_method=PUT');
+      var request = http.MultipartRequest('POST', uri)
         ..fields['name_topping'] = nameTopping
         ..fields['price'] = price.toString()
-        ..fields['stock'] = stock.toString()
+        ..fields['stock_topping'] = stock.toString()
         ..headers['Accept'] = 'application/json';
-
-      // Check if image is provided and the path is not empty
-      if (image != null && image.path.isNotEmpty) {
-        request.files.add(http.MultipartFile(
-          'image',
-          image.readAsBytes().asStream(),
-          image.lengthSync(),
-          filename: 'topping_image.jpg',
-        ));
-      }
 
       var response = await http.Response.fromStream(await request.send());
       if (response.statusCode == 200) {
@@ -73,23 +61,6 @@ class EditToppingController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
-    }
-  }
-
-  void getImage(ImageSource imageSource) async {
-    final pickedFile = await ImagePicker().pickImage(source: imageSource);
-    if (pickedFile != null) {
-      selectedImage.value = File(pickedFile.path); // Store image as File
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.snackbar(
-          'Error',
-          'Tidak ada gambar yang dipilih',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      });
     }
   }
 }
