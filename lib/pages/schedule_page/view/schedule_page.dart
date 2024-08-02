@@ -33,7 +33,7 @@ class SchedulePage extends StatelessWidget {
             vertical: screenHeight * 0.03,
           ),
           child: Obx(() {
-            final schedules = scheduleController.schedules;
+            final schedules = scheduleController.scheduleElement;
             final isScheduleEmpty = schedules.isEmpty;
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -61,9 +61,9 @@ class SchedulePage extends StatelessWidget {
                 if (!isScheduleEmpty)
                   Expanded(
                     child: ListView.builder(
-                      itemCount: schedules.length,
+                      itemCount: scheduleController.scheduleElement.length,
                       itemBuilder: (context, index) {
-                        var schedule = schedules[index];
+                        var schedule = scheduleController.scheduleElement[index];
                         return GestureDetector(
                           onTap: () {
                             showModalBottomSheet(
@@ -92,26 +92,18 @@ class SchedulePage extends StatelessWidget {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(height: 16),
-                                    Text(schedule.hours),
+                                    Row(
+                                      children: [
+                                        Text(schedule.start_time),
+                                        SizedBox(width: 8),
+                                        Text('-'),
+                                        SizedBox(width: 8),
+                                        Text(schedule.end_time),
+                                      ],
+                                    ),
                                     SizedBox(height: 16),
-                                    // Text('Temporary Closure: ${schedule.temporaryClosureDuration}'),
-                                    // SizedBox(height: 4),
-                                    // Text('Status: ${schedule.isOpen ? 'Open' : 'Closed'}'),
                                   ],
                                 ),
-                                // Switch(
-                                // value: schedule.isOpen,
-                                // onChanged: (newValue) {
-                                // Update the schedule status
-                                // scheduleController.updateStatusSchedule(
-                                // isOpen: newValue ? '1' : '0',
-                                // temporaryClosureDuration: schedule.temporaryClosureDuration,
-                                // );
-                                // print('isOpen value changed to: $newValue');
-                                // },
-                                // activeColor: Colors.green,
-                                // inactiveThumbColor: Colors.grey,
-                                // ),
                               ],
                             ),
                           ),

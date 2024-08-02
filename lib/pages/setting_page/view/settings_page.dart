@@ -142,7 +142,7 @@ class SettingsPage extends StatelessWidget {
                                       borderRadius: BorderRadius.zero,
                                     ),
                                     builder: (BuildContext context) {
-                                      return BottomSheetShop();
+                                      return BottomSheetShop(scheduleId: 0,);
                                     },
                                   );
                                 },
