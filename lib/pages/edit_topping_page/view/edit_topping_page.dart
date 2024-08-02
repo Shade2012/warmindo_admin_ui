@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/global/model/product_response.dart'; // Pastikan import yang benar
+import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/pages/edit_topping_page/controller/edit_topping_controller.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';

@@ -82,10 +82,10 @@ class ProductPage extends StatelessWidget {
                 cancelText: "Tidak",
                 confirmText: "Iya",
                 onCancelPressed: () {
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
                 onConfirmPressed: () {
-                  Navigator.of(context).pop();
+                  Get.back();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {

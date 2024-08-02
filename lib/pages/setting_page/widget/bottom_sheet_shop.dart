@@ -6,7 +6,9 @@ import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class BottomSheetShop extends StatelessWidget {
-  const BottomSheetShop({Key? key}) : super(key: key);
+  final int scheduleId; // Assuming this is passed to the widget
+
+  const BottomSheetShop({Key? key, required this.scheduleId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +219,8 @@ class BottomSheetShop extends StatelessWidget {
                 } else {
                   await statusController.updateStatusSchedule(
                     isOpen: statusController.selectedStatus.value == 'Beroperasi Normal' ? '1' : '0',
-                    temporaryClosureDuration: statusController.selectedChip.value,
+                    temporaryClosureDuration: statusController.selectedChip.value, 
+                    scheduleId: scheduleId,
                   );
                   print('Selected status: ${statusController.selectedStatus.value}');
                   print('Selected chip: ${statusController.selectedChip.value}');

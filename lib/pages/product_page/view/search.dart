@@ -15,7 +15,8 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final currencyFormat =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -60,16 +61,17 @@ class Search extends StatelessWidget {
           itemCount: 12,
         );
       }
-      if(productController.searchResults.length == 0){
+      if (productController.searchResults.length == 0) {
         return Center(
           child: Text('Produk tidak ditemukan'),
         );
-      }else {
+      } else {
         return ListView.builder(
           itemCount: productController.searchResults.length,
           itemBuilder: (context, index) {
             final product = productController.searchResults[index];
-            double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
+            double? priceAsDouble = double.tryParse(
+                product.price.replaceAll(',', '').replaceAll('.', ''));
             double adjustedPrice = priceAsDouble! / 100;
 
             return ListTile(
@@ -82,6 +84,9 @@ class Search extends StatelessWidget {
                     placeholder: AssetImage(Images.mieAyam),
                     image: NetworkImage(product.image),
                     fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset(Images.mieAyam);
+                    },
                   ),
                 ),
               ),
@@ -111,7 +116,8 @@ class Search extends StatelessWidget {
                               Get.back();
                             },
                             onConfirmPressed: () {
-                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
+                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
+                                  arguments: product);
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
                             confirmButtonColor: ColorResources.buttonedit,

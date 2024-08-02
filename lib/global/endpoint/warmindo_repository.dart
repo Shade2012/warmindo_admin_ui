@@ -50,5 +50,5 @@ class OrderApi {
 class ScheduleApi {
   static var getallScheduleList = '$apiUrl/api/store-statuses';
   static var storeSchedule = '$apiUrl/api/store-statuses/store';
-  static var updateSchedule = '$apiUrl/api/store-statuses/1';
+  static var updateSchedule = '$apiUrl/api/store-statuses/';
 }

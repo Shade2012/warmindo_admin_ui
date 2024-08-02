@@ -5,7 +5,6 @@ import 'dart:developer';
 
 class BottomSheetSchedule extends StatelessWidget {
   final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
-
   BottomSheetSchedule({Key? key}) : super(key: key);
 
   @override

@@ -1,171 +1,108 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:warmindo_admin_ui/global/model/model_schedule.dart';
 
 class ScheduleController extends GetxController {
+  late final tz.Location asiaJakarta;
+  late final tz.TZDateTime now;
+  late final String today;
+  RxList<ScheduleList> scheduleElement = <ScheduleList>[].obs;
+  List<ScheduleList> jadwalElement = <ScheduleList>[];
   var isLoading = true.obs;
-  var schedules = <Schedule>[].obs;
   var selectedStatus = 'Beroperasi Normal'.obs;
   var selectedChip = ''.obs;
+  var $scheduleId = ''.obs;
 
   @override
   void onInit() {
-    fetchScheduleList();
     super.onInit();
+    initializeDateFormatting('id_ID', null).then((_) {
+      tz.initializeTimeZones();
+      asiaJakarta = tz.getLocation('Asia/Jakarta');
+      now = tz.TZDateTime.now(asiaJakarta);
+      today = DateFormat('EEEE', 'id_ID').format(now);
+
+      fetchScheduleList();
+    }).catchError((e) {
+      print('Error initializing date formatting: $e');
+    });
   }
 
   Future<void> fetchScheduleList() async {
     try {
-      final response = await http.get(Uri.parse(ScheduleApi.getallScheduleList));
+      isLoading.value = true;
+      var response = await http.get(Uri.parse(ScheduleApi.getallScheduleList));
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body)['data'];
-        if (responseData != null && responseData is List) {
-          schedules.value = responseData.map((json) => Schedule.fromJson(json)).toList();
-          isLoading.value = false;
-        } else {
-          print('Received data format is not as expected.');
-        }
+        scheduleElement.value = scheduleListFromJson(response.body);
+        final List<ScheduleList> todaySchedule = scheduleElement
+            .where((schedule) => schedule.days == today)
+            .toList();
+        jadwalElement = todaySchedule;
+        print('Schedule fetched successfully');
+        print('Response: ${response.body}');
       } else {
-        print('Failed to fetch data. Response status: ${response.statusCode}');
+        print('Failed to fetch schedule: ${response.statusCode}');
+        print('Response: ${response.body}');
       }
-    } catch (error) {
-      print("Error while fetching data: $error");
+    } catch (e) {
+      print('Error occurred while fetching schedule: $e');
     } finally {
-      print('Finished fetching data');
+      isLoading.value = false;
     }
   }
-Future<void> updateStatusSchedule({
-  required String isOpen,
-  required String temporaryClosureDuration,
-}) async {
-  // Determine the actual values for `isOpen` and `temporaryClosureDuration`
-  if (selectedStatus.value == 'Beroperasi Normal') {
-    isOpen = '1'; // Open
-    temporaryClosureDuration = ''; 
-  } else if (selectedStatus.value == 'Tutup Sementara') {
-    isOpen = '0'; // Closed
-    temporaryClosureDuration = selectedChip.value; 
-  } else if (selectedStatus.value == 'Tutup') {
-    isOpen = '0'; // Closed
-    temporaryClosureDuration = ''; 
-  } else if (selectedStatus.value == 'Jadwal Khusus') {
-    isOpen = '1'; // Assume it's open if it’s a special schedule
-    // Set temporaryClosureDuration if needed
-  }
 
-  try {
-    isLoading.value = true;
-    var uri = Uri.parse('${ScheduleApi.updateSchedule}');
-    var response = await http.put(
-      uri,
-      headers: {'Accept': 'application/json'},
-      body: {
-        'is_open': isOpen,
-        'temporary_closure_duration': temporaryClosureDuration,
-      },
-    );
+  Future<void> updateStatusSchedule({
+    required String isOpen,
+    required String temporaryClosureDuration,
+    required int scheduleId,
+  }) async {
+    try {
+      isLoading.value = true;
+      var uri =
+          Uri.parse('${ScheduleApi.updateSchedule}/$scheduleId?_method=PUT');
+      var response = await http.post(
+        uri,
+        headers: {'Accept': 'application/json'},
+        body: {
+          'id': scheduleId.toString(),
+          'is_open': isOpen,
+          'temporary_closure_duration': temporaryClosureDuration,
+        },
+      );
 
-    if (response.statusCode == 200) {
-      isLoading.value = false;
-      print('Schedule updated successfully');
-      print('Response: ${response.body}');
-      Get.back(); 
-    } else {
-      isLoading.value = false;
-      print('Failed to update schedule: ${response.statusCode}');
-      print('Response: ${response.body}');
-
+      if (response.statusCode == 200) {
+        print('Schedule updated successfully');
+        print('Response: ${response.body}');
+        Get.back();
+      } else {
+        print('Failed to update schedule: ${response.statusCode}');
+        print('Response: ${response.body}');
+        Get.snackbar(
+          'Error',
+          'Failed to update schedule!',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      print('Error occurred while updating schedule: $e');
       Get.snackbar(
         'Error',
-        'Failed to update schedule!',
+        '$e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+    } finally {
+      isLoading.value = false;
     }
-  } catch (e) {
-    isLoading.value = false;
-    print('Error occurred while updating schedule: $e');
-    Get.snackbar(
-      'Error',
-      '$e',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
-  }
-}
-
-// Future<void> updateStatusSchedule({
-  // required String isOpen,
-  // required String temporaryClosureDuration,
-// }) async {
-  // Determine the actual values for `isOpen` and `temporaryClosureDuration`
-  // if (selectedStatus.value == 'Beroperasi Normal') {
-    // isOpen = '1'; // Open
-    // temporaryClosureDuration = ''; // Not needed for normal operation
-  // } else if (selectedStatus.value == 'Tutup Sementara') {
-    // isOpen = '0'; // Closed
-    // temporaryClosureDuration = selectedChip.value; // Use selected chip value
-  // } else if (selectedStatus.value == 'Tutup') {
-    // isOpen = '0'; // Closed
-    // temporaryClosureDuration = ''; // Not needed for permanent closure
-  // } else if (selectedStatus.value == 'Jadwal Khusus') {
-    // Custom logic for special schedule can be added here
-    // Example:
-    // isOpen = '1'; // Assume it's open if it’s a special schedule
-    // temporaryClosureDuration can be a custom value if needed
-//   }
-
-//   try {
-//     isLoading.value = true;
-//     var uri = Uri.parse('${ScheduleApi.updateSchedule}');
-//     var request = http.MultipartRequest('PUT', uri)
-//       ..fields['is_open'] = isOpen
-//       ..fields['temporary_closure_duration'] = temporaryClosureDuration
-//       ..headers['Accept'] = 'application/json';
-
-//     var response = await http.Response.fromStream(await request.send());
-
-//     if (response.statusCode == 200) {
-//       isLoading.value = false;
-//       print('Schedule updated successfully');
-//       print('Response: ${response.body}');
-//       Get.back(); // Go back after a successful update
-//     } else {
-//       isLoading.value = false;
-//       print('Failed to update schedule: ${response.statusCode}');
-//       print('Response: ${response.body}');
-
-//       Get.snackbar(
-//         'Error',
-//         'Failed to update schedule!',
-//         snackPosition: SnackPosition.BOTTOM,
-//         backgroundColor: Colors.red,
-//         colorText: Colors.white,
-//       );
-//     }
-//   } catch (e) {
-//     isLoading.value = false;
-//     print('Error occurred while updating schedule: $e');
-//     Get.snackbar(
-//       'Error',
-//       '$e',
-//       snackPosition: SnackPosition.BOTTOM,
-//       backgroundColor: Colors.red,
-//       colorText: Colors.white,
-//     );
-//   }
-// }
-
-  
-  void updateScheduleStatusLocal(int index, bool newValue) {
-    schedules[index].isOpen = newValue;
-    schedules.refresh();
-    // Optionally, you can make an API call to update the status on the server.
   }
 
   void setStatus(String status) {
@@ -178,9 +115,5 @@ Future<void> updateStatusSchedule({
 
   void resetChip() {
     selectedChip.value = '';
-  }
-
-  Future<void> insertSchedule(Schedule schedule) async {
-    // Implement insert schedule functionality here
   }
 }
