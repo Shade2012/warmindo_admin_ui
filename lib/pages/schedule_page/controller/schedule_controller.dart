@@ -17,7 +17,7 @@ class ScheduleController extends GetxController {
   var isLoading = true.obs;
   var selectedStatus = 'Beroperasi Normal'.obs;
   var selectedChip = ''.obs;
-  var $scheduleId = ''.obs;
+  var scheduleId = 0.obs;
 
   @override
   void onInit() {
@@ -44,6 +44,7 @@ class ScheduleController extends GetxController {
             .where((schedule) => schedule.days == today)
             .toList();
         jadwalElement = todaySchedule;
+        scheduleId.value = jadwalElement[0].id;
         print('Schedule fetched successfully');
         print('Response: ${response.body}');
       } else {
@@ -58,22 +59,23 @@ class ScheduleController extends GetxController {
   }
 
   Future<void> updateStatusSchedule({
-    required String isOpen,
-    required String temporaryClosureDuration,
-    required int scheduleId,
+    String? temporaryClosureDuration,
+    String? end_time,
+    String? start_time,
   }) async {
     try {
       isLoading.value = true;
-      var uri =
-          Uri.parse('${ScheduleApi.updateSchedule}/$scheduleId?_method=PUT');
+      var uri = Uri.parse('${ScheduleApi.updateSchedule}${scheduleId.value}?_method=PUT');
+
+      Map<String, String> body = {};
+      if (start_time != null) body['start_time'] = start_time;
+      if (end_time != null) body['end_time'] = end_time;
+      if (temporaryClosureDuration != null) body['temporary_closure_duration'] = temporaryClosureDuration;
+
       var response = await http.post(
         uri,
         headers: {'Accept': 'application/json'},
-        body: {
-          'id': scheduleId.toString(),
-          'is_open': isOpen,
-          'temporary_closure_duration': temporaryClosureDuration,
-        },
+        body: body,
       );
 
       if (response.statusCode == 200) {
@@ -117,3 +119,5 @@ class ScheduleController extends GetxController {
     selectedChip.value = '';
   }
 }
+
+
