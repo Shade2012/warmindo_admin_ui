@@ -81,6 +81,7 @@ class ScheduleController extends GetxController {
       if (response.statusCode == 200) {
         print('Schedule updated successfully');
         print('Response: ${response.body}');
+        await fetchScheduleList();
         Get.back();
       } else {
         print('Failed to update schedule: ${response.statusCode}');
