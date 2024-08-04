@@ -92,7 +92,7 @@ class OrderController extends GetxController {
     try {
       final response = await http.get(Uri.parse(OrderApi.getallOrderList));
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body)['data'];
+        final responseData = json.decode(response.body)['orders'];
         if (responseData != null && responseData is List) {
           final List<dynamic> orderListData = responseData;
           orderList.value =

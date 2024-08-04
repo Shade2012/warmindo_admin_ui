@@ -21,15 +21,15 @@ class OrderBox extends StatelessWidget {
 
   Color _getLabelColor(String status) {
     switch (status.toLowerCase()) {
-      case 'Selesai':
+      case 'selesai':
         return ColorResources.labelcomplete;
-      case 'Pesanan Siap':
+      case 'pesanan siap':
         return ColorResources.labelcomplete;
-      case 'Sedang Diproses':
+      case 'sedang diproses':
         return ColorResources.labelinprogg;
-      case 'Permintaan Pembatalan':
+      case 'permintaan pembatalan':
         return ColorResources.labelcancel;
-      case 'Dibatalkan':
+      case 'dibatalkan':
         return ColorResources.labelcancel;
       default:
         return Colors.black;
@@ -62,9 +62,9 @@ class OrderBox extends StatelessWidget {
 
     // Find menu items related to the order
     final menuItems = controller.orderList
-        .where((o) => o.orderId == order.orderId)
+        .where((o) => o.id == order.id)
         .map((o) => controller.menuList
-            .firstWhere((menu) => menu.id == int.parse(o.menuId)))
+            .firstWhere((menu) => menu.id == o.id))
         .toList();
 
     double totalPrice = 0;
@@ -131,7 +131,7 @@ class OrderBox extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('#ID ${order.orderId}', style: idOrderBoxTextStyle),
+                Text('#ID ${order.id}', style: idOrderBoxTextStyle),
                 Container(
                   padding: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(

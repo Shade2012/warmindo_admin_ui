@@ -1,119 +1,97 @@
 import 'dart:convert';
+
 OrderList orderListFromJson(String str) => OrderList.fromJson(json.decode(str));
+
 String orderListToJson(OrderList data) => json.encode(data.toJson());
 
 class OrderList {
-    bool success;
+    String status;
     String message;
-    List<Order> data;
+    List<Order> orders;
 
     OrderList({
-        required this.success,
+        required this.status,
         required this.message,
-        required this.data,
+        required this.orders,
     });
 
     OrderList copyWith({
-        bool? success,
+        String? status,
         String? message,
-        List<Order>? data,
+        List<Order>? orders,
     }) => 
         OrderList(
-            success: success ?? this.success,
+            status: status ?? this.status,
             message: message ?? this.message,
-            data: data ?? this.data,
+            orders: orders ?? this.orders,
         );
 
     factory OrderList.fromJson(Map<String, dynamic> json) => OrderList(
-        success: json["success"],
+        status: json["status"],
         message: json["message"],
-        data: List<Order>.from(json["data"].map((x) => Order.fromJson(x))),
+        orders: List<Order>.from(json["orders"].map((x) => Order.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "success": success,
+        "status": status,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "orders": List<dynamic>.from(orders.map((x) => x.toJson())),
     };
 }
 
 class Order {
-    int orderId;
+    int id;
     String userId;
-    String menuId;
     String priceOrder;
-    DateTime orderDate;
     String status;
-    String payment;
-    String refund;
     dynamic note;
     DateTime createdAt;
     DateTime updatedAt;
 
     Order({
-        required this.orderId,
+        required this.id,
         required this.userId,
-        required this.menuId,
         required this.priceOrder,
-        required this.orderDate,
         required this.status,
-        required this.payment,
-        required this.refund,
         required this.note,
         required this.createdAt,
         required this.updatedAt,
     });
 
     Order copyWith({
-        int? orderId,
+        int? id,
         String? userId,
-        String? menuId,
         String? priceOrder,
-        DateTime? orderDate,
         String? status,
-        String? payment,
-        String? refund,
         dynamic note,
         DateTime? createdAt,
         DateTime? updatedAt,
     }) => 
         Order(
-            orderId: orderId ?? this.orderId,
+            id: id ?? this.id,
             userId: userId ?? this.userId,
-            menuId: menuId ?? this.menuId,
             priceOrder: priceOrder ?? this.priceOrder,
-            orderDate: orderDate ?? this.orderDate,
             status: status ?? this.status,
-            payment: payment ?? this.payment,
-            refund: refund ?? this.refund,
             note: note ?? this.note,
             createdAt: createdAt ?? this.createdAt,
             updatedAt: updatedAt ?? this.updatedAt,
         );
 
     factory Order.fromJson(Map<String, dynamic> json) => Order(
-        orderId: json["order_id"],
-        userId: json["user_id"], 
-        menuId: json["menuID"],
+        id: json["id"],
+        userId: json["user_id"],
         priceOrder: json["price_order"],
-        orderDate: DateTime.parse(json["order_date"]),
         status: json["status"],
-        payment: json["payment"],
-        refund: json["refund"],
         note: json["note"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "order_id": orderId,
+        "id": id,
         "user_id": userId,
-        "menuID": menuId,
         "price_order": priceOrder,
-        "order_date": orderDate.toIso8601String(),
         "status": status,
-        "payment": payment,
-        "refund": refund,
         "note": note,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),

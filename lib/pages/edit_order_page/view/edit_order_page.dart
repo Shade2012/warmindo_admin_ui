@@ -19,8 +19,8 @@ class EditOrderPage extends StatelessWidget {
   EditOrderPage({required this.order}) {
     ctrUserId.text = order.userId;
     ctrPrice.text = order.priceOrder.toString();
-    ctrMenuId.text = order.menuId;
-    ctrRefund.text = order.refund == 0 ? 'Ya' : 'Tidak';
+    ctrMenuId.text = order.id.toString();
+    // ctrRefund.text = order.refund == 0 ? 'Ya' : 'Tidak';
     selectedCategory.value = order.status;
   }
 
@@ -116,14 +116,14 @@ class EditOrderPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  editOrderController.updateOrder(
-                    orderId: order.orderId.toString(),
-                    userId: order.userId,
-                    price: double.parse(order.priceOrder).toInt(),
-                    menuId: order.menuId,
-                    status: selectedCategory.value,
-                    refund: int.parse(order.refund),
-                  );
+                  // editOrderController.updateOrder(
+                  //   orderId: order.orderId.toString(),
+                  //   userId: order.userId,
+                  //   price: double.parse(order.priceOrder).toInt(),
+                  //   menuId: order.menuId,
+                  //   status: selectedCategory.value,
+                  //   refund: int.parse(order.refund),
+                  // );
                 },
                 child: Text('Ubah Status'),
                 style: ElevatedButton.styleFrom(

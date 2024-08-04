@@ -43,7 +43,7 @@ class AllCustomers {
 }
 
 class OrderApi {
-  static var getallOrderList = '$apiUrl/api/orders';
+  static var getallOrderList = '$apiUrl/api/admins/orders';
   static var editStatusOrder = '$apiUrl/api/orders/';
 }
 

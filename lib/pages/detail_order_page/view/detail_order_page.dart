@@ -43,25 +43,25 @@ class DetailOrderPage extends StatelessWidget {
 
     // Calculate total price
     double totalPrice = controller.orderList
-        .where((o) => o.orderId == order.orderId)
+        .where((o) => o.id == order.id)
         .fold(0, (sum, o) => sum + double.parse(o.priceOrder));
 
     final totalPayment = totalPrice + adminFee;
 
     // Find menu items related to the order
     final menuItems = controller.orderList
-        .where((o) => o.orderId == order.orderId)
-        .map((o) => controller.menuList.firstWhere((menu) => menu.id == int.parse(o.menuId)))
+        .where((o) => o.id == order.id)
+        .map((o) => controller.menuList.firstWhere((menu) => menu.id == o.id))
         .toList();
 
     // find customerdata related to the order
     final userData = controller.orderList
-        .where((o) => o.orderId == order.orderId)
+        .where((o) => o.id == order.id)
         .map((o) => controller.customersList.firstWhere((customer) => customer.id == int.parse(o.userId)))
         .toList();
 
     final labelColor = _getLabelColor(order.status);
-    final formattedDate = DateFormat('dd-MM-yyyy').format(order.orderDate);
+    final formattedDate = DateFormat('dd-MM-yyyy').format(order.createdAt);
 
     return Scaffold(
       appBar: AppBar(
@@ -116,7 +116,7 @@ class DetailOrderPage extends StatelessWidget {
                       children: [
                         Text('Warmindo Anggrek Muria', style: nameRestoTextStyle),
                         SizedBox(height: screenHeight * 0.0110),
-                        Text(order.orderId.toString(), style: idOrderTextStyle),
+                        Text(order.id.toString(), style: idOrderTextStyle),
                         SizedBox(height: screenHeight * 0.0110),
                         Text(formattedDate, style: dateOrderTextStyle), // Updated line
                         SizedBox(height: screenHeight * 0.0125),
