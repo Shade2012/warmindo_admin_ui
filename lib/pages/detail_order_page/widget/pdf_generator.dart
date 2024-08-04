@@ -17,8 +17,8 @@ Future<Uint8List> generateOrderPdf(Order order) async {
   final menuItems = <pw.Widget>[];
 
   for (var orderItem in controller.orderList) {
-    if (orderItem.orderId == order.orderId) {
-      final menu = controller.menuList.firstWhere((menu) => menu.id == int.parse(orderItem.menuId));
+    if (orderItem.id == order.id) {
+      final menu = controller.menuList.firstWhere((menu) => menu.id == orderItem.id);
       totalPrice += double.parse(menu.price);
       menuItems.add(pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -39,7 +39,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
 
   // Find customer data related to the order
   final userData = controller.orderList
-        .where((o) => o.orderId == order.orderId)
+        .where((o) => o.id == order.id)
         .map((o) => controller.customersList.firstWhere((customer) => customer.id == int.parse(o.userId)))
         .toList();
 
@@ -72,8 +72,8 @@ Future<Uint8List> generateOrderPdf(Order order) async {
               color: PdfColors.black,
             ),
             pw.SizedBox(height: 16),
-            pw.Text('Order ID: ${order.orderId}', style: pw.TextStyle(fontSize: 16)),
-            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(order.orderDate)}', style: pw.TextStyle(fontSize: 16)),
+            pw.Text('Order ID: ${order.id}', style: pw.TextStyle(fontSize: 16)),
+            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(order.createdAt)}', style: pw.TextStyle(fontSize: 16)),
             pw.Text('Status: ${order.status}', style: pw.TextStyle(fontSize: 16)),
             pw.SizedBox(height: 16),
             pw.Text('Pesanan', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),

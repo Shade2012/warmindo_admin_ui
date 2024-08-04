@@ -32,7 +32,7 @@ class DetailOrderBnb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userData = controller.orderList
-        .where((o) => o.orderId == order.orderId)
+        .where((o) => o.id == order.id)
         .map((o) => controller.customersList.firstWhere((customer) => customer.id == int.parse(o.userId)))
         .toList();
 

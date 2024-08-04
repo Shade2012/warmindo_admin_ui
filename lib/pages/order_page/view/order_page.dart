@@ -6,20 +6,6 @@ import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 import 'package:warmindo_admin_ui/pages/order_page/widget/order_filter_dropdown.dart';
 
-const Map<String, String> statusTranslation = {
-  'done': 'Selesai',
-  'in progress': 'Dalam Proses',
-  'cancelled': 'Batal',
-  'ready': 'Pesanan Siap',
-};
-
-const Map<String, String> reverseStatusTranslation = {
-  'Selesai': 'done',
-  'Dalam Proses': 'in progress',
-  'Batal': 'cancelled',
-  'Pesanan Siap': 'ready',
-};
-
 class OrderPage extends StatelessWidget {
   final OrderController controller = Get.put(OrderController());
   final TextEditingController searchController = TextEditingController();
@@ -39,8 +25,7 @@ class OrderPage extends StatelessWidget {
     if (selectedStatus == null || selectedStatus == 'Semua') {
       return orders;
     } else {
-      String englishStatus = reverseStatusTranslation[selectedStatus] ?? selectedStatus;
-      return orders.where((order) => order.status == englishStatus).toList();
+      return orders.where((order) => order.status.toLowerCase() == selectedStatus.toLowerCase()).toList();
     }
   }
 
@@ -60,7 +45,7 @@ class OrderPage extends StatelessWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          controller.fetchDataOrder();
+          await controller.fetchDataOrder();
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(), // Allow scroll for pull to refresh
@@ -74,7 +59,7 @@ class OrderPage extends StatelessWidget {
                   child: TextField(
                     controller: searchController,
                     onChanged: (value) {
-                      // UI will automatically update because of Obx
+                      // Tidak perlu melakukan apa-apa di sini, karena UI akan secara otomatis terupdate dengan Obx
                     },
                     decoration: InputDecoration(
                       hintText: 'Cari nama pelanggan',
