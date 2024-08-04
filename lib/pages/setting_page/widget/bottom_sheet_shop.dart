@@ -190,7 +190,7 @@ class BottomSheetShop extends StatelessWidget {
                             style: contentBoldBtsShopTextStyle,
                           ),
                           Text(
-                            'Buat jadwal khusus untuk restoran Anda',
+                            'Atur Jadwal khusus restoran anda',
                             style: contentSmallBtsShopTextStyle,
                           ),
                         ],
@@ -217,13 +217,38 @@ class BottomSheetShop extends StatelessWidget {
                   Get.back();
                   Get.toNamed(Routes.SCHEDULE_PAGE);
                 } else {
-                  await statusController.updateStatusSchedule(
-                    isOpen: statusController.selectedStatus.value == 'Beroperasi Normal' ? '1' : '0',
-                    temporaryClosureDuration: statusController.selectedChip.value, 
-                    scheduleId: scheduleId,
-                  );
+                  if(statusController.selectedStatus.value == 'Beroperasi Normal'){
+                    await statusController.updateStatusSchedule(
+                      start_time: '00:00:00',
+                      temporaryClosureDuration: '0',
+                      end_time: '23:59:59',
+                    );
+                  }else if(statusController.selectedStatus.value == 'Tutup Sementara'){
+                    if(statusController.selectedChip.value == '30 menit'){
+                      await statusController.updateStatusSchedule(
+                        temporaryClosureDuration: '30'
+                      );
+                    }
+                    else if(statusController.selectedChip.value == '60 menit'){
+                      await statusController.updateStatusSchedule(
+                          temporaryClosureDuration: '60'
+                      );
+                    }
+                    else if(statusController.selectedChip.value == '90 menit'){
+                      await statusController.updateStatusSchedule(
+                          temporaryClosureDuration: '90'
+                      );
+                    }
+                  }else if(statusController.selectedStatus.value == 'Tutup'){
+                    await statusController.updateStatusSchedule(
+                        end_time: '00:00:00'
+                    );
+                  }
                   print('Selected status: ${statusController.selectedStatus.value}');
                   print('Selected chip: ${statusController.selectedChip.value}');
+                  print('Status saat ini ${statusController.jadwalElement[0].is_open}');
+                  print('tutup sementara saat ini ${statusController.jadwalElement[0].temporary_closure_duration}');
+                  print('jam terakhir saat ini ${statusController.jadwalElement[0].end_time}');
                 }
               },
               child: Text('Ubah Status'),
@@ -242,3 +267,4 @@ class BottomSheetShop extends StatelessWidget {
     );
   }
 }
+

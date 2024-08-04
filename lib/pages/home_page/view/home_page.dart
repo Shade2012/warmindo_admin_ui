@@ -10,6 +10,8 @@ import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
+import '../../schedule_page/controller/schedule_controller.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -19,6 +21,7 @@ class HomePage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final HomeController homeController = Get.put(HomeController());
     final OrderController controller = Get.put(OrderController());
+    final ScheduleController statusController = Get.put(ScheduleController());
 
     return Scaffold(
       appBar: PreferredSize(
@@ -53,6 +56,10 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: screenHeight * 0.02),
+                  Padding(
+                    padding:  EdgeInsets.all(screenWidth * 0.02),
+                    child: Text('Status Toko : ${statusController.jadwalElement[0].is_open ? 'Buka' : 'Tutup'}',style: subHeadOrderTextStyle,),
+                  ),
                   Row(
                     children: [
                       Expanded(
