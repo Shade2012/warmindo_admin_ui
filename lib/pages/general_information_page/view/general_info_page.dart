@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/general_information_page/controller/general_info_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 
 class GeneralInformation extends StatelessWidget {
+  final GeneralInformationController controller =
+      Get.put(GeneralInformationController());
   final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    _fullNameController.text = "admin";
-    _emailController.text = "admin@gmail.com";
-    _phoneNumberController.text = "0821-2480-5253";
 
     return Scaffold(
       appBar: AppBar(
@@ -39,19 +35,32 @@ class GeneralInformation extends StatelessWidget {
               children: [
                 Center(
                   child: ClipOval(
-                    child: Image.asset(
-                      Images.userImage,
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return CircularProgressIndicator();
+                      } else {
+                        return Image.network(
+                          controller.image.value.isEmpty
+                              ? Images.userImage
+                              : controller.image.value,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            width: 200,
+                            child: Image.asset(Images.userImage),
+                          ),
+                          width: 150,
+                          height: 150,
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        );
+                      }
+                    }),
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.16),
                 TextFormField(
                   readOnly: true,
-                  controller: _fullNameController,
+                  controller: controller.fullNameController,
                   decoration: InputDecoration(
                     labelText: "Full Name",
                   ),
@@ -65,7 +74,7 @@ class GeneralInformation extends StatelessWidget {
                 SizedBox(height: screenHeight * 0.02),
                 TextFormField(
                   readOnly: true,
-                  controller: _emailController,
+                  controller: controller.emailController,
                   decoration: InputDecoration(
                     labelText: "Email Address",
                   ),
@@ -83,7 +92,7 @@ class GeneralInformation extends StatelessWidget {
                 SizedBox(height: screenHeight * 0.02),
                 TextFormField(
                   readOnly: true,
-                  controller: _phoneNumberController,
+                  controller: controller.phoneNumberController,
                   decoration: InputDecoration(
                     labelText: "Phone Number",
                   ),
@@ -101,20 +110,6 @@ class GeneralInformation extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // if (_formKey.currentState!.validate()) {
-                    //   // Update profile information
-                    //   print("Full Name: ${_fullNameController.text}");
-                    //   print("Email Address: ${_emailController.text}");
-                    //   print("Phone Number: ${_phoneNumberController.text}");
-                    //   // print("Username: ${_usernameController.text}");
-
-                    //   // Show a success message or perform other actions
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(
-                    //       content: Text("Profile updated successfully!"),
-                    //     ),
-                    //   );
-                    // }
                     Get.toNamed(Routes.EDIT_PROFILE_PAGE);
                   },
                   child: Text("Edit"),

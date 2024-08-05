@@ -55,7 +55,6 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: screenHeight * 0.02),
                   Padding(
                     padding:  EdgeInsets.all(screenWidth * 0.02),
                     child: Text('Status Toko : ${statusController.jadwalElement[0].is_open ? 'Buka' : 'Tutup'}',style: subHeadOrderTextStyle,),

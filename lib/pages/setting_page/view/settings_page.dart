@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/general_information_page/controller/general_info_controller.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/controller/settings_controller.dart';
 import 'package:warmindo_admin_ui/pages/setting_page/widget/bottom_sheet_shop.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
@@ -10,6 +11,8 @@ import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class SettingsPage extends StatelessWidget {
   final SettingsController controller = Get.put(SettingsController());
+  final GeneralInformationController generalInfor =
+      Get.put(GeneralInformationController());
   SettingsPage({Key? key});
 
   @override
@@ -36,8 +39,16 @@ class SettingsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ClipOval(
-                        child: Image.asset(
-                          Images.userImage,
+                        child: FadeInImage(
+                          placeholder: AssetImage(Images.userImage),
+                          image: NetworkImage(generalInfor.image.value.isEmpty
+                              ? Images.userImage
+                              : generalInfor.image.value),
+                          imageErrorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            width: screenWidth * 0.4,
+                            child: Image.asset(Images.userImage),
+                          ),
                           width: screenWidth * 0.4,
                           height: screenWidth * 0.4,
                           fit: BoxFit.cover,
@@ -46,7 +57,7 @@ class SettingsPage extends StatelessWidget {
                       ),
                       SizedBox(height: screenHeight * 0.02),
                       Text(
-                        'Admin',
+                        generalInfor.fullNameController.text,
                         style: nameProfileTextStyle,
                       ),
                       SizedBox(height: screenHeight * 0.01),
@@ -142,7 +153,9 @@ class SettingsPage extends StatelessWidget {
                                       borderRadius: BorderRadius.zero,
                                     ),
                                     builder: (BuildContext context) {
-                                      return BottomSheetShop(scheduleId: 0,);
+                                      return BottomSheetShop(
+                                        scheduleId: 0,
+                                      );
                                     },
                                   );
                                 },

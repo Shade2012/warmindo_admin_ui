@@ -34,6 +34,8 @@ class VariantApi {
 
 class AuthEndpoint {
   final String login = '$apiUrl/api/admins/login';
+  final String detailUser = '$apiUrl/api/admins/details';
+  final String updateAdminData = '$apiUrl/api/admins/update?_method=PUT';
 }
 
 class AllCustomers {
