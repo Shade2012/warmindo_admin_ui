@@ -66,34 +66,33 @@ class ProductController extends GetxController {
       searchResults.addAll(toppingList.where((topping) {
         return topping.nameTopping.toLowerCase().contains(enteredKeyword);
       }).map((topping) => model.Menu(
-          id: topping.id,
-          nameMenu: topping.nameTopping,
-          price: topping.price.toString(),
-          image: '', 
-          stock: topping.stockTopping.toString(),
-          category: 'Topping',  
-          ratings: '',
-          description: '',
-          createdAt: topping.createdAt,
-          updatedAt: topping.updatedAt,
-          secondCategory: topping.menuId.toString(),
+        id: topping.id,
+        nameMenu: topping.nameTopping,
+        price: topping.price.toString(),
+        image: '',
+        stock: topping.stockTopping.toString(),
+        category: 'Topping',
+        ratings: '',
+        description: '',
+        createdAt: topping.createdAt,
+        updatedAt: topping.updatedAt,
+        secondCategory: topping.menuId.toString(),
       )).toList());
       searchResults.addAll(variantList.where((variant) {
         return variant.nameVarian.toLowerCase().contains(enteredKeyword);
       }).map((variant) => model.Menu(
-          id: variant.idVarian,
-          nameMenu: variant.nameVarian,
-          price: '0', 
-          image: variant.image ?? '', // Handle null value
-          stock: variant.stockVarian,
-          category: variant.category,  
-          ratings: '',
-          description: '',
-          createdAt: DateTime.now(),  // Placeholder, update as needed
-          updatedAt: DateTime.now(),  // Placeholder, update as needed
-          secondCategory: '',
-      )
-      ).toList());
+        id: variant.idVarian,
+        nameMenu: variant.nameVarian,
+        price: '0',
+        image: variant.image ?? '',
+        stock: variant.stockVarian,
+        category: variant.category,
+        ratings: '',
+        description: '',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        secondCategory: '',
+      )).toList());
     }
   }
 
@@ -209,42 +208,16 @@ class ProductController extends GetxController {
     }
   }
 
-Future<void> getToppingList() async {
-  isLoading.value = true;  // Set loading status before starting the fetch
-  try {
-    final response = await http.get(Uri.parse(ToppingsApi.getallToppingsList));
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      if (responseData is Map<String, dynamic>) {
-        ToppingList toppingListData = ToppingList.fromJson(responseData);
-        toppingList.value = toppingListData.data;
-        filterProducts(); // Make sure this function is defined elsewhere
-      } else {
-        print('Data yang diterima tidak sesuai format yang diharapkan.');
-      }
-    } else {
-      print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
-    }
-  } catch (error) {
-    print("Error while fetching data: $error");
-  } finally {
-    isLoading.value = false;  // Set loading status after the fetch completes
-    print('Selesai fetching data');
-  }
-}
-
-
-  Future<void> getVariantList() async {
+  Future<void> getToppingList() async {
+    isLoading.value = true;  // Set loading status before starting the fetch
     try {
-      final response = await http.get(Uri.parse(VariantApi.getallVariantList));
+      final response = await http.get(Uri.parse(ToppingsApi.getallToppingsList));
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        if (responseData is Map<String, dynamic> &&
-            responseData['data'] is List) {
-          final List<dynamic> variantListData = responseData['data'];
-          variantList.value =
-              variantListData.map((json) => Datum.fromJson(json)).toList();
-          filterProducts();
+        if (responseData is Map<String, dynamic>) {
+          ToppingList toppingListData = ToppingList.fromJson(responseData);
+          toppingList.value = toppingListData.data;
+          filterProducts(); // Make sure this function is defined elsewhere
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
         }
@@ -254,7 +227,31 @@ Future<void> getToppingList() async {
     } catch (error) {
       print("Error while fetching data: $error");
     } finally {
-      isLoading.value = false;
+      isLoading.value = false;  // Set loading status after the fetch completes
+      print('Selesai fetching data');
+    }
+  }
+
+  Future<void> getVariantList() async {
+    isLoading.value = true;  // Set loading status before starting the fetch
+    try {
+      final response = await http.get(Uri.parse(VariantApi.getallVariantList));
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData is Map<String, dynamic>) {
+          VarianList variantListData = VarianList.fromJson(responseData);
+          variantList.value = variantListData.data;
+          filterProducts(); // Make sure this function is defined elsewhere
+        } else {
+          print('Data yang diterima tidak sesuai format yang diharapkan.');
+        }
+      } else {
+        print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
+      }
+    } catch (error) {
+      print("Error while fetching data: $error");
+    } finally {
+      isLoading.value = false;  // Set loading status after the fetch completes
       print('Selesai fetching data');
     }
   }
@@ -268,7 +265,7 @@ Future<void> getToppingList() async {
         price: topping.price.toString(),
         image: '',
         stock: topping.stockTopping.toString(),
-        category: 'Topping',  
+        category: 'Topping',
         ratings: '',
         description: '',
         createdAt: topping.createdAt,
@@ -278,14 +275,14 @@ Future<void> getToppingList() async {
       filteredProductList.addAll(variantList.map((variant) => model.Menu(
         id: variant.idVarian,
         nameMenu: variant.nameVarian,
-        price: '', 
-        image: variant.image ?? '', 
+        price: '0',
+        image: variant.image ?? '',
         stock: variant.stockVarian,
-        category: 'Variant',  
+        category: 'Variant',
         ratings: '',
         description: '',
-        createdAt: DateTime.now(),  
-        updatedAt: DateTime.now(),  
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
         secondCategory: variant.category,
       )).toList());
     } else if (selectedCategory.value == 'Makanan') {
@@ -299,9 +296,9 @@ Future<void> getToppingList() async {
         id: topping.id,
         nameMenu: topping.nameTopping,
         price: topping.price.toString(),
-        image: '', // Handle null value
+        image: '',
         stock: topping.stockTopping.toString(),
-        category: 'Topping',  // This is just an example, adjust accordingly
+        category: 'Topping',
         ratings: '',
         description: '',
         createdAt: topping.createdAt,
@@ -312,14 +309,14 @@ Future<void> getToppingList() async {
       filteredProductList.assignAll(variantList.map((variant) => model.Menu(
         id: variant.idVarian,
         nameMenu: variant.nameVarian,
-        price: '', // You might need to update this according to your needs
-        image: variant.image ?? '', // Handle null value
+        price: '0',
+        image: variant.image ?? '',
         stock: variant.stockVarian,
-        category: 'Variant',  // This is just an example, adjust accordingly
+        category: 'Variant',
         ratings: '',
         description: '',
-        createdAt: DateTime.now(),  // Placeholder, update as needed
-        updatedAt: DateTime.now(),  // Placeholder, update as needed
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
         secondCategory: '',
       )).toList());
     }
@@ -336,17 +333,13 @@ Future<void> getToppingList() async {
     try {
       final response = await http.delete(Uri.parse(url));
       if (response.statusCode == 200) {
-        // Product deleted successfully
         Get.snackbar('Sukses', 'Produk berhasil dihapus',
             snackPosition: SnackPosition.TOP);
         await fetchAllData();
       } else {
-        // Error from server
-        // Get.snackbar('Error', 'Gagal menghapus produk',
-            // snackPosition: SnackPosition.TOP);
+        print('Gagal menghapus produk. Status respon: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle error
       Get.snackbar('Error', 'Terjadi kesalahan',
           snackPosition: SnackPosition.TOP);
     } finally {
@@ -360,17 +353,13 @@ Future<void> getToppingList() async {
     try {
       final response = await http.delete(Uri.parse(url));
       if (response.statusCode == 200) {
-        // Topping deleted successfully
         Get.snackbar('Sukses', 'Topping berhasil dihapus',
             snackPosition: SnackPosition.TOP);
         await fetchAllData();
       } else {
-        // Error from server
-        // Get.snackbar('Error', 'Gagal menghapus topping',
-        //     snackPosition: SnackPosition.TOP);
+        print('Gagal menghapus topping. Status respon: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle error
       Get.snackbar('Error', 'Terjadi kesalahan',
           snackPosition: SnackPosition.TOP);
     } finally {
@@ -384,17 +373,13 @@ Future<void> getToppingList() async {
     try {
       final response = await http.delete(Uri.parse(url));
       if (response.statusCode == 200) {
-        // Variant deleted successfully
         Get.snackbar('Sukses', 'Variant berhasil dihapus',
             snackPosition: SnackPosition.TOP);
         await fetchAllData();
       } else {
-        // Error from server
-        // Get.snackbar('Error', 'Gagal menghapus variant',
-        //     snackPosition: SnackPosition.TOP);
+        print('Gagal menghapus variant. Status respon: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle error
       Get.snackbar('Error', 'Terjadi kesalahan',
           snackPosition: SnackPosition.TOP);
     } finally {
