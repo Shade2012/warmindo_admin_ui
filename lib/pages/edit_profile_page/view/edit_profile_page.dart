@@ -111,7 +111,7 @@ class EditProfilPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
-                      Text("Nama lengkap", style: regularInputTextStyle),
+                      Text("Nama", style: regularInputTextStyle),
                       SizedBox(height: 10.0),
                       TextFormField(
                         controller: controller.fullNameController,
@@ -240,6 +240,8 @@ class EditProfilPage extends StatelessWidget {
                                     username:
                                         controller.usernameController.text,
                                     email: controller.emailController.text,
+                                    numberPhone: controller.phoneNumberController.text,
+                                    
                                   );
                                   print('image ada');
                                 } else {
@@ -249,6 +251,7 @@ class EditProfilPage extends StatelessWidget {
                                         controller.usernameController.text,
                                     email: controller.emailController.text,
                                     image: controller.selectedImage.value,
+                                    numberPhone: controller.phoneNumberController.text,
                                   );
                                   print(
                                       'image saat ini : ${controller.selectedImage.value}');

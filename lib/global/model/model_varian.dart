@@ -58,11 +58,11 @@ class Datum {
       );
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    idVarian: json["id_varian"],
-    nameVarian: json["name_varian"],
-    category: json["category"],
+    idVarian: json["id_varian"] ?? 0, // Default value jika null
+    nameVarian: json["name_varian"] ?? '', // Default value jika null
+    category: json["category"] ?? '', // Default value jika null
     image: json["image"],  // Bisa null
-    stockVarian: json["stock_varian"],
+    stockVarian: json["stock_varian"] ?? '0', // Default value jika null
   );
 
   Map<String, dynamic> toJson() => {

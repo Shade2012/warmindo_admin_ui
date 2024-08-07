@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/controller/general_info_controller.dart';
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class EditProfileController extends GetxController {
   final GeneralInformationController profileController = Get.put(GeneralInformationController());
@@ -121,6 +120,7 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> editProfile({
+    String? numberPhone,
     String? name,
     String? username,
     String? email,
@@ -140,7 +140,9 @@ class EditProfileController extends GetxController {
         })
         ..fields['name'] = name ?? ''
         ..fields['username'] = username ?? ''
-        ..fields['email'] = email ?? '';
+        ..fields['email'] = email ?? ''
+        ..fields['phone_number'] = numberPhone ?? '';
+        
 
       if (image != null) {
         request.files.add(http.MultipartFile(
@@ -166,7 +168,8 @@ class EditProfileController extends GetxController {
       if (response.statusCode == 201) {
         isLoading.value = false;
         profileController.checkSharedPreference();
-        Get.toNamed(Routes.BOTTOM_NAVIGATION);
+        Get.back();
+        Get.back();
         Get.snackbar(
           'Success',
           'Berhasil Dirubah',

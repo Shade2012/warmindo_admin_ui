@@ -25,7 +25,7 @@ class ToppingsApi {
 }
 
 class VariantApi {
-  static var getallVariantList = '$apiUrl/api/variants';
+  static var getallVariantList = '$apiUrl/api/variants/';
   static var storeVariant = '$apiUrl/api/variants/store';
   static var updateVariant = '$apiUrl/api/variants/';
   static var deleteVariant = '$apiUrl/api/variants';
