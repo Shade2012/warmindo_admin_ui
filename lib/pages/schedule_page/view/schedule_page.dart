@@ -69,7 +69,7 @@ class SchedulePage extends StatelessWidget {
                             showModalBottomSheet(
                               context: context,
                               builder: (BuildContext context) {
-                                return BottomSheetSchedule();
+                                return BottomSheetSchedule(schedules: schedule);
                               },
                             );
                           },

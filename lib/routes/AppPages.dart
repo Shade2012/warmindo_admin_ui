@@ -173,7 +173,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.BOTTOM_SHEET_SCHEDULE,
-        page: () => BottomSheetSchedule(),
+        page: () => BottomSheetSchedule(schedules: Get.arguments),
         binding: BottomSheetScheduleBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
