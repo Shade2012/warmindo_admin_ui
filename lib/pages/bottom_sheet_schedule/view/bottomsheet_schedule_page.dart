@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/model/model_schedule.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottomsheet_schedule_controller.dart';
 import 'dart:developer';
 
 class BottomSheetSchedule extends StatelessWidget {
+  final ScheduleList schedules;
   final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
-  BottomSheetSchedule({Key? key}) : super(key: key);
+
+  BottomSheetSchedule({required this.schedules}) {
+    _controller.openTimeController.text = schedules.start_time;
+    _controller.closeTimeController.text = schedules.end_time;   
+}
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class BottomSheetSchedule extends StatelessWidget {
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Misal: 08:00 AM',
+                            hintText: _controller.openTimeController.text,
                             suffixIcon: Icon(
                               Icons.timer,
                               color: Colors.black,
@@ -67,7 +73,7 @@ class BottomSheetSchedule extends StatelessWidget {
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Misal: 05:00 PM',
+                            hintText: _controller.closeTimeController.text,
                             suffixIcon: Icon(
                               Icons.timer,
                               color: Colors.black,
@@ -105,7 +111,7 @@ class BottomSheetSchedule extends StatelessWidget {
                             onChanged: (value) => _controller.toggleClosed(value),
                             activeColor: Colors.purple,
                           )),
-                      Text('Close'),
+                      Text('Tutup'),
                     ],
                   ),
                 ),
@@ -138,9 +144,22 @@ class BottomSheetSchedule extends StatelessWidget {
                 SizedBox(width: screenWidth * 0.03),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      _controller.addSchedule();
-                      log('Save button clicked');
+                    onPressed: () async {
+                      if (_controller.is24Hours.value == true) {
+                        await _controller.updateScheduleTime(
+                          id: schedules.id.toString(),
+                          start_time: '00:00:00',
+                          end_time: '23:59:59', 
+                        );
+                      } else if (_controller.isClosedStatus.value == true) {
+                        await _controller.updateScheduleTime(
+                          id: schedules.id.toString(),
+                          start_time: '00:00:00',
+                          end_time: '00:00:00',
+                        );
+                      } else {
+                        await _controller.updateScheduleTime(id: schedules.id.toString(),);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
