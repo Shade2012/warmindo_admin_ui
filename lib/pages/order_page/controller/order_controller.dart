@@ -95,8 +95,7 @@ class OrderController extends GetxController {
         final responseData = json.decode(response.body)['orders'];
         if (responseData != null && responseData is List) {
           final List<dynamic> orderListData = responseData;
-          orderList.value =
-              orderListData.map((json) => Order.fromJson(json)).toList();
+          orderList.value = orderListData.map((json) => Order.fromJson(json)).toList();
           print('Fetched Order List: ${orderList.length}');
           isLoading.value = false;
         } else {

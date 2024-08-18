@@ -14,14 +14,6 @@ class LoginController extends GetxController {
   TextEditingController ctrEmail = TextEditingController();
   TextEditingController ctrPassword = TextEditingController();
 
-   void setToken(String newToken) {
-    token.value = newToken;
-  }
-
-  String getToken() {
-    return token.value;
-  }
-
   Future<void> loginAdmin(String email, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isLoading.value = true; 

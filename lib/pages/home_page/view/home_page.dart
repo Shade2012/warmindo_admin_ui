@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   Padding(
                     padding:  EdgeInsets.all(screenWidth * 0.02),
-                    child: Text('Status Toko : ${statusController.jadwalElement[0].is_open ? 'Buka' : 'Tutup'}',style: subHeadOrderTextStyle,),
+                    // child: Text('Status Toko : ${statusController.jadwalElement[0].is_open ? 'Buka' : 'Tutup'}',style: subHeadOrderTextStyle,),
                   ),
                   Row(
                     children: [

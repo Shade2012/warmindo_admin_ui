@@ -28,7 +28,7 @@ class OrderFilterDropdown extends StatelessWidget {
           onChanged: onChanged,
           items: <String>[
             'Semua',
-            'Dalam Proses',
+            'Sedang Diproses',
             'Pesanan Siap',
             'Selesai',
             'Menunggu Batal',
