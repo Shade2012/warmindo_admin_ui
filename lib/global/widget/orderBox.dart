@@ -19,8 +19,8 @@ class OrderBox extends StatelessWidget {
   final String customerName;
   final OrderController controller = Get.find<OrderController>();
 
-  Color _getLabelColor(String status) {
-    switch (status.toLowerCase()) {
+  Color _getLabelColor(String? status) {
+    switch (status?.toLowerCase()) {
       case 'selesai':
         return ColorResources.labelcomplete;
       case 'pesanan siap':
@@ -36,43 +36,34 @@ class OrderBox extends StatelessWidget {
     }
   }
 
-  // String _translateStatus(String status) {
-  //   switch (status.toLowerCase()) {
-  //     case 'done':
-  //       return 'Selesai';
-  //     case 'ready':
-  //       return 'Pesanan Siap';
-  //     case 'in progress':
-  //       return 'Sedang Diproses';
-  //     case 'cancellation request':
-  //       return 'Permintaan Pembatalan';
-  //     case 'cancelled':
-  //       return 'Dibatalkan';
-  //     default:
-  //       return status;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    // Abaikan pesanan dengan status "menunggu pembayaran"
+    if (order.status?.toLowerCase() == 'menunggu pembayaran') {
+      return SizedBox.shrink();
+    }
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final labelColor = _getLabelColor(order.status);
     final borderColor = _getLabelColor(order.status);
 
-    // Find menu items related to the order
-    final menuItems = controller.orderList
-        .where((o) => o.id == order.id)
-        .map((o) => controller.menuList
-            .firstWhere((menu) => menu.id == o.id))
-        .toList();
+    // Find order details related to the order
+    final orderDetails = order.orderDetails;
 
     double totalPrice = 0;
-    for (var menu in menuItems) {
-      totalPrice += double.parse(menu.price);
+    for (var detail in orderDetails) {
+      double itemPrice = double.tryParse(detail.menu.price) ?? 0.0;
+
+      // Menghitung harga topping dan menambahkannya ke total
+      double toppingPrice = detail.toppings!.fold(0.0, (sum, topping) {
+        return sum + (double.tryParse(topping.price.toString()) ?? 0.0) * (detail.quantity ?? 0);
+      });
+
+      totalPrice += (itemPrice * (detail.quantity ?? 0)) + toppingPrice;
     }
 
-     // Tambahkan admin fee sebesar 1000
+    // Tambahkan admin fee sebesar 1000
     double totalPriceWithAdminFee = totalPrice + 1000;
 
     String formattedPrice = totalPriceWithAdminFee.toStringAsFixed(
@@ -81,7 +72,7 @@ class OrderBox extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        if (order.status.toLowerCase() == 'cancellation request') {
+        if (order.status?.toLowerCase() == 'permintaan pembatalan') {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -138,7 +129,7 @@ class OrderBox extends StatelessWidget {
                     color: labelColor,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: Text(order.status, style: labelOrderBoxTextStyle),
+                  child: Text(order.status ?? 'Status tidak tersedia', style: labelOrderBoxTextStyle),
                 ),
               ],
             ),
@@ -146,12 +137,19 @@ class OrderBox extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: menuItems.length,
+                itemCount: orderDetails.length,
                 itemBuilder: (context, index) {
-                  final menu = menuItems[index];
-                  double price = double.parse(menuItems[index].price);
-                  String formattedItemPrice = price.toStringAsFixed(
-                    price.truncateToDouble() == price ? 0 : 2,
+                  final detail = orderDetails[index];
+                  double price = double.tryParse(detail.menu.price) ?? 0.0;
+
+                  // Menghitung harga topping
+                  double toppingPrice = detail.toppings!.fold(0.0, (sum, topping) {
+                    return sum + (double.tryParse(topping.price.toString()) ?? 0.0) * (detail.quantity ?? 0);
+                  });
+
+                  double itemTotalPrice = (price * (detail.quantity ?? 0)) + toppingPrice;
+                  String formattedItemPrice = itemTotalPrice.toStringAsFixed(
+                    itemTotalPrice.truncateToDouble() == itemTotalPrice ? 0 : 2,
                   );
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.0),
@@ -159,7 +157,7 @@ class OrderBox extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Image.network(
-                          menu.image,
+                          detail.menu.image,
                           width: 55.0,
                           height: 55.0,
                         ),
@@ -167,10 +165,9 @@ class OrderBox extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(menu.nameMenu, style: titleMenuOrderTextStyle),
+                            Text(detail.menu.nameMenu ?? 'Nama Menu tidak tersedia', style: titleMenuOrderTextStyle),
                             SizedBox(height: 4.0),
-                            Text('Rp $formattedItemPrice',
-                                style: priceMenuOrderTextStyle),
+                            Text('Rp $formattedItemPrice', style: priceMenuOrderTextStyle),
                           ],
                         ),
                       ],

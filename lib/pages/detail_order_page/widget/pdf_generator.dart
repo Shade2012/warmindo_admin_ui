@@ -10,38 +10,70 @@ import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.d
 
 Future<Uint8List> generateOrderPdf(Order order) async {
   final pdf = pw.Document();
+  final controller = Get.put(OrderController());
   final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
-  final OrderController controller = Get.put(OrderController());
 
-  double totalPrice = 0.0;
+  // Calculate total price and prepare menu items
+  double totalPrice = order.orderDetails.fold(0, (sum, orderDetail) {
+    double itemPrice = double.parse(orderDetail.menu.price) * orderDetail.quantity;
+
+    // Calculate total topping price for the current orderDetail
+    double toppingPrice = orderDetail.toppings!.fold(0, (toppingSum, topping) {
+      return toppingSum + topping.price * orderDetail.quantity;
+    });
+
+    return sum + itemPrice + toppingPrice;
+  });
+
   final menuItems = <pw.Widget>[];
 
-  for (var orderItem in controller.orderList) {
-    if (orderItem.id == order.id) {
-      final menu = controller.menuList.firstWhere((menu) => menu.id == orderItem.id);
-      totalPrice += double.parse(menu.price);
+  for (var orderDetail in order.orderDetails) {
+    final menu = orderDetail.menu;
+
+    // Menu item
+    menuItems.add(pw.Row(
+      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+      children: [
+        pw.Text(menu.nameMenu, style: pw.TextStyle(fontSize: 16)),
+        pw.Text(orderDetail.quantity.toString(), style: pw.TextStyle(fontSize: 16)),
+        pw.Text(currencyFormat.format(double.parse(menu.price) * orderDetail.quantity),
+            style: pw.TextStyle(fontSize: 16)),
+      ],
+    ));
+
+    // Variant
+    if (orderDetail.variant != null) {
       menuItems.add(pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: pw.MainAxisAlignment.start,
         children: [
-          pw.Text(menu.nameMenu, style: pw.TextStyle(fontSize: 16)),
-          pw.Text('1', style: pw.TextStyle(fontSize: 16)),
-          pw.Text(currencyFormat.format(double.parse(menu.price)), style: pw.TextStyle(fontSize: 16)),
+          pw.Text('- Variant: ${orderDetail.variant!.nameVarian}', style: pw.TextStyle(fontSize: 14)),
         ],
       ));
+    }
+
+    // Toppings
+    if (orderDetail.toppings != null && orderDetail.toppings!.isNotEmpty) {
+      for (var topping in orderDetail.toppings!) {
+        menuItems.add(pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.start,
+          children: [
+            pw.Text('- Topping: ${topping.nameTopping} (${currencyFormat.format(topping.price * orderDetail.quantity)})',
+                style: pw.TextStyle(fontSize: 14)),
+          ],
+        ));
+      }
     }
   }
 
   final adminFee = 1000.0;
   final totalPayment = totalPrice + adminFee;
 
+  // Load the logo image
   final ByteData bytes = await rootBundle.load('assets/images/logo.png');
   final Uint8List logo = bytes.buffer.asUint8List();
 
-  // Find customer data related to the order
-  final userData = controller.orderList
-        .where((o) => o.id == order.id)
-        .map((o) => controller.customersList.firstWhere((customer) => customer.id == int.parse(o.userId)))
-        .toList();
+  // Access customer data using the userId from the order
+  final customerData = controller.getCustomerById(int.parse(order.userId));
 
   pdf.addPage(
     pw.Page(
@@ -63,17 +95,17 @@ Future<Uint8List> generateOrderPdf(Order order) async {
                 pw.Image(pw.MemoryImage(logo), width: 100), // Add the logo image
               ],
             ),
-            pw.SizedBox(height: 16),
+            pw.SizedBox(height: 10),
             DashedLine(
               dash: 3,
               gap: 2,
-              width: 500, // Explicitly set the width
+              width: 500,
               height: 1,
               color: PdfColors.black,
             ),
             pw.SizedBox(height: 16),
             pw.Text('Order ID: ${order.id}', style: pw.TextStyle(fontSize: 16)),
-            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(order.createdAt)}', style: pw.TextStyle(fontSize: 16)),
+            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(order.createdAt.toString()))}', style: pw.TextStyle(fontSize: 16)),
             pw.Text('Status: ${order.status}', style: pw.TextStyle(fontSize: 16)),
             pw.SizedBox(height: 16),
             pw.Text('Pesanan', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
@@ -111,40 +143,6 @@ Future<Uint8List> generateOrderPdf(Order order) async {
               ],
             ),
             pw.SizedBox(height: 16),
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                // pw.Text('Pembayaran ${order.paymentMethod}', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(currencyFormat.format(totalPayment),
-                    style: pw.TextStyle(fontSize: 16)),
-              ],
-            ),
-            pw.SizedBox(height: 16),
-            pw.Divider(),
-            pw.Text('Detail Pelanggan', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
-            pw.SizedBox(height: 8),
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                pw.Text('Nama Pelanggan', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(userData[0].name, style: pw.TextStyle(fontSize: 16)),
-              ],
-            ),
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                pw.Text('Email', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(userData[0].email, style: pw.TextStyle(fontSize: 16)),
-              ],
-            ),
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                pw.Text('No. Telepon', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(userData[0].phoneNumber, style: pw.TextStyle(fontSize: 16)),
-              ],
-            ),
-            pw.Spacer(), // Takes up the remaining space
             pw.Divider(),
             pw.SizedBox(height: 4),
             pw.Align(
