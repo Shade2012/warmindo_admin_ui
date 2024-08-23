@@ -75,6 +75,14 @@ class ProductList extends StatelessWidget {
           separatorBuilder: (context, index) => SizedBox(height: 20),
           itemCount: 12,
         );
+      } else if (productList.isEmpty) {
+        return Center(
+          child: Text(
+            'Data produk kosong',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            textAlign: TextAlign.center,
+          ),
+        );
       } else {
         return RefreshIndicator(
           color: ColorResources.primaryColor,
@@ -126,7 +134,7 @@ class ProductList extends StatelessWidget {
                     Get.toNamed(Routes.DETAIL_PRODUCT_PAGE, arguments: product);
                   },
                   child: Text(
-                    '${priceAsDouble != null ? currencyFormat.format(priceAsDouble) : 'Rp 0'} | ${product.stock} in stock',
+                    '${priceAsDouble != null ? currencyFormat.format(priceAsDouble) : 'Rp 0'} | ${product.stock} stok',
                     style: titleproductTextStyle,
                   ),
                 ),

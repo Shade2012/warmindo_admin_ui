@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "729246064126",
+    "project_id": "warmindo-api",
+    "storage_bucket": "warmindo-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729246064126:android:0be21d0f08ea6119f474af",
+        "android_client_info": {
+          "package_name": "com.example.warmindo_admin_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729246064126-ub599elu7vo8hncs4gah2odpq771cnmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrTYliMwb6HxE2i9NfQ31a_b-B7TGAPuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729246064126-ub599elu7vo8hncs4gah2odpq771cnmg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "729246064126-rb4aj60v2u6bag7etenb1vtg8tlkmasc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.warmindoUserUi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729246064126:android:7c30c15fa7ee0bcdf474af",
+        "android_client_info": {
+          "package_name": "com.example.warmindo_user_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729246064126-ub599elu7vo8hncs4gah2odpq771cnmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrTYliMwb6HxE2i9NfQ31a_b-B7TGAPuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729246064126-ub599elu7vo8hncs4gah2odpq771cnmg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "729246064126-rb4aj60v2u6bag7etenb1vtg8tlkmasc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.warmindoUserUi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

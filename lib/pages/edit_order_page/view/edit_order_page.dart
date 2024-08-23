@@ -82,28 +82,12 @@ class EditOrderPage extends StatelessWidget {
               readOnly: true,
               keyboardType: TextInputType.number,
             ),
-            // SizedBox(height: screenHeight * 0.02),
-            // Text('MenuId', style: titleAddProductTextStyle),
-            // SizedBox(height: screenHeight * 0.01),
-            // CustomTextField(
-            //   controller: ctrMenuId,
-            //   hintText: 'Masukkan ID Menu',
-            //   readOnly: true,
-            // ),
             SizedBox(height: screenHeight * 0.02),
-            // Text('Pengembalian', style: titleAddProductTextStyle),
-            // SizedBox(height: screenHeight * 0.01),
-            // CustomTextField(
-            //   controller: ctrRefund,
-            //   hintText: 'Masukkan Pengembalian',
-            //   readOnly: true,
-            // ),
-            // SizedBox(height: screenHeight * 0.02),
             Text("Status Pesanan", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: ['sedang diproses', 'selesai', 'pesanan siap','dibatalkan'],
+                  items: ['sedang diproses', 'selesai', 'pesanan siap','batal'],
                   value: selectedCategory.value.isNotEmpty
                       ? selectedCategory.value
                       : null,

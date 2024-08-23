@@ -104,7 +104,7 @@ class EditCustomersPage extends StatelessWidget {
                       } if (selectedStatus.value == 'Belum Terverifikasi') {
                         await editCustomersController.unverifyUser(customers.id.toString());
                       }
-                      Get.toNamed(Routes.BOTTOM_NAVIGATION);
+                      Get.back();
                       dataCustomers.fetchDataCustomer();
                     } catch (e) {
                       Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);

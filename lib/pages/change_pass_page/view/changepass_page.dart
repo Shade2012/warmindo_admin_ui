@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/change_pass_page/controller/changepass_controller.dart';
+import 'package:warmindo_admin_ui/pages/change_pass_page/widget/typePassword.dart';
 
 class ChangePassPage extends StatelessWidget {
+  final ChangePassController controller = Get.put(ChangePassController());
   final _formKey = GlobalKey<FormState>();
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
@@ -11,140 +15,123 @@ class ChangePassPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        centerTitle: true,
-        title: Text("Ubah Password"),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Untuk mengubah password, silakan isi formulir di bawah ini:",
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                typePass(
-                  TextInputType.text,
-                  "Password Lama",
-                  "Masukkan password lama",
-                  _currentPasswordController,
-                  (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Password Lama diperlukan";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: screenHeight * 0.002),
-                typePass(
-                  TextInputType.text,
-                  "Password Baru",
-                  "Masukkan password baru",
-                  _newPasswordController,
-                  (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Password Baru diperlukan";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: screenHeight * 0.002),
-                typePass(
-                  TextInputType.text,
-                  "Konfirmasi Password Baru",
-                  "Konfirmasi password baru",
-                  _confirmNewPasswordController,
-                  (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Konfirmasi Password Baru diperlukan";
-                    }
-                    if (_newPasswordController.text != value) {
-                      return "Password Baru dan Konfirmasi Password Baru tidak sama";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: screenHeight * 0.10),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size(screenWidth, screenHeight * 0.06),
-                    padding: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+
+    return Stack(
+      children: [
+        Scaffold(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(screenWidth * 0.05),
+              child: Column(
+                children: [
+                  SizedBox(height: screenHeight * 0.03),
+                  Center(child: Text("Ubah Password", style: appBarTextStyle)),
+                  SizedBox(height: screenHeight * 0.03),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Untuk mengubah password, silakan isi formulir di bawah ini:",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: screenHeight * 0.05),
+                        typePass(
+                          TextInputType.text,
+                          "Password Lama",
+                          _currentPasswordController,
+                          (value) {
+                            if (value!.isEmpty) {
+                              return "Password Lama diperlukan";
+                            }
+                            return null;
+                          },
+                          false.obs,
+                          screenWidth,
+                        ),
+                        SizedBox(height: screenHeight * 0.05),
+                        typePass(
+                          TextInputType.text,
+                          "Password Baru",
+                          _newPasswordController,
+                          (value) {
+                            if (value!.isEmpty) {
+                              return "Password Baru diperlukan";
+                            }
+                            if (value.length < 8) {
+                              return "Password Baru harus terdiri dari minimal 8 karakter";
+                            }
+                            return null;
+                          },
+                          false.obs,
+                          screenWidth,
+                        ),
+                        SizedBox(height: screenHeight * 0.05),
+                        typePass(
+                          TextInputType.text,
+                          "Konfirmasi Password Baru",
+                          _confirmNewPasswordController,
+                          (value) {
+                            if (value!.isEmpty) {
+                              return "Konfirmasi Password Baru diperlukan";
+                            }
+                            if (_newPasswordController.text != value) {
+                              return "Password Baru dan Konfirmasi Password Baru tidak sama";
+                            }
+                            return null;
+                          },
+                          false.obs,
+                          screenWidth,
+                        ),
+                        SizedBox(height: screenHeight * 0.3),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
+                            padding: EdgeInsets.all(screenWidth * 0.03),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              controller.changePassword(
+                                password: _newPasswordController.text,
+                                current_password: _currentPasswordController.text,
+                                password_confirmation: _confirmNewPasswordController.text,
+                              );
+                            }
+                          },
+                          child: Text("Ubah Password"),
+                        ),
+                      ],
                     ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Change password
-                      print(
-                          "Password Lama: ${_currentPasswordController.text}");
-                      print("Password Baru: ${_newPasswordController.text}");
-                      Get.back();
-                      // Show a success message or perform other actions
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Password berhasil diubah!"),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text("Ubah Password"),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
+        Obx(() {
+          if (controller.isLoading.value == true) {
+            return Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        }),
+      ],
     );
   }
 }
 
-Widget typePass(
-  TextInputType keyboardType,
-  String label,
-  String hint,
-  TextEditingController controller,
-  String? Function(String?)? validator,
-) {
-  return Container(
-    margin: EdgeInsets.only(top: 20, bottom: 20),
-    child: TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-        hintText: hint,
-        labelText: label,
-        hintStyle: TextStyle(color: Colors.black),
-        errorStyle: TextStyle(color: Colors.red),
-        labelStyle: TextStyle(color: Colors.black),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-      validator: validator,
-    ),
-  );
-}

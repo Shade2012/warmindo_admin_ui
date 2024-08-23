@@ -64,8 +64,9 @@ class Menu {
     String category;
     String secondCategory;
     String stock;
-    String ratings;
+    double? rating;
     String description;
+    String status;
     DateTime createdAt;
     DateTime updatedAt;
 
@@ -77,22 +78,24 @@ class Menu {
         required this.category,
         required this.secondCategory,
         required this.stock,
-        required this.ratings,
+        this.rating,
         required this.description,
+        required this.status,
         required this.createdAt,
         required this.updatedAt,
     });
 
     factory Menu.fromJson(Map<String, dynamic> json) => Menu(
         id: json["id"],
-        image: json["image"],
-        nameMenu: json["name_menu"],
-        price: json["price"],
-        category: json["category"],
-        secondCategory: json["second_category"],
-        stock: json["stock"],
-        ratings: json["ratings"],
-        description: json["description"],
+        image: json["image"] ?? '',
+        nameMenu: json["name_menu"] ?? '',
+        price: json["price"] ?? '',
+        category: json["category"] ?? '',
+        secondCategory: json["second_category"] ?? '',
+        stock: json["stock"] ?? '',
+        rating: double.tryParse(json["average_rating"] ?? '0') ?? 0.0,
+        description: json["description"] ?? '',
+        status: json["status_menu"] ?? 'Available',
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
     );
@@ -105,8 +108,9 @@ class Menu {
         "category": category,
         "second_category": secondCategory,
         "stock": stock,
-        "ratings": ratings,
+        "rating": rating.toString(),
         "description": description,
+        "status_menu": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
     };
@@ -119,8 +123,9 @@ class Menu {
         String? category,
         String? secondCategory,
         String? stock,
-        String? ratings,
+        double? rating,
         String? description,
+        String? status_menu,
         DateTime? createdAt,
         DateTime? updatedAt,
     }) => 
@@ -132,8 +137,9 @@ class Menu {
             category: category ?? this.category,
             secondCategory: secondCategory ?? this.secondCategory,
             stock: stock ?? this.stock,
-            ratings: ratings ?? this.ratings,
+            rating: rating ?? this.rating,
             description: description ?? this.description,
+            status: status_menu ?? this.status,
             createdAt: createdAt ?? this.createdAt,
             updatedAt: updatedAt ?? this.updatedAt,
         );

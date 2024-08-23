@@ -22,10 +22,10 @@ class DetailProductPage extends StatelessWidget {
     final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     final ProductController productController = Get.find<ProductController>();
 
-    double? priceAsDouble = double.tryParse(product.price?.replaceAll(',', '').replaceAll('.', '') ?? '');
+    double? priceAsDouble = double.tryParse(product.price.replaceAll(',', '').replaceAll('.', ''));
 
-    double? ratingAsDouble = double.tryParse(product.ratings ?? '');
-    String ratingString = ratingAsDouble?.toString() ?? 'N/A';
+    // double? ratingAsDouble = double.tryParse(product.rating ?? '');
+    // String ratingString = ratingAsDouble?.toString() ?? 'N/A';
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +68,7 @@ class DetailProductPage extends StatelessWidget {
                 width: screenWidth * 0.8,
                 height: screenHeight * 0.25,
                 child: Image.network(
-                  product.image ?? '', // Handle null image URL
+                  product.image, // Handle null image URL
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(Images.mieAyam);
@@ -97,7 +97,7 @@ class DetailProductPage extends StatelessWidget {
                 Icon(Icons.star, color: Colors.amber),
                 SizedBox(width: screenWidth * 0.02),
                 Text(
-                  ratingString,
+                  product.rating.toString() ?? 'N/A', 
                   style: TextStyle(fontSize: 16),
                 ),
               ],

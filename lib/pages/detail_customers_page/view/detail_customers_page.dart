@@ -89,23 +89,6 @@ class DetailCustomersPage extends StatelessWidget {
                     disabledBorder: InputBorder.none,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.04),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.ORDER_HISTORY_PAGE,
-                        arguments: customerData.name);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(screenWidth * 0.2, screenHeight * 0.05),
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    textStyle: TextStyle(fontSize: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Text("Tampilkan Riwayat Pesanan"),
-                ),
               ],
             ),
           ),

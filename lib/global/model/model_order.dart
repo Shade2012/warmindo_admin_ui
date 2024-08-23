@@ -52,6 +52,10 @@ class Order {
   String? note;
   String? paymentMethod; 
   String? orderMethod;   
+  String? cancelMethod;
+  String? reasonCancel;
+  String? noRekening;
+  String adminFee;
   DateTime? createdAt;   
   DateTime? updatedAt;   
   List<OrderDetail> orderDetails;
@@ -64,6 +68,10 @@ class Order {
     this.note,
     this.paymentMethod,
     this.orderMethod,
+    this.cancelMethod,
+    this.reasonCancel,
+    this.noRekening,
+    required this.adminFee,
     this.createdAt,
     this.updatedAt,
     required this.orderDetails,
@@ -78,6 +86,10 @@ class Order {
       note: json['note'] ?? '',
       paymentMethod: json['payment_method'] ?? '',
       orderMethod: json['order_method'] ?? '',
+      cancelMethod: json['cancel_method'] ?? '',
+      reasonCancel: json['reason_cancel'] ?? '',
+      noRekening: json['no_rekening'] ?? '',
+      adminFee: json['admin_fee'] ?? '',
       createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
       updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
       orderDetails: (json['orderDetails'] as List)
@@ -95,6 +107,10 @@ class Order {
       'note': note,
       'payment_method': paymentMethod,
       'order_method': orderMethod,
+      'cancel_method': cancelMethod,
+      'reason_cancel': reasonCancel,
+      'no_rekening': noRekening,
+      'admin_fee': adminFee,
       'created_at': createdAt?.toIso8601String(),
       'updated_at': updatedAt?.toIso8601String(),
       'orderDetails': orderDetails.map((item) => item.toJson()).toList(),

@@ -13,6 +13,8 @@ class FoodApi {
   static String storeProduct = '$apiUrl/api/menus/store';
   static String updateProduct = '$apiUrl/api/menus/';
   static String deleteProduct = '$apiUrl/api/menus';
+  static var disableProduct = '$apiUrl/api/menus/disable/';
+  static var enableProduct = '$apiUrl/api/menus/enable/';
 }
 
 class ToppingsApi {
@@ -46,11 +48,15 @@ class AllCustomers {
 
 class OrderApi {
   static var getallOrderList = '$apiUrl/api/admins/orders';
-  static var editStatusOrder = '$apiUrl/api/orders/status/';
+  static var editStatusOrder = '$apiUrl/api/admins/status/';
 }
 
 class ScheduleApi {
   static var getallScheduleList = '$apiUrl/api/store-statuses';
   static var storeSchedule = '$apiUrl/api/store-statuses/store';
   static var updateSchedule = '$apiUrl/api/store-statuses/';
+}
+
+class NotificationApi {
+  static var sendnotificationtoAll = '$apiUrl/api/notifications/send-to-all';
 }

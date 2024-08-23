@@ -25,17 +25,15 @@ class ProductPage extends StatelessWidget {
       appBar: CustomAppBar(
         title: 'Kelola Produk',
         onChanged: (query) {
-          print(query);
           productController.searchFilter(query);
-          print(productController.searchResults);
         },
         controller: productController.search,
       ),
       body: Column(
         children: [
-          CategoryWidget(
+          Obx(() => CategoryWidget(
             onCategorySelected: (selectedCategory) {
-              productController.selectedCategory(selectedCategory);
+              productController.setCategory(selectedCategory);
               switch (selectedCategory) {
                 case 'Semua':
                   productController.getAllProductList();
@@ -55,9 +53,15 @@ class ProductPage extends StatelessWidget {
                 case 'Varian':
                   productController.getVariantList();
                   break;
+                case 'Tidak Aktif':
+                  productController.filterProducts(); // Pastikan ini memfilter produk tidak tersedia
+                  break;
+                default:
+                  productController.getAllProductList();
               }
             },
-          ),
+            selectedCategory: productController.selectedCategory.value,
+          )),
           SizedBox(height: 10),
           Expanded(
             child: Obx(() {

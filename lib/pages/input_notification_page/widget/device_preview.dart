@@ -29,31 +29,19 @@ class DevicePreview extends StatelessWidget {
                 children: [
                   Text(
                     controller.title.value.isEmpty
-                        ? 'Notification Title'
+                        ? 'Judul Notifikasi'
                         : controller.title.value,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   Text(
                     controller.description.value.isEmpty
-                        ? 'Notification Text'
+                        ? 'Deksripsi Notifikasi'
                         : controller.description.value,
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
               ),
             ),
-            if (controller.imageUrl.value.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.all(8.0), // Adjusted padding
-                child: Image.network(
-                  controller.imageUrl.value,
-                  height: 30, // Adjusted image height
-                  width: 30, // Adjusted image width
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(Icons.broken_image, color: Colors.white);
-                  },
-                ),
-              ),
           ],
         ),
       );

@@ -10,7 +10,6 @@ class CancelOrderController extends GetxController{
   void onInit() {
     _internetService.connectionChange.listen(_updateConnectionStatus);
     _checkInternetConnection();
-    // TODO: implement onInit
     super.onInit();
   }
 
