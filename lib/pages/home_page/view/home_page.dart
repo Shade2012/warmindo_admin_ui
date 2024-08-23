@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/model/model_history_order.dart';
 import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/pages/home_page/controller/home_controller.dart';
 import 'package:warmindo_admin_ui/pages/home_page/widget/homepage_shimmer.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
+import 'package:warmindo_admin_ui/pages/schedule_page/controller/schedule_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
-
-import '../../schedule_page/controller/schedule_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -56,8 +56,19 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                    padding:  EdgeInsets.all(screenWidth * 0.02),
-                    // child: Text('Status Toko : ${statusController.jadwalElement[0].is_open ? 'Buka' : 'Tutup'}',style: subHeadOrderTextStyle,),
+                    padding: EdgeInsets.all(screenWidth * 0.02),
+                    child: Text(
+                      'Status Toko : ${() {
+                        try {
+                          return statusController.jadwalElement[0].is_open
+                              ? 'Buka'
+                              : 'Tutup';
+                        } catch (e) {
+                          return 'Tidak Diketahui';
+                        }
+                      }()}',
+                      style: subHeadOrderTextStyle,
+                    ),
                   ),
                   Row(
                     children: [
@@ -112,28 +123,47 @@ class HomePage extends StatelessWidget {
                   ),
                   Container(
                     height: screenHeight * 0.6,
-                    child: Obx(() => ListView.separated(
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: controller.orderList.length.clamp(0, 3),
-                          itemBuilder: (context, index) {
-                            final order = controller.orderList[index];
-                            final userId = int.tryParse(order.userId.toString()) ?? 0;
-                            final customer = controller.getCustomerById(userId);
-                            print('Order ID: ${order.id}, User ID: ${order.userId}, Customer: ${customer?.name}');
-                            return OrderBox(
-                              order: order,
-                              customerName:
-                              customer?.name ?? 'Unknown Customer',
+                    child: Obx(() {
+                      // Filter and sort orders by the most recent date
+                      final filteredOrders = controller.orderList
+                          .where((order) =>
+                              order.status?.toLowerCase() !=
+                                  'menunggu pembayaran' &&
+                              order.status?.toLowerCase() != 'menunggu batal')
+                          .toList()
+                        ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: filteredOrders.length.clamp(0, 3),
+                        itemBuilder: (context, index) {
+                          if (controller.orderList.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'Tidak ada pesanan',
+                                textAlign: TextAlign.center,
+                              ),
                             );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(
-                              height: 10,
-                            );
-                          },
-                        )),
+                          }
+                          final order = filteredOrders[index];
+                          final userId =
+                              int.tryParse(order.userId.toString()) ?? 0;
+                          final customer = controller.getCustomerById(userId);
+                          print(
+                              'Order ID: ${order.id}, User ID: ${order.userId}, Customer: ${customer?.name}');
+                          return OrderBox(
+                            order: order,
+                            customerName: customer?.name ?? 'Unknown Customer',
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            height: 10,
+                          );
+                        },
+                      );
+                    }),
                   ),
                 ],
               ),
@@ -144,4 +174,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-

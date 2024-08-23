@@ -18,7 +18,7 @@ class CancelOrderPage extends StatelessWidget {
 
     // Filter pesanan dengan status permintaan pembatalan
     List<Order> cancelOrders = controller.orderList
-        .where((order) => order.status == 'Permintaan Pembatalan')
+        .where((order) => order.status == 'menunggu batal')
         .toList();
 
     return Scaffold(
@@ -41,7 +41,7 @@ class CancelOrderPage extends StatelessWidget {
           return Center(
             child: Text(
               'Tidak ada pesanan dengan permintaan pembatalan',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
               textAlign: TextAlign.center,
             ),
           );
@@ -53,14 +53,18 @@ class CancelOrderPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: cancelOrders
                   .map(
-                    (order) => Container(
-                      height: screenHeight * 0.2,
-                      width: screenWidth,
-                      child: OrderBox(
-                        order: order, 
-                        customerName: controller.getCustomerById(int.tryParse(order.userId) ?? 0)?.name ?? '', 
-                        
-                      ),
+                    (order) => Column(
+                      children: [
+                        Container(
+                          height: screenHeight * 0.2,
+                          width: screenWidth,
+                          child: OrderBox(
+                            order: order,
+                            customerName: controller.getCustomerById(int.tryParse(order.userId) ?? 0)?.name ?? '',
+                          ),
+                        ),
+                        SizedBox(height: 8), // Add space between OrderBox widgets
+                      ],
                     ),
                   )
                   .toList(),

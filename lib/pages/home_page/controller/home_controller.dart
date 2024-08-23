@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:warmindo_admin_ui/global/services/intenet_service.dart';
 
 class HomeController extends GetxController {
@@ -10,7 +9,6 @@ class HomeController extends GetxController {
   void onInit() {
     _internetService.connectionChange.listen(_updateConnectionStatus);
     _checkInternetConnection();
-    // TODO: implement onInit
     super.onInit();
   }
 

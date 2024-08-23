@@ -39,33 +39,35 @@ class CustomersController extends GetxController {
   }
 
   Future<void> fetchDataCustomer() async {
-    try {
-      final response = await http.get(Uri.parse(AllCustomers().customers));
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body)['data'];
-        final responseDatauser2 = json.decode(response.body)['data'][1]['user_verified'];
+  try {
+    final response = await http.get(Uri.parse(AllCustomers().customers));
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body)['data'];
+      if (responseData != null && responseData.isNotEmpty) {
+        final responseDatauser2 = responseData.length > 1 ? responseData[1]['user_verified'] : responseData[0]['user_verified'];
         userVerified.value = responseDatauser2;
-        if (responseData != null && responseData is List) {
-          final List<dynamic> allCustomerListData = responseData;
-          allCustomerList.value = allCustomerListData
-              .map((json) => CustomerData.fromJson(json))
-              .toList();
-          searchResults.value = allCustomerList;
-          print('{userVerified.value}');
-          print(responseData);
-          isLoading.value = false;
-        } else {
-          print('Data yang diterima tidak sesuai format yang diharapkan.');
-        }
+
+        final List<dynamic> allCustomerListData = responseData;
+        allCustomerList.value = allCustomerListData
+            .map((json) => CustomerData.fromJson(json))
+            .toList();
+        searchResults.value = allCustomerList;
+        print('{userVerified.value}');
+        print(responseData);
+        isLoading.value = false;
       } else {
-        print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
+        print('Data yang diterima kosong atau null.');
       }
-    } catch (error) {
-      print("Error while fetching data: $error");
-    } finally {
-      print('Selesai fetching data user');
+    } else {
+      print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
     }
+  } catch (error) {
+    print("Error while fetching data: $error");
+  } finally {
+    print('Selesai fetching data user');
   }
+}
+
 
   void searchCustomers(String query) {
     if (query.isEmpty) {

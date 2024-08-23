@@ -32,7 +32,7 @@ class EditCustomersController extends GetxController {
 
     if (response.statusCode == 200 && response.statusCode == 400) {
       print('User updated successfully');
-      Get.snackbar('Success', 'User status updated successfully',
+      Get.snackbar('Berhasil', 'Status Verifikasi Pelanggan dapat berubah',
           snackPosition: SnackPosition.TOP);
     } else {
       print('Failed to update user');

@@ -96,7 +96,7 @@ class EditProfileController extends GetxController {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
-        final userData = responseData['user'];
+        final userData = responseData['data'];
         username.value = userData['username'] ?? '';
         name.value = userData['name'] ?? '';
         email.value = userData['email'] ?? '';
@@ -133,7 +133,6 @@ class EditProfileController extends GetxController {
     try {
       isLoading.value = true;
 
-      // Create a multipart request
       var request = http.MultipartRequest('POST', url)
         ..headers.addAll({
           'Authorization': 'Bearer $token',

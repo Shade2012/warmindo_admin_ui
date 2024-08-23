@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,8 +21,10 @@ class EditProductPage extends StatelessWidget {
   final selectedCategory = RxString('');
   final selectedSecondCategory = RxString('');
   final selectedStock = RxString('');
+  final selectedStatusMenu = RxString('');
   final ProductController productController = Get.put(ProductController());
   final EditProductController editProductController = Get.put(EditProductController());
+
   void getImage(ImageSource source) {
     editProductController.getImage(source);
   }
@@ -37,6 +38,7 @@ class EditProductPage extends StatelessWidget {
     selectedStock.value = product.stock;
     selectedSecondCategory.value = product.secondCategory;
     ctrProductDesc.text = product.description;
+    selectedStatusMenu.value = product.status == 1 ? 'Aktif' : 'Tidak Aktif';
   }
 
   @override
@@ -94,11 +96,9 @@ class EditProductPage extends StatelessWidget {
                             height: screenHeight * 0.15,
                             width: screenHeight * 0.15,
                             child: editProductController.selectedImage.value != null &&
-                                    editProductController
-                                        .selectedImage.value!.path.isNotEmpty
+                                    editProductController.selectedImage.value!.path.isNotEmpty
                                 ? Image.file(
-                                    File(editProductController
-                                        .selectedImage.value!.path),
+                                    File(editProductController.selectedImage.value!.path),
                                     fit: BoxFit.cover,
                                   )
                                 : Image.network(product.image),
@@ -203,8 +203,6 @@ class EditProductPage extends StatelessWidget {
                       },
                       dropdownType: DropdownType.Stock,
                     )),
-
-
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.02),
@@ -238,15 +236,33 @@ class EditProductPage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.02),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Status Produk", style: titleAddProductTextStyle),
+                    SizedBox(height: screenHeight * 0.01),
+                    Obx(() => CustomDropdown(
+                          items: ['Aktif', 'Tidak Aktif'],
+                          value: selectedStatusMenu.value.isNotEmpty
+                              ? selectedStatusMenu.value
+                              : null,
+                          onChanged: (String? value) {
+                            selectedStatusMenu.value = value ?? '';
+                          },
+                          dropdownType: DropdownType.StatusMenu,
+                        )),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.02),
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final selectedImage = editProductController.selectedImage.value;
                       final stockValue = selectedStock.value; // Use the value directly here
 
                       if (selectedImage != null) {
-                        editProductController.updateProduct(
+                        await editProductController.updateProduct(
                           menuId: product.id.toString(),
                           nameMenu: ctrProductName.text,
                           price: int.parse(ctrProductPrice.text),
@@ -257,7 +273,7 @@ class EditProductPage extends StatelessWidget {
                           second_category: selectedSecondCategory.value,
                         );
                       } else {
-                        editProductController.updateProduct(
+                        await editProductController.updateProduct(
                           menuId: product.id.toString(),
                           nameMenu: ctrProductName.text,
                           price: int.parse(ctrProductPrice.text),
@@ -267,6 +283,17 @@ class EditProductPage extends StatelessWidget {
                           second_category: selectedSecondCategory.value,
                         );
                       }
+
+                      // Update the status of the product
+                      if (selectedStatusMenu.value == 'Aktif') {
+                        await editProductController.enabledStatus(product.id.toString());
+                      } else {
+                        await editProductController.disabledStatus(product.id.toString());
+                      }
+
+                      // Optionally, navigate back or give feedback to the user
+                      Get.snackbar('Success', 'Product updated successfully',
+                          snackPosition: SnackPosition.TOP);
                     },
                     child: Text('Ubah Data Produk'),
                     style: ElevatedButton.styleFrom(
@@ -278,7 +305,6 @@ class EditProductPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.28),
                     ),
                   ),
-
                 ),
               ],
             ),

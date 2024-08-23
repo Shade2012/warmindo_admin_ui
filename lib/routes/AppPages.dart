@@ -28,8 +28,6 @@ import 'package:warmindo_admin_ui/pages/edit_varian_page/binding/edit_varian_bin
 import 'package:warmindo_admin_ui/pages/edit_varian_page/view/edit_varian_page.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/binding/general_info_binding.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/view/general_info_page.dart';
-import 'package:warmindo_admin_ui/pages/history_order_page/binding/history_binding.dart';
-import 'package:warmindo_admin_ui/pages/history_order_page/view/history_page.dart';
 import 'package:warmindo_admin_ui/pages/home_page/binding/home_binding.dart';
 import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
 import 'package:warmindo_admin_ui/pages/input_notification_page/binding/input_notification_binding.dart';
@@ -210,12 +208,6 @@ class AppPages {
         name: _Paths.DETAIL_CUSTOMERS_PAGE,
         page: () => DetailCustomersPage(customerData: Get.arguments),
         binding: DetailCustomersBinding(),
-        transition: Transition.fadeIn,
-        transitionDuration: const Duration(milliseconds: 100)),
-    GetPage(
-        name: _Paths.ORDER_HISTORY_PAGE,
-        page: () => HistoryPage(),
-        binding: HistoryBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 100)),
     GetPage(

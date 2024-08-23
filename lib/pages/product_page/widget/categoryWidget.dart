@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 
-class CategoryWidget extends StatefulWidget {
-  final Function(String) onCategorySelected; // Callback untuk kategori terpilih
-  const CategoryWidget({Key? key, required this.onCategorySelected}) : super(key: key);
+class CategoryWidget extends StatelessWidget {
+  final Function(String) onCategorySelected;
+  final String selectedCategory;
 
-  @override
-  _CategoryWidgetState createState() => _CategoryWidgetState();
-}
+  CategoryWidget({
+    Key? key,
+    required this.onCategorySelected,
+    required this.selectedCategory,
+  }) : super(key: key);
 
-class _CategoryWidgetState extends State<CategoryWidget> {
-  late List<bool> isSelected;
-  final List<String> categories = ['Semua', 'Makanan', 'Minuman', 'Snack', 'Topping', 'Varian'];
-
-  @override
-  void initState() {
-    super.initState();
-    isSelected = List.generate(categories.length, (_) => false);
-    isSelected[0] = true; // Default category selection
-  }
+  final List<String> categories = ['Semua', 'Makanan', 'Minuman', 'Snack', 'Topping', 'Varian', 'Tidak Aktif'];
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +21,22 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         padding: const EdgeInsets.only(top: 8.0),
         child: Row(
           children: List.generate(categories.length, (index) {
+            final category = categories[index];
+            final isSelected = category == selectedCategory;
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14.0),
               child: GestureDetector(
                 onTap: () {
-                  setState(() {
-                    // Reset all selections and select the tapped category
-                    isSelected = List.generate(categories.length, (_) => false);
-                    isSelected[index] = true;
-                    widget.onCategorySelected(categories[index]); // Panggil callback
-                  });
+                  onCategorySelected(category); 
                 },
                 child: Chip(
-                  label: Text(categories[index]),
-                  backgroundColor: isSelected[index]
+                  label: Text(category),
+                  backgroundColor: isSelected
                       ? ColorResources.primaryColor
                       : ColorResources.primaryColorLight,
                   labelStyle: TextStyle(
-                    color: isSelected[index]
+                    color: isSelected
                         ? ColorResources.primaryColorLight
                         : ColorResources.primaryColorDark,
                   ),

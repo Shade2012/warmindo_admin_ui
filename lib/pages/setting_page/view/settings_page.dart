@@ -46,7 +46,8 @@ class SettingsPage extends StatelessWidget {
                             placeholder: AssetImage(Images.userImage),
                             image: NetworkImage(generalInfor.image.value.isEmpty
                                 ? Images.userImage
-                                : generalInfor.image.value),
+                                : 'https://warmindo.pradiptaahmad.tech/image/' +
+                                    generalInfor.image.value),
                             imageErrorBuilder: (context, error, stackTrace) =>
                                 Container(
                               width: screenWidth * 0.4,

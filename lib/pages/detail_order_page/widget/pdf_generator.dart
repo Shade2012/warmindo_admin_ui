@@ -65,7 +65,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
     }
   }
 
-  final adminFee = 1000.0;
+  final adminFee = double.parse(order.adminFee);
   final totalPayment = totalPrice + adminFee;
 
   // Load the logo image
@@ -129,6 +129,13 @@ Future<Uint8List> generateOrderPdf(Order order) async {
               children: [
                 pw.Text('Biaya Admin', style: pw.TextStyle(fontSize: 16)),
                 pw.Text(currencyFormat.format(adminFee), style: pw.TextStyle(fontSize: 16)),
+              ],
+            ),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text('Metode Pembayaran', style: pw.TextStyle(fontSize: 16)),
+                pw.Text(order.paymentMethod!, style: pw.TextStyle(fontSize: 16)),
               ],
             ),
             pw.SizedBox(height: 16),

@@ -90,18 +90,24 @@ class GeneralInformationController extends GetxController {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
-        final userData = responseData['user'];
-        username.value = userData['username'] ?? '';
-        name.value = userData['name'] ?? '';
-        email.value = userData['email'] ?? '';
-        phoneNumber.value = userData['phone_number'] ?? '';
-        image.value = userData['profile_picture'] ?? '';
+        final userData = responseData['data']; // Mengakses data dengan benar
 
-        // Update TextEditingControllers
-        fullNameController.text = name.value;
-        emailController.text = email.value;
-        phoneNumberController.text = phoneNumber.value;
-        usernameController.text = username.value;
+        // Pastikan userData tidak null sebelum mengakses
+        if (userData != null) {
+          username.value = userData['username'] ?? '';
+          name.value = userData['name'] ?? '';
+          email.value = userData['email'] ?? '';
+          phoneNumber.value = userData['phone_number'] ?? '';
+          image.value = userData['profile_picture'] ?? '';
+
+          // Update TextEditingControllers
+          fullNameController.text = name.value;
+          emailController.text = email.value;
+          phoneNumberController.text = phoneNumber.value;
+          usernameController.text = username.value;
+        } else {
+          print("User data is null");
+        }
       } else {
         print('Error: ${response.statusCode}');
         print('Response body: ${response.body}');

@@ -14,6 +14,11 @@ class OrderPage extends StatelessWidget {
   List<Order> getFilteredOrders(
       List<Order> orders, String? selectedStatus, String searchTerm) {
     orders = getFilteredOrdersByStatus(orders, selectedStatus);
+    
+    // Filter out orders with status "menunggu pembayaran"
+    orders = orders.where((order) => order.status?.toLowerCase() != 'menunggu pembayaran' && order.status?.toLowerCase() != 'menunggu batal').toList();
+    orders.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+    
     return orders.where((order) {
       final customer = controller.getCustomerById(int.tryParse(order.userId) ?? 0);
       return customer?.name.toLowerCase().contains(searchTerm.toLowerCase()) ?? false;
@@ -36,6 +41,14 @@ class OrderPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () async {
+               
+            },
+          ),
+        ],
         title: Text(
           'Manajemen Pesanan',
           style: appBarTextStyle,
@@ -111,7 +124,7 @@ class OrderPage extends StatelessWidget {
                             order: order,
                             customerName: customer?.name ?? 'Unknown Customer',
                           ),
-                          SizedBox(height: 10), // Add SizedBox with height 10
+                          SizedBox(height: screenHeight * 0.02), 
                         ],
                       );
                     }).toList(),

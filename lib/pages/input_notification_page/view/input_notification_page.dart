@@ -8,6 +8,7 @@ import 'package:warmindo_admin_ui/pages/input_notification_page/widget/device_pr
 
 class InputNotificationPage extends StatelessWidget {
   final InputNotificationController controller = Get.put(InputNotificationController());
+
   InputNotificationPage({super.key});
 
   @override
@@ -17,21 +18,29 @@ class InputNotificationPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text('Buat Notifikasi', style: appBarTextStyle),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
-            onPressed: () {
-              Get.back();
-            },
-          )),
+        title: Text('Kirim Notifikasi', style: appBarTextStyle),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02),
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(height: screenHeight * 0.025),
+            Text(
+              'Pratinjau Notifikasi',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: screenHeight * 0.015),
+            DevicePreview(controller: controller),
+            SizedBox(height: screenHeight * 0.025),
             Text(
               'Judul Notifikasi',
               style: titleAddProductTextStyle,
@@ -49,39 +58,9 @@ class InputNotificationPage extends StatelessWidget {
             ),
             SizedBox(height: screenHeight * 0.015),
             CustomTextField(
-              controller:
-                  TextEditingController(text: controller.description.value),
+              controller: TextEditingController(text: controller.description.value),
               hintText: 'Deskripsi Notifikasi',
               onChanged: (value) => controller.description.value = value,
-            ),
-            SizedBox(height: screenHeight * 0.025),
-            Text(
-              'Gambar Notifikasi (Opsional)',
-              style: titleAddProductTextStyle,
-            ),
-            SizedBox(height: screenHeight * 0.015),
-            CustomTextField(
-              trailing: IconButton(
-                icon: Icon(Icons.upload),
-                onPressed: () {
-                  //logic upload image here
-                },
-              ),
-              controller:
-                  TextEditingController(text: controller.imageUrl.value),
-              hintText: 'Gambar Notifikasi (Opsional)',
-              onChanged: (value) => controller.imageUrl.value = value,
-            ),
-            SizedBox(height: screenHeight * 0.025),
-            Text(
-              'Nama Notifikasi (Opsional)',
-              style: titleAddProductTextStyle,
-            ),
-            SizedBox(height: screenHeight * 0.015),
-            CustomTextField(
-              controller: TextEditingController(text: controller.name.value),
-              hintText: 'Nama Notifikasi (Opsional)',
-              onChanged: (value) => controller.name.value = value,
             ),
             SizedBox(height: screenHeight * 0.025),
             Center(
@@ -108,19 +87,12 @@ class InputNotificationPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // Implement your send test message logic here
+                    controller.sendNotification();
                   },
-                  child: Text('Kirim notifikasi'),
+                  child: Text('Kirim Notifikasi'),
                 ),
               ),
             ),
-            SizedBox(height: screenHeight * 0.025),
-            Text(
-              'Pratinjau Notifikasi',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: screenHeight * 0.015),
-            DevicePreview(controller: controller),
           ],
         ),
       ),

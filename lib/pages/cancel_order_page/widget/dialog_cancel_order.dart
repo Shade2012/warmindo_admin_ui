@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class DialogCancelOrder extends StatelessWidget {
   final String title;
   final String content;
+  final String content2;
   final String cancelText;
   final String confirmText;
   final Function onCancelPressed;
@@ -17,6 +19,7 @@ class DialogCancelOrder extends StatelessWidget {
   DialogCancelOrder({
     required this.title,
     required this.content,
+    required this.content2,
     required this.cancelText,
     required this.confirmText,
     required this.onCancelPressed,
@@ -35,13 +38,35 @@ class DialogCancelOrder extends StatelessWidget {
 
     return AlertDialog(
       backgroundColor: Colors.white,
+      titlePadding: EdgeInsets.zero,  // Remove default padding
       title: Column(
         children: [
-          if (dialogImage != null) dialogImage!,
+          Stack(
+            children: [
+              if (dialogImage != null)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 16.0),
+                    child: dialogImage!,
+                  ),
+                ),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: IconButton(
+                  icon: Icon(Icons.close, color: Colors.black),
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: height * 0.01),
           Text(
             title,
             style: titleDialogButtonTextStyle,
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -68,9 +93,18 @@ class DialogCancelOrder extends StatelessWidget {
               ),
               SizedBox(width: width * 0.02),
               Expanded(
-                child: Text(
-                  content,
-                  style: contentDialogButtonTextStyle,
+                child: Column(
+                  children: [
+                    Text(
+                      content,
+                      style: contentDialogButtonTextStyle,
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Text(
+                      content2,
+                      style: contentDialogButtonTextStyle,
+                    ),
+                  ],
                 ),
               ),
             ],

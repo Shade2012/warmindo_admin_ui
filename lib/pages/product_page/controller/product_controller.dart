@@ -72,8 +72,9 @@ class ProductController extends GetxController {
         image: '',
         stock: topping.stockTopping.toString(),
         category: 'Topping',
-        ratings: '',
+        rating: 0.0,
         description: '',
+        status: '',
         createdAt: topping.createdAt,
         updatedAt: topping.updatedAt,
         secondCategory: topping.menuId.toString(),
@@ -87,8 +88,9 @@ class ProductController extends GetxController {
         image: variant.image ?? '',
         stock: variant.stockVarian,
         category: variant.category,
-        ratings: '',
+        rating: 0.0,
         description: '',
+        status: '',
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         secondCategory: '',
@@ -111,26 +113,72 @@ class ProductController extends GetxController {
     try {
       final response = await http.get(Uri.parse(FoodApi.getallProductList));
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body)['data'];
-        if (responseData != null && responseData['menu'] is List) {
-          final List<dynamic> allProductListData = responseData['menu'];
-          allProductList.value = allProductListData
-              .map((json) => model.Menu.fromJson(json))
-              .toList();
+        final List<dynamic> responseData = json.decode(response.body);
+        if (responseData is List) {
+          allProductList.value = responseData.map((json) => model.Menu.fromJson(json)).toList();
+          for (var product in allProductList) {
+            if (product.stock == '0') {
+              Get.snackbar(
+                'Stok ${product.nameMenu} kosong',
+                'Harap cek lagi stok produk anda!',
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.redAccent,
+                colorText: Colors.white,
+              );
+            }
+          }
           filterProducts();
+
         } else {
-          print('Data yang diterima tidak sesuai format yang diharapkan.');
+          print('Unexpected response format: ${responseData.runtimeType}');
         }
       } else {
-        print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
+        print('Failed to fetch data. Status code: ${response.statusCode}');
       }
     } catch (error) {
       print("Error while fetching data: $error");
     } finally {
       isLoading.value = false;
-      print('Selesai fetching data');
     }
   }
+
+  // Future<void> getAllProductList() async {
+  //   try {
+  //     final response = await http.get(Uri.parse(FoodApi.getallProductList));
+  //     if (response.statusCode == 200) {
+  //       final responseData = json.decode(response.body);
+  //       if (responseData != null && responseData['menu'] is List) {
+  //         final List<dynamic> allProductListData = responseData['menu'];
+  //         allProductList.value = allProductListData
+  //             .map((json) => model.Menu.fromJson(json))
+  //             .toList();
+          
+  //         for (var product in allProductList) {
+  //           if (product.stock == '0') {
+  //             Get.snackbar(
+  //               'Stok ${product.nameMenu} kosong',
+  //               'Harap cek lagi stok produk anda!',
+  //               snackPosition: SnackPosition.TOP,
+  //               backgroundColor: Colors.redAccent,
+  //               colorText: Colors.white,
+  //             );
+  //           }
+  //         }
+
+  //         filterProducts();
+  //       } else {
+  //         print('Data yang diterima tidak sesuai format yang diharapkan.');
+  //       }
+  //     } else {
+  //       print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
+  //     }
+  //   } catch (error) {
+  //     print("Error while fetching data: $error");
+  //   } finally {
+  //     isLoading.value = false;
+  //     print('Selesai fetching data');
+  //   }
+  // }
 
   Future<void> getFoodList() async {
     try {
@@ -209,7 +257,7 @@ class ProductController extends GetxController {
   }
 
   Future<void> getToppingList() async {
-    isLoading.value = true;  // Set loading status before starting the fetch
+    isLoading.value = true;  
     try {
       final response = await http.get(Uri.parse(ToppingsApi.getallToppingsList));
       if (response.statusCode == 200) {
@@ -217,7 +265,7 @@ class ProductController extends GetxController {
         if (responseData is Map<String, dynamic>) {
           ToppingList toppingListData = ToppingList.fromJson(responseData);
           toppingList.value = toppingListData.data;
-          filterProducts(); // Make sure this function is defined elsewhere
+          filterProducts(); 
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
         }
@@ -227,13 +275,13 @@ class ProductController extends GetxController {
     } catch (error) {
       print("Error while fetching data: $error");
     } finally {
-      isLoading.value = false;  // Set loading status after the fetch completes
+      isLoading.value = false;  
       print('Selesai fetching data');
     }
   }
 
   Future<void> getVariantList() async {
-    isLoading.value = true;  // Set loading status before starting the fetch
+    isLoading.value = true;  
     try {
       final response = await http.get(Uri.parse(VariantApi.getallVariantList));
       if (response.statusCode == 200) {
@@ -241,7 +289,7 @@ class ProductController extends GetxController {
         if (responseData is Map<String, dynamic>) {
           VarianList variantListData = VarianList.fromJson(responseData);
           variantList.value = variantListData.data;
-          filterProducts(); // Make sure this function is defined elsewhere
+          filterProducts(); 
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
         }
@@ -251,75 +299,103 @@ class ProductController extends GetxController {
     } catch (error) {
       print("Error while fetching data: $error");
     } finally {
-      isLoading.value = false;  // Set loading status after the fetch completes
+      isLoading.value = false;  
       print('Selesai fetching data');
     }
   }
 
   void filterProducts() {
+    print('Filtering for category: ${selectedCategory.value}');
+    
     if (selectedCategory.value == 'Semua') {
-      filteredProductList.assignAll(allProductList);
-      filteredProductList.addAll(toppingList.map((topping) => model.Menu(
-        id: topping.id,
-        nameMenu: topping.nameTopping,
-        price: topping.price.toString(),
-        image: '',
-        stock: topping.stockTopping.toString(),
-        category: 'Topping',
-        ratings: '',
-        description: '',
-        createdAt: topping.createdAt,
-        updatedAt: topping.updatedAt,
-        secondCategory: topping.menuId.toString(),
-      )).toList());
-      filteredProductList.addAll(variantList.map((variant) => model.Menu(
-        id: variant.idVarian,
-        nameMenu: variant.nameVarian,
-        price: '0',
-        image: variant.image ?? '',
-        stock: variant.stockVarian,
-        category: 'Variant',
-        ratings: '',
-        description: '',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        secondCategory: variant.category,
-      )).toList());
+      filteredProductList.assignAll(
+        allProductList.where((product) => product.status != '0').toList()
+      );
+      filteredProductList.addAll(
+        toppingList.map((topping) => model.Menu(
+          id: topping.id,
+          nameMenu: topping.nameTopping,
+          price: topping.price.toString(),
+          image: '',
+          stock: topping.stockTopping.toString(),
+          category: 'Topping',
+          rating: 0.0,
+          description: '',
+          status: '',
+          createdAt: topping.createdAt,
+          updatedAt: topping.updatedAt,
+          secondCategory: topping.menuId.toString(),
+        )).toList()
+      );
+      filteredProductList.addAll(
+        variantList.map((variant) => model.Menu(
+          id: variant.idVarian,
+          nameMenu: variant.nameVarian,
+          price: '0',
+          image: variant.image ?? '',
+          stock: variant.stockVarian,
+          category: 'Variant',
+          rating: 0.0,
+          description: '',
+          status: '',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          secondCategory: variant.category,
+        )).toList()
+      );
     } else if (selectedCategory.value == 'Makanan') {
-      filteredProductList.assignAll(foodList);
+      filteredProductList.assignAll(
+        foodList.where((product) => product.status != '0').toList()
+      );
     } else if (selectedCategory.value == 'Minuman') {
-      filteredProductList.assignAll(drinklist);
+      filteredProductList.assignAll(
+        drinklist.where((product) => product.status != '0').toList()
+      );
     } else if (selectedCategory.value == 'Snack') {
-      filteredProductList.assignAll(snackList);
+      filteredProductList.assignAll(
+        snackList.where((product) => product.status != '0').toList()
+      );
     } else if (selectedCategory.value == 'Topping') {
-      filteredProductList.assignAll(toppingList.map((topping) => model.Menu(
-        id: topping.id,
-        nameMenu: topping.nameTopping,
-        price: topping.price.toString(),
-        image: '',
-        stock: topping.stockTopping.toString(),
-        category: 'Topping',
-        ratings: '',
-        description: '',
-        createdAt: topping.createdAt,
-        updatedAt: topping.updatedAt,
-        secondCategory: topping.menuId.toString(),
-      )).toList());
+      filteredProductList.assignAll(
+        toppingList.map((topping) => model.Menu(
+          id: topping.id,
+          nameMenu: topping.nameTopping,
+          price: topping.price.toString(),
+          image: '',
+          stock: topping.stockTopping.toString(),
+          category: 'Topping',
+          rating: 0.0,
+          description: '',
+          status: '',
+          createdAt: topping.createdAt,
+          updatedAt: topping.updatedAt,
+          secondCategory: topping.menuId.toString(),
+        )).toList()
+      );
     } else if (selectedCategory.value == 'Varian') {
-      filteredProductList.assignAll(variantList.map((variant) => model.Menu(
-        id: variant.idVarian,
-        nameMenu: variant.nameVarian,
-        price: '0',
-        image: variant.image ?? '',
-        stock: variant.stockVarian,
-        category: 'Variant',
-        ratings: '',
-        description: '',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        secondCategory: '',
-      )).toList());
+      filteredProductList.assignAll(
+        variantList.map((variant) => model.Menu(
+          id: variant.idVarian,
+          nameMenu: variant.nameVarian,
+          price: '0',
+          image: variant.image ?? '',
+          stock: variant.stockVarian,
+          category: 'Variant',
+          rating: 0.0,
+          description: '',
+          status: '',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          secondCategory: '',
+        )).toList()
+      );
+    } else if (selectedCategory.value == 'Tidak Aktif') {
+      filteredProductList.assignAll(
+        allProductList.where((product) => product.status == '0').toList()
+      );
     }
+
+    print('Filtered products count: ${filteredProductList.length}');
   }
 
   void setCategory(String category) {
