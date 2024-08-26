@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/pages/schedule_page/controller/schedule_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class BottomSheetShop extends StatelessWidget {
-  const BottomSheetShop({Key? key}) : super(key: key);
+  final int scheduleId; // Assuming this is passed to the widget
+
+  const BottomSheetShop({Key? key, required this.scheduleId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ScheduleController statusController = Get.put(ScheduleController());
-
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
@@ -27,7 +28,7 @@ class BottomSheetShop extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Get.back();
                 },
                 icon: Icon(Icons.close),
               ),
@@ -178,43 +179,77 @@ class BottomSheetShop extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Jadwal Khusus',
-                        style: contentBoldBtsShopTextStyle,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Jadwal Khusus',
+                            style: contentBoldBtsShopTextStyle,
+                          ),
+                          Text(
+                            'Atur Jadwal khusus restoran anda',
+                            style: contentSmallBtsShopTextStyle,
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Buat jadwal khusus untuk restoran Anda',
-                        style: contentSmallBtsShopTextStyle,
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Radio<String>(
+                          value: 'Jadwal Khusus',
+                          groupValue: statusController.selectedStatus.value,
+                          onChanged: (String? value) {
+                            statusController.setStatus(value!);
+                          },
+                        ),
                       ),
                     ],
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () {
-                        Get.toNamed(Routes.SCHEDULE_PAGE);
-                      },
-                      icon: Icon(Icons.arrow_forward_ios_rounded),
-                    ),
-                  ),
-                ],
-              ),
+                  )),
             ],
           ),
           Spacer(),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                // Save the selected status and chip here
-                print('Selected status: ${statusController.selectedStatus.value}');
-                print('Selected chip: ${statusController.selectedChip.value}');
-                Navigator.pop(context);
+              onPressed: () async {
+                if (statusController.selectedStatus.value == 'Jadwal Khusus') {
+                  Get.back();
+                  Get.toNamed(Routes.SCHEDULE_PAGE);
+                } else {
+                  if(statusController.selectedStatus.value == 'Beroperasi Normal'){
+                    await statusController.updateStatusSchedule(
+                      start_time: '00:00:00',
+                      temporaryClosureDuration: '0',
+                      end_time: '23:59:59',
+                    );
+                  }else if(statusController.selectedStatus.value == 'Tutup Sementara'){
+                    if(statusController.selectedChip.value == '30 menit'){
+                      await statusController.updateStatusSchedule(
+                        temporaryClosureDuration: '30'
+                      );
+                    }
+                    else if(statusController.selectedChip.value == '60 menit'){
+                      await statusController.updateStatusSchedule(
+                          temporaryClosureDuration: '60'
+                      );
+                    }
+                    else if(statusController.selectedChip.value == '90 menit'){
+                      await statusController.updateStatusSchedule(
+                          temporaryClosureDuration: '90'
+                      );
+                    }
+                  }else if(statusController.selectedStatus.value == 'Tutup'){
+                    await statusController.updateStatusSchedule(
+                        end_time: '00:00:00'
+                    );
+                  }
+                  print('Selected status: ${statusController.selectedStatus.value}');
+                  print('Selected chip: ${statusController.selectedChip.value}');
+                  print('Status saat ini ${statusController.jadwalElement[0].is_open}');
+                  print('tutup sementara saat ini ${statusController.jadwalElement[0].temporary_closure_duration}');
+                  print('jam terakhir saat ini ${statusController.jadwalElement[0].end_time}');
+                }
               },
               child: Text('Ubah Status'),
               style: ElevatedButton.styleFrom(
@@ -232,3 +267,4 @@ class BottomSheetShop extends StatelessWidget {
     );
   }
 }
+

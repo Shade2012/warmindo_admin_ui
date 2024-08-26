@@ -1,10 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';
+import 'package:warmindo_admin_ui/global/firebase/firebase_api.dart';
+import 'package:warmindo_admin_ui/global/firebase/firebase_options.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
-void main() {
-  Get.put(NavigatorController(), permanent: true);
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    name: 'default',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi.InitLocalNotifications();
   runApp(const MyApp());
 }
 

@@ -1,38 +1,76 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:warmindo_admin_ui/repository/warmindo_repository.dart';
-
+import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import '../../../routes/AppPages.dart';
 
 class EditProductController extends GetxController {
   Rx<File> selectedImage = Rx<File>(File(''));
+  RxString error = ''.obs;
   RxBool isLoading = false.obs;
 
+  Future<void> updateStatusMenu({required String id, required bool statusMenu}) async {
+    isLoading.value = true;
+    final String endpoint = statusMenu
+        ? FoodApi.enableProduct + id 
+        : FoodApi.disableProduct + id ;
+    print('Sending request to URL: $endpoint with user_verified: $statusMenu');
+    
+    final response = await http.put(
+      Uri.parse(endpoint),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    isLoading.value = false;
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200 && response.statusCode == 400) {
+      print('User updated successfully');
+      Get.snackbar('Berhasil', 'Status Produk Berhasil Diubah',
+          snackPosition: SnackPosition.TOP);
+    } else {
+      print('Gagal mengubah status produk');
+    }
+  }
+
+  Future<void> enabledStatus(String id) async {
+    await updateStatusMenu(id: id, statusMenu: true);
+  }
+
+  Future<void> disabledStatus(String id) async {
+    await updateStatusMenu(id: id, statusMenu: false);
+  }
+
   Future<void> updateProduct({
-    required String menuId,
-    required String nameMenu,
-    required int price,
-    required String category,
-    required int stock,
-    required double ratings,
-    required String description,
+    String? menuId,
+    String? nameMenu,
+    int? price,
+    String? category,
+    String? stock,
+    String? description,
+    String? second_category,
     File? image,
   }) async {
     try {
       isLoading.value = true;
-      var uri = Uri.parse('${FoodApi.updateProduct}/$menuId');
+      var uri = Uri.parse('${FoodApi.updateProduct}$menuId');
       var request = http.MultipartRequest('POST', uri)
-        ..fields['name_menu'] = nameMenu
+        ..fields['name_menu'] = nameMenu ?? ''
         ..fields['price'] = price.toString()
-        ..fields['category'] = category
+        ..fields['category'] = category ??  ''
         ..fields['stock'] = stock.toString()
-        ..fields['ratings'] = ratings.toString()
-        ..fields['description'] = description;
-      
-      if (image != null) {
+        ..fields['description'] = description ?? ''
+        ..fields['second_category'] = second_category ?? ''
+        ..fields['_method'] = 'put'
+        ..headers['Accept'] = 'application/json';
+
+      // Check if image is provided and the path is not empty
+      if (image != null && image.path.isNotEmpty) {
         request.files.add(http.MultipartFile(
           'image',
           image.readAsBytes().asStream(),
@@ -68,11 +106,11 @@ class EditProductController extends GetxController {
       // Handle error
       isLoading.value = false;
       print('Error occurred while updating product: $e');
-
+      error.value = e.toString();
       // Show error snackbar
       Get.snackbar(
-        'Error',
-        'An error occurred while updating the product!',
+        'Error2',
+        '$e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

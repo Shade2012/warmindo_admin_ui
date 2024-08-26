@@ -1,24 +1,17 @@
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/global/model/model_schedule.dart';
 import 'package:warmindo_admin_ui/pages/bottom_sheet_schedule/controller/bottomsheet_schedule_controller.dart';
 import 'dart:developer';
-import 'package:warmindo_admin_ui/pages/widget/custom_dropdown_multi.dart';
-
-const List<Day> _dayItems = [
-  Day('Senin'),
-  Day('Selasa'),
-  Day('Rabu'),
-  Day('Kamis'),
-  Day('Jumat'),
-  Day('Sabtu'),
-  Day('Minggu'),
-];
 
 class BottomSheetSchedule extends StatelessWidget {
+  final ScheduleList schedules;
   final BottomSheetScheduleController _controller = Get.put(BottomSheetScheduleController());
 
-  BottomSheetSchedule({Key? key}) : super(key: key);
+  BottomSheetSchedule({required this.schedules}) {
+    _controller.openTimeController.text = schedules.start_time;
+    _controller.closeTimeController.text = schedules.end_time;   
+}
 
   @override
   Widget build(BuildContext context) {
@@ -30,34 +23,10 @@ class BottomSheetSchedule extends StatelessWidget {
       child: Container(
         color: Colors.white60,
         width: screenWidth,
-        height: screenHeight * 0.45,
+        height: screenHeight * 0.35,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Pilih Hari'),
-            SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ]),
-              child: Obx(() {
-                return CustomDropdown<Day>.multiSelect(
-                  hintText: 'Pilih Hari',
-                  items: _dayItems,
-                  initialItems: _controller.selectedDays.toList(),
-                  onListChanged: (value) {
-                    log('changing value to: $value');
-                    _controller.selectedDays.value = value;
-                  },
-                );
-              }),
-            ),
-            SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
@@ -76,7 +45,7 @@ class BottomSheetSchedule extends StatelessWidget {
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Misal: 08:00 AM',
+                            hintText: _controller.openTimeController.text,
                             suffixIcon: Icon(
                               Icons.timer,
                               color: Colors.black,
@@ -104,7 +73,7 @@ class BottomSheetSchedule extends StatelessWidget {
                           ),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Misal: 05:00 PM',
+                            hintText: _controller.closeTimeController.text,
                             suffixIcon: Icon(
                               Icons.timer,
                               color: Colors.black,
@@ -142,13 +111,13 @@ class BottomSheetSchedule extends StatelessWidget {
                             onChanged: (value) => _controller.toggleClosed(value),
                             activeColor: Colors.purple,
                           )),
-                      Text('Close'),
+                      Text('Tutup'),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.09),
+            SizedBox(height: screenHeight * 0.11),
             Row(
               children: [
                 Expanded(
@@ -175,11 +144,25 @@ class BottomSheetSchedule extends StatelessWidget {
                 SizedBox(width: screenWidth * 0.03),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      _controller.addSchedule();
-                      log('Save button clicked');
+                    onPressed: () async {
+                      if (_controller.is24Hours.value == true) {
+                        await _controller.updateScheduleTime(
+                          id: schedules.id.toString(),
+                          start_time: '00:00:00',
+                          end_time: '23:59:59', 
+                        );
+                      } else if (_controller.isClosedStatus.value == true) {
+                        await _controller.updateScheduleTime(
+                          id: schedules.id.toString(),
+                          start_time: '00:00:00',
+                          end_time: '00:00:00',
+                        );
+                      } else {
+                        await _controller.updateScheduleTime(id: schedules.id.toString(),);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0,
                       backgroundColor: Colors.green, // Warna latar belakang tombol
                       foregroundColor: Colors.white, // Warna teks tombol
                       minimumSize: Size(screenWidth / 2 - 30, 45),

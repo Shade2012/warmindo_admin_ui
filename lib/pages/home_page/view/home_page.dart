@@ -1,97 +1,179 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
-import 'package:warmindo_admin_ui/pages/widget/analyticBox.dart';
-import 'package:warmindo_admin_ui/pages/widget/customAppBar.dart';
-import 'package:warmindo_admin_ui/pages/widget/orderBox.dart';
+import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
+import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
+import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
+import 'package:warmindo_admin_ui/pages/home_page/controller/home_controller.dart';
+import 'package:warmindo_admin_ui/pages/home_page/widget/homepage_shimmer.dart';
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
+import 'package:warmindo_admin_ui/pages/sales_detail_page/controller/sales_detail_controller.dart';
+import 'package:warmindo_admin_ui/pages/schedule_page/controller/schedule_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-import 'package:warmindo_admin_ui/utils/themes/icon_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController search1 = TextEditingController();
-    final TextEditingController search2 = TextEditingController();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final HomeController homeController = Get.put(HomeController());
+    final OrderController controller = Get.put(OrderController());
+    final ScheduleController statusController = Get.put(ScheduleController());
+    final SalesController salesController = Get.put(SalesController());
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: CustomAppBar(controller: search1,).preferredSize,
-        child: CustomAppBar(controller: search2,),
+        preferredSize: Size.fromHeight(55),
+        child: CustomAppBar(
+          title: 'Halo, Admin!',
+          showSearch: false,
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(screenWidth * 0.02),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: screenHeight * 0.02),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(screenWidth * 0.02),
-                      child: AnalyticBox(
-                        totalSales: 200000,
-                        titleAnalyticBox: 'Total Penjualan',
-                        imagePath: IconThemes.iconCoin,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(screenWidth * 0.02),
-                      child: AnalyticBox(
-                        totalSales: 50,
-                        titleAnalyticBox: 'Produk',
-                        imagePath: IconThemes.iconProduct,
-                      ),
-                    ),
-                  ),
-                ],
+        child: Obx(() {
+          if (!homeController.isConnected.value) {
+            return Center(
+              child: Text(
+                'Tidak ada koneksi internet mohon cek internet anda',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
-              Padding(
-                padding: EdgeInsets.all(screenWidth * 0.02),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Pesanan',
+            );
+          }
+          if (controller.isLoading.value || salesController.isLoading.value) {
+            return HomepageShimmer();
+          }
+          return RefreshIndicator(
+            onRefresh: () async {
+              await controller.fetchDataOrder();
+              await statusController.fetchScheduleList();
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(screenWidth * 0.02),
+                    child: Text(
+                      'Status Toko : ${() {
+                        try {
+                          return statusController.jadwalElement[0].is_open
+                              ? 'Buka'
+                              : 'Tutup';
+                        } catch (e) {
+                          return 'Tidak Diketahui';
+                        }
+                      }()}',
                       style: subHeadOrderTextStyle,
                     ),
-                    SizedBox(width: screenWidth * 0.54),
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.ORDER_PAGE);
-                      },
-                      child: Text(
-                        'Lihat Semua',
-                        style: viewAllTextStyle2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  OrderBox(
-                    order: order001,
-                    nameCustomer: 'Baratha Wijaya',
                   ),
-                  SizedBox(height: screenHeight * 0.01),
-                  OrderBox(
-                    order: order002,
-                    nameCustomer: 'Damar Fikri',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(screenWidth * 0.02),
+                          child: Obx(() {
+                            return AnalyticBox(
+                              totalSales: salesController.revenueChart.value.overalltotal ?? 0,
+                              titleAnalyticBox: 'Total Penjualan',
+                              imagePath: IconThemes.iconCoin,
+                              onTap: () {
+                                Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                              },
+                            );
+                          }),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(screenWidth * 0.02),
+                          child: Obx(() {
+                            return AnalyticBox(
+                              totalSales: salesController.salesChart.value.overalltotal ?? 0,
+                              titleAnalyticBox: 'Total Produk Terjual',
+                              imagePath: IconThemes.iconProduct,
+                              onTap: () {
+                                Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                              },
+                            );
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(screenWidth * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Pesanan',
+                          style: subHeadOrderTextStyle,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.ORDER_PAGE);
+                          },
+                          child: Text(
+                            'Lihat Semua',
+                            style: viewAllTextStyle2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: screenHeight * 0.6,
+                    child: Obx(() {
+                      final filteredOrders = controller.orderList
+                          .where((order) =>
+                              order.status?.toLowerCase() !='menunggu pembayaran' &&
+                              order.status?.toLowerCase() != 'menunggu batal')
+                          .toList()
+                        ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: filteredOrders.length.clamp(0, 3),
+                        itemBuilder: (context, index) {
+                          if (controller.orderList.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'Tidak ada pesanan',
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          }
+                          final order = filteredOrders[index];
+                          final userId =
+                              int.tryParse(order.userId.toString()) ?? 0;
+                          final customer = controller.getCustomerById(userId);
+                          print(
+                              'Order ID: ${order.id}, User ID: ${order.userId}, Customer: ${customer?.name}');
+                          return OrderBox(
+                            order: order,
+                            customerName: customer?.name ?? 'Unknown Customer',
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            height: 10,
+                          );
+                        },
+                      );
+                    }),
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

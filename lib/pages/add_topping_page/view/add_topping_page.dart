@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
-import 'package:warmindo_admin_ui/pages/widget/up_image_bottomsheet.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/image_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/textfield.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/add_topping_page/controller/add_topping_controller.dart';
 
 class AddToppingPage extends StatelessWidget {
+  final AddToppingController toppingController = Get.put(AddToppingController());
   final TextEditingController ctrProductName = TextEditingController();
   final TextEditingController ctrProductPrice = TextEditingController();
   final TextEditingController ctrProductStock = TextEditingController();
@@ -51,39 +51,6 @@ class AddToppingPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Stack(
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.15,
-                    width: screenHeight * 0.15,
-                    child: Image.asset(Images.defaultImage),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => UploadImage(),
-                        );
-                      },
-                      child: Container(
-                        width: screenHeight * 0.04,
-                        height: screenHeight * 0.04,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child:
-                            Icon(Icons.camera_alt, size: screenHeight * 0.05),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: screenHeight * 0.02),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +96,26 @@ class AddToppingPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Add product to database
+                  final toppingName = ctrProductName.text;
+                  final toppingPrice = double.tryParse(ctrProductPrice.text);
+                  final toppingStock = int.tryParse(ctrProductStock.text);
+
+                  if (toppingName.isEmpty || toppingPrice == null || toppingStock == null) {
+                    Get.snackbar(
+                      'Warning',
+                      'Semua data harus diisi',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.orange,
+                      colorText: Colors.white,
+                    );
+                  } else {
+                    toppingController.addToppings(
+                      nameTopping: toppingName, 
+                      price: toppingPrice,
+                      stock: toppingStock,
+                      menu_id: 4
+                    );
+                  }
                 },
                 child: Text('Tambahkan'),
                 style: ElevatedButton.styleFrom(

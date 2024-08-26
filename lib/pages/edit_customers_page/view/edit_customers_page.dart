@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
-import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/model/model_customers.dart';
+import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
+import 'package:warmindo_admin_ui/global/widget/textfield.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/customers_page/controller/customers_controller.dart';
+import 'package:warmindo_admin_ui/pages/edit_customers_page/controller/edit_customers_controller.dart';
+import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class EditCustomersPage extends StatelessWidget {
+  final CustomerData customers;
   final TextEditingController ctrNameUser = TextEditingController();
   final TextEditingController ctrEmailUser = TextEditingController();
   final TextEditingController ctrPhoneUser = TextEditingController();
-  final TextEditingController ctrIdUser = TextEditingController();
+  final EditCustomersController editCustomersController = Get.put(EditCustomersController());
+  final CustomersController dataCustomers = Get.put(CustomersController());
   final selectedStatus = RxString('');
 
-  EditCustomersPage({Key? key}) : super(key: key);
+  EditCustomersPage({required this.customers}) {
+    ctrNameUser.text = customers.name;
+    ctrEmailUser.text = customers.email;
+    ctrPhoneUser.text = customers.phoneNumber;
+    selectedStatus.value = customers.userVerified == 0 ? 'Belum Terverifikasi' : 'Terverifikasi';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,36 +72,20 @@ class EditCustomersPage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.01),
               CustomTextField(
                 controller: ctrNameUser,
-                hintText: "Damar Fikri",
                 readOnly: true,
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              Text("ID User", style: titleAddProductTextStyle),
-              SizedBox(height: screenHeight * 0.01),
-              CustomTextField(
-                controller: ctrIdUser,
-                hintText: "12345",
-                readOnly: true,
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              Text("No Telepon", style: titleAddProductTextStyle),
-              SizedBox(height: screenHeight * 0.01),
-              CustomTextField(
-                controller: ctrPhoneUser,
-                hintText: "081234567890",
               ),
               SizedBox(height: screenHeight * 0.02),
               Text("Email", style: titleAddProductTextStyle),
               SizedBox(height: screenHeight * 0.01),
               CustomTextField(
                 controller: ctrEmailUser,
-                hintText: "damar@example.com",
+                readOnly: true,
               ),
               SizedBox(height: screenHeight * 0.02),
               Text("Status User", style: titleAddProductTextStyle),
               SizedBox(height: screenHeight * 0.01),
               Obx(() => CustomDropdown(
-                    items: ['Telah Terveritifikasi', 'Belum Terveritifikasi'],
+                    items: ['Terverifikasi', 'Belum Terverifikasi'],
                     value: selectedStatus.value.isNotEmpty
                         ? selectedStatus.value
                         : null,
@@ -102,10 +97,20 @@ class EditCustomersPage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Lakukan penanganan input disini
+                  onPressed: () async {
+                    try {
+                      if (selectedStatus.value == 'Terverifikasi') {
+                        await editCustomersController.verifyUser(customers.id.toString());
+                      } if (selectedStatus.value == 'Belum Terverifikasi') {
+                        await editCustomersController.unverifyUser(customers.id.toString());
+                      }
+                      Get.back();
+                      dataCustomers.fetchDataCustomer();
+                    } catch (e) {
+                      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+                    }
                   },
-                  child: Text('Edit Data'),
+                  child: Text('Ubah Data'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorResources.primaryColor,
                     foregroundColor: Colors.white,

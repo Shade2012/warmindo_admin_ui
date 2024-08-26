@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/pages/model/modelorder.dart';
-import 'package:warmindo_admin_ui/pages/widget/custom_dropdown.dart';
-import 'package:warmindo_admin_ui/pages/widget/textfield.dart';
-import 'package:warmindo_admin_ui/utils/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/utils/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/model/model_order.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
+import 'package:warmindo_admin_ui/global/widget/textfield.dart';
+import 'package:warmindo_admin_ui/pages/edit_order_page/controller/edit_order_controller.dart';
 
 class EditOrderPage extends StatelessWidget {
-  late final Order order;
-  final TextEditingController ctrNameUser = TextEditingController();
+  final Order order;
+  final EditOrderController editOrderController = Get.put(EditOrderController());
+  final TextEditingController ctrUserId = TextEditingController();
   final TextEditingController ctrPrice = TextEditingController();
-  final TextEditingController ctrIdOrder = TextEditingController();
+  final TextEditingController ctrMenuId = TextEditingController();
+  final TextEditingController ctrRefund = TextEditingController();
   final selectedCategory = RxString('');
 
-  // EditOrderPage(this.order) {
-  // ctrNameUser.text = order.nameCustomer;
-  // ctrIdOrder.text = order.id;
-  // selectedCategory.value = order.status;
-  // }
+  EditOrderPage({required this.order}) {
+    ctrUserId.text = order.userId;
+    ctrPrice.text = order.priceOrder.toString();
+    ctrMenuId.text = order.id.toString();
+    // ctrRefund.text = order.refund == 0 ? 'Ya' : 'Tidak';
+    selectedCategory.value = order.status;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +66,11 @@ class EditOrderPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nama User', style: titleAddProductTextStyle),
+            Text('User ID', style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             CustomTextField(
-              controller: ctrNameUser,
-              hintText: 'Masukkan Nama User',
+              controller: ctrUserId,
+              hintText: 'Masukkan ID User',
               readOnly: true,
             ),
             SizedBox(height: screenHeight * 0.02),
@@ -75,20 +80,14 @@ class EditOrderPage extends StatelessWidget {
               controller: ctrPrice,
               hintText: 'Masukkan Harga',
               readOnly: true,
+              keyboardType: TextInputType.number,
             ),
             SizedBox(height: screenHeight * 0.02),
-            Text('ID Pesanan', style: titleAddProductTextStyle),
+            Text("Status Pesanan", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
-            CustomTextField(
-              controller: ctrIdOrder,
-              hintText: 'Masukkan ID Pesanan',
-              readOnly: true,
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Text("Kategori Produk", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: ['Proses', 'Selesai', 'Menunggu Diambil'],
+                  items: ['sedang diproses', 'selesai', 'pesanan siap','batal','menunggu pengembalian dana'],
                   value: selectedCategory.value.isNotEmpty
                       ? selectedCategory.value
                       : null,
@@ -97,11 +96,14 @@ class EditOrderPage extends StatelessWidget {
                   },
                   dropdownType: DropdownType.Category,
                 )),
-            SizedBox(height: screenHeight * 0.33),
+            SizedBox(height: screenHeight * 0.20),
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Lakukan penanganan input disini
+                  editOrderController.updateOrder(
+                    orderId: order.id.toString(),
+                    status: selectedCategory.value,
+                  );
                 },
                 child: Text('Ubah Status'),
                 style: ElevatedButton.styleFrom(

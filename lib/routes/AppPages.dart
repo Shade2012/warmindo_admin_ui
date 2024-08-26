@@ -22,10 +22,16 @@ import 'package:warmindo_admin_ui/pages/edit_product_page/binding/edit_product_b
 import 'package:warmindo_admin_ui/pages/edit_product_page/view/edit_product_page.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/binding/edit_profile_binding.dart';
 import 'package:warmindo_admin_ui/pages/edit_profile_page/view/edit_profile_page.dart';
+import 'package:warmindo_admin_ui/pages/edit_topping_page/binding/edit_topping_binding.dart';
+import 'package:warmindo_admin_ui/pages/edit_topping_page/view/edit_topping_page.dart';
+import 'package:warmindo_admin_ui/pages/edit_varian_page/binding/edit_varian_binding.dart';
+import 'package:warmindo_admin_ui/pages/edit_varian_page/view/edit_varian_page.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/binding/general_info_binding.dart';
 import 'package:warmindo_admin_ui/pages/general_information_page/view/general_info_page.dart';
 import 'package:warmindo_admin_ui/pages/home_page/binding/home_binding.dart';
 import 'package:warmindo_admin_ui/pages/home_page/view/home_page.dart';
+import 'package:warmindo_admin_ui/pages/input_notification_page/binding/input_notification_binding.dart';
+import 'package:warmindo_admin_ui/pages/input_notification_page/view/input_notification_page.dart';
 import 'package:warmindo_admin_ui/pages/login_page/binding/login_binding.dart';
 import 'package:warmindo_admin_ui/pages/login_page/view/login_page.dart';
 import 'package:warmindo_admin_ui/pages/navigator_page/view/navigator_page.dart';
@@ -41,13 +47,13 @@ import 'package:warmindo_admin_ui/pages/schedule_page/binding/schedule_binding.d
 import 'package:warmindo_admin_ui/pages/schedule_page/view/schedule_page.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/binding/splash_binding.dart';
 import 'package:warmindo_admin_ui/pages/splash_page/view/splash_page.dart';
+import '../pages/detail_customers_page/binding/detail_customers_binding.dart';
+import '../pages/detail_customers_page/view/detail_customers_page.dart';
 part 'AppRoutes.dart';
 
 class AppPages {
   AppPages._();
-
   static const INITIAL = Routes.SPLASH_PAGE;
-
   static final routes = [
     GetPage(
         name: _Paths.BOTTOM_NAVIGATION,
@@ -153,7 +159,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.EDIT_CUSTOMERS_PAGE,
-        page: () => EditCustomersPage(),
+        page: () => EditCustomersPage(customers: Get.arguments),
         binding: EditCustomersBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
@@ -165,7 +171,7 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
         name: _Paths.BOTTOM_SHEET_SCHEDULE,
-        page: () => BottomSheetSchedule(),
+        page: () => BottomSheetSchedule(schedules: Get.arguments),
         binding: BottomSheetScheduleBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
@@ -175,8 +181,14 @@ class AppPages {
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
     GetPage(
+        name: _Paths.EDIT_VARIAN_PAGE,
+        page: () => EditVarianPage(varian: Get.arguments),
+        binding: EditVariantBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
         name: _Paths.EDIT_ORDER_PAGE,
-        page: () => EditOrderPage(),
+        page: () => EditOrderPage(order: Get.arguments), 
         binding: EditOrderBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
@@ -186,5 +198,29 @@ class AppPages {
         binding: AddToppingBinding(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.EDIT_TOPPING_PAGE,
+        page: () => EditToppingPage(topping: Get.arguments),
+        binding: EditToppingBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: _Paths.DETAIL_CUSTOMERS_PAGE,
+        page: () => DetailCustomersPage(customerData: Get.arguments),
+        binding: DetailCustomersBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100)),
+    GetPage(
+        name: _Paths.DETAIL_HISTORY_PAGE,
+        page: () => DetailOrderPage(order: Get.arguments),
+        binding: DetailOrderBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100)),
+    GetPage(
+        name: _Paths.INPUT_NOTIFICATION_PAGE,
+        page: () => InputNotificationPage(),
+        binding: InputNotificationBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100))
   ];
 }

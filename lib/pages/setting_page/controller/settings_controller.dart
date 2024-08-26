@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:warmindo_admin_ui/pages/navigator_page/controller/navigator_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class SettingsController extends GetxController {
   RxString email = ''.obs;
   RxString password = ''.obs;
+  var currentIndex = 0.obs;
+  NavigatorController navigatorController = Get.find<NavigatorController>();
   late final SharedPreferences prefs;
 
   @override
@@ -25,5 +28,8 @@ class SettingsController extends GetxController {
     prefs.remove('email');
     prefs.remove('password');
     Get.offAllNamed(Routes.SPLASH_PAGE);
+    navigatorController.goToHomePage();
   }
+
+  
 }

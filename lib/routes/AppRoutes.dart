@@ -1,4 +1,3 @@
-
 part of 'AppPages.dart';
 
 abstract class Routes {
@@ -26,7 +25,10 @@ abstract class Routes {
   static const BOTTOM_SHEET_SCHEDULE = _Paths.BOTTOM_SHEET_SCHEDULE;
   static const ADD_VARIAN_PAGE = _Paths.ADD_VARIAN_PAGE;
   static const ADD_TOPPING_PAGE = _Paths.ADD_TOPPING_PAGE;
-
+  static const DETAIL_CUSTOMERS_PAGE = _Paths.DETAIL_CUSTOMERS_PAGE;
+  static const EDIT_VARIAN_PAGE = _Paths.EDIT_VARIAN_PAGE;
+  static const EDIT_TOPPING_PAGE = _Paths.EDIT_TOPPING_PAGE;
+  static const INPUT_NOTIFICATION_PAGE = _Paths.INPUT_NOTIFICATION_PAGE;
 }
 
 abstract class _Paths {
@@ -54,5 +56,9 @@ abstract class _Paths {
   static const ADD_VARIAN_PAGE = '/add-varian-page';
   static const EDIT_ORDER_PAGE = '/edit-order-page';
   static const ADD_TOPPING_PAGE = '/add-topping-page';
-
+  static const DETAIL_CUSTOMERS_PAGE = '/detail-customers-page';
+  static const EDIT_VARIAN_PAGE = '/edit-varian-page';
+  static const EDIT_TOPPING_PAGE = '/edit-topping-page';
+  static const DETAIL_HISTORY_PAGE = '/detail-history-page';
+  static const INPUT_NOTIFICATION_PAGE = '/input-notification-page';
 }

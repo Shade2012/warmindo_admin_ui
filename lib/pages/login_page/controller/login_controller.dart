@@ -1,25 +1,34 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:warmindo_admin_ui/repository/warmindo_repository.dart';
+import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class LoginController extends GetxController {
+  final firebaseMessaging = FirebaseMessaging.instance;
   RxBool isLoading = false.obs;
   var obscureText = true.obs;
+  var token = ''.obs;
   TextEditingController ctrEmail = TextEditingController();
   TextEditingController ctrPassword = TextEditingController();
 
   Future<void> loginAdmin(String email, String password) async {
+    String? notificationToken;
+    await firebaseMessaging.getToken().then((value) {
+      notificationToken = value;
+    });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isLoading = true.obs;
+    isLoading.value = true; 
     final url = Uri.parse(AuthEndpoint().login);
 
     final client = http.Client();
     try {
+      print('token fcm di login: $notificationToken');
       final response = await client.post(
         url,
         headers: {
@@ -28,6 +37,7 @@ class LoginController extends GetxController {
         body: jsonEncode({
           'email': email,
           'password': password,
+          'notification_token': notificationToken,
         }),
       );
       if (response.statusCode == 200) {
@@ -55,7 +65,7 @@ class LoginController extends GetxController {
     } catch (e) {
       print(e);
     } finally {
-      isLoading = false.obs;
+      isLoading.value = false; 
       client.close();
     }
   }
