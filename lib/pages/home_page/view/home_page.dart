@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:warmindo_admin_ui/global/model/model_history_order.dart';
 import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/pages/home_page/controller/home_controller.dart';
 import 'package:warmindo_admin_ui/pages/home_page/widget/homepage_shimmer.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
+import 'package:warmindo_admin_ui/pages/sales_detail_page/controller/sales_detail_controller.dart';
 import 'package:warmindo_admin_ui/pages/schedule_page/controller/schedule_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
@@ -22,6 +22,7 @@ class HomePage extends StatelessWidget {
     final HomeController homeController = Get.put(HomeController());
     final OrderController controller = Get.put(OrderController());
     final ScheduleController statusController = Get.put(ScheduleController());
+    final SalesController salesController = Get.put(SalesController());
 
     return Scaffold(
       appBar: PreferredSize(
@@ -43,12 +44,13 @@ class HomePage extends StatelessWidget {
               ),
             );
           }
-          if (controller.isLoading.value) {
+          if (controller.isLoading.value || salesController.isLoading.value) {
             return HomepageShimmer();
           }
           return RefreshIndicator(
             onRefresh: () async {
               await controller.fetchDataOrder();
+              await statusController.fetchScheduleList();
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -75,27 +77,31 @@ class HomePage extends StatelessWidget {
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(screenWidth * 0.02),
-                          child: AnalyticBox(
-                            totalSales: 200000,
-                            titleAnalyticBox: 'Total Penjualan',
-                            imagePath: IconThemes.iconCoin,
-                            onTap: () {
-                              Get.toNamed(Routes.DETAIL_SALES_PAGE);
-                            },
-                          ),
+                          child: Obx(() {
+                            return AnalyticBox(
+                              totalSales: salesController.revenueChart.value.overalltotal ?? 0,
+                              titleAnalyticBox: 'Total Penjualan',
+                              imagePath: IconThemes.iconCoin,
+                              onTap: () {
+                                Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                              },
+                            );
+                          }),
                         ),
                       ),
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(screenWidth * 0.02),
-                          child: AnalyticBox(
-                            totalSales: 50,
-                            titleAnalyticBox: 'Produk',
-                            imagePath: IconThemes.iconProduct,
-                            onTap: () {
-                              Get.toNamed(Routes.DETAIL_SALES_PAGE);
-                            },
-                          ),
+                          child: Obx(() {
+                            return AnalyticBox(
+                              totalSales: salesController.salesChart.value.overalltotal ?? 0,
+                              titleAnalyticBox: 'Total Produk Terjual',
+                              imagePath: IconThemes.iconProduct,
+                              onTap: () {
+                                Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                              },
+                            );
+                          }),
                         ),
                       ),
                     ],
@@ -124,11 +130,9 @@ class HomePage extends StatelessWidget {
                   Container(
                     height: screenHeight * 0.6,
                     child: Obx(() {
-                      // Filter and sort orders by the most recent date
                       final filteredOrders = controller.orderList
                           .where((order) =>
-                              order.status?.toLowerCase() !=
-                                  'menunggu pembayaran' &&
+                              order.status?.toLowerCase() !='menunggu pembayaran' &&
                               order.status?.toLowerCase() != 'menunggu batal')
                           .toList()
                         ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
