@@ -41,14 +41,6 @@ class OrderPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () async {
-               
-            },
-          ),
-        ],
         title: Text(
           'Manajemen Pesanan',
           style: appBarTextStyle,

@@ -23,6 +23,29 @@ class EditOrderController extends GetxController {
     token.value = prefs?.getString('token') ?? '';
   }
 
+  Future<void> updateCancelOrder(int id) async {
+  isLoading.value = true;
+  final String url = '${OrderApi.cancelOrder}$id';
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      Get.snackbar('Sukses', 'Pesanan berhasil dibatalkan', snackPosition: SnackPosition.TOP);
+    } else {
+      print('Gagal membatalkan pesanan. Status respon: ${response.statusCode}');
+    }
+  } catch (e) {
+    Get.snackbar('Error', 'Terjadi kesalahan', snackPosition: SnackPosition.TOP);
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+
   Future<void> updateOrder({
     required String orderId,
     String? userId,
