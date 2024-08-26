@@ -1,67 +1,65 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import '../model/sales_model.dart';
+import 'package:warmindo_admin_ui/pages/sales_detail_page/controller/Api_service.dart';
+import 'package:warmindo_admin_ui/pages/sales_detail_page/model/revenue_model.dart';
+import 'package:warmindo_admin_ui/pages/sales_detail_page/model/sales_model.dart';
 
 class SalesController extends GetxController {
-  var dropdownValue = 'Mingguan'.obs;
-  var selectedDate = DateTime.now().obs;
-  var chartData = <SalesData>[].obs;
-  var yAxisTitle = 'Total Penjualan'.obs;
-
-  final _items = ['Mingguan', 'Bulanan', 'Tahunan'];
-
-  List<String> get items => _items;
+  var salesChart = SalesChart(data: [], overalltotal: 0).obs;
+  var revenueChart = RevenueChart(data: [], overalltotal: 0).obs;
+  var isLoading = false.obs;
+  var selectedInterval = 'weekly'.obs;
+  var isShowingRevenueChart = true.obs; // True untuk revenue, false untuk sales
 
   @override
   void onInit() {
     super.onInit();
-    initializeDateFormatting('id_ID', null).then((_) {
-      updateChartData(type: 'Penjualan');
-    });
+    updateData(selectedInterval.value); // Inisialisasi dengan interval default
   }
 
-  void updateChartData({String type = 'Penjualan'}) {
-    DateTime now = DateTime.now();
-    print('Updating chart data for ${dropdownValue.value} with type $type');
-
-    if (type == 'Penjualan') {
-      yAxisTitle.value = 'Total Penjualan';
-      if (dropdownValue.value == 'Mingguan') {
-        chartData.value = List.generate(now.weekday, (index) {
-          DateTime date = now.subtract(Duration(days: now.weekday - 1 - index));
-          return SalesData(DateFormat('E', 'id_ID').format(date), (index + 1) * 10.0);
-        });
-      } else if (dropdownValue.value == 'Bulanan') {
-        int weeksInMonth = (now.day / 7).ceil();
-        chartData.value = List.generate(weeksInMonth, (index) {
-          return SalesData('Minggu ${index + 1}', (index + 1) * 50.0);
-        });
-      } else {
-        chartData.value = List.generate(now.month, (index) {
-          DateTime date = DateTime(now.year, index + 1, 1);
-          return SalesData(DateFormat('MMM', 'id_ID').format(date), (index + 1) * 100.0);
-        });
-      }
-    } else if (type == 'Produk') {
-      yAxisTitle.value = 'Jumlah Produk';
-      if (dropdownValue.value == 'Mingguan') {
-        chartData.value = List.generate(now.weekday, (index) {
-          DateTime date = now.subtract(Duration(days: now.weekday - 1 - index));
-          return SalesData(DateFormat('E', 'id_ID').format(date), (index + 1) * 8.0);
-        });
-      } else if (dropdownValue.value == 'Bulanan') {
-        int weeksInMonth = (now.day / 7).ceil();
-        chartData.value = List.generate(weeksInMonth, (index) {
-          return SalesData('Minggu ${index + 1}', (index + 1) * 20.0);
-        });
-      } else {
-        chartData.value = List.generate(now.month, (index) {
-          DateTime date = DateTime(now.year, index + 1, 1);
-          return SalesData(DateFormat('MMM', 'id_ID').format(date), (index + 1) * 40.0);
-        });
-      }
+  // Fetch sales data berdasarkan interval
+  void fetchSalesData(String interval) async {
+    isLoading.value = true;
+    try {
+      SalesChart fetchedSalesData = await ApiService.fetchSalesData(interval);
+      salesChart.value = fetchedSalesData;
+      print('Overall Total Sales: ${salesChart.value.overalltotal}');
+    } catch (e) {
+      print('Error fetching sales data: $e');
+      salesChart.value = SalesChart(data: [], overalltotal: 0);
+    } finally {
+      isLoading.value = false;
     }
-    print('Chart data updated: ${chartData.length} items');
+  }
+
+  // Fetch revenue data berdasarkan interval
+  void fetchRevenueData(String interval) async {
+    isLoading.value = true;
+    try {
+      RevenueChart fetchedRevenueData = await ApiService.fetchRevenueData(interval);
+      revenueChart.value = fetchedRevenueData;
+      print('Overall Total Revenue: ${revenueChart.value.overalltotal}');
+    } catch (e) {
+      print('Error fetching revenue data: $e');
+      revenueChart.value = RevenueChart(data: [], overalltotal: 0);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Update data based on dropdown selection
+  void updateData(String interval) {
+    selectedInterval.value = interval;
+    fetchSalesData(interval);
+    fetchRevenueData(interval);
+  }
+
+  // Show revenue chart
+  void showRevenueChart() {
+    isShowingRevenueChart.value = true;
+  }
+
+  // Show sales chart
+  void showSalesChart() {
+    isShowingRevenueChart.value = false;
   }
 }
