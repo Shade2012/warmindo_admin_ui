@@ -87,7 +87,7 @@ class EditOrderPage extends StatelessWidget {
             SizedBox(height: screenHeight * 0.01),
             SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: ['sedang diproses', 'selesai', 'pesanan siap','batal'],
+                  items: ['sedang diproses', 'selesai', 'pesanan siap','batal','menunggu pengembalian dana'],
                   value: selectedCategory.value.isNotEmpty
                       ? selectedCategory.value
                       : null,

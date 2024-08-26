@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:warmindo_admin_ui/global/model/model_order.dart';
+import 'package:warmindo_admin_ui/global/widget/reusable_dialog.dart';
+import 'package:warmindo_admin_ui/pages/edit_order_page/controller/edit_order_controller.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/icon_themes.dart';
@@ -12,6 +14,7 @@ class DetailOrderBnb extends StatelessWidget {
   DetailOrderBnb({Key? key, required this.order});
   final Order order;
   final OrderController controller = Get.find<OrderController>();
+  final EditOrderController editOrderController = Get.put(EditOrderController());
 
   String convertPhoneNumber(String phoneNumber) {
     if (phoneNumber.startsWith('0')) {
@@ -63,13 +66,21 @@ class DetailOrderBnb extends StatelessWidget {
               ],
             ),
             Container(
-              width: 70,
+              width: 110,
               height: 65,
-              child: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  Get.toNamed(Routes.EDIT_ORDER_PAGE, arguments: order);
-                },
+              child: Row(
+                children: [
+                  IconButton(onPressed: () {
+                    editOrderController.updateCancelOrder(order.id);
+                    Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+                  }, icon: Icon(Icons.clear)),
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      Get.toNamed(Routes.EDIT_ORDER_PAGE, arguments: order);
+                    },
+                  ),
+                ],
               ),
             ),
           ],

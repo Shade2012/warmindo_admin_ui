@@ -49,6 +49,9 @@ class AllCustomers {
 class OrderApi {
   static var getallOrderList = '$apiUrl/api/admins/orders';
   static var editStatusOrder = '$apiUrl/api/admins/status/';
+  static var cancelOrder = '$apiUrl/api/admins/acceptcancel/';
+  static var acceptcancel = '$apiUrl/api/admins/acceptcancel/';
+  static var rejectcancel = '$apiUrl/api/admins/rejectcancel/';
 }
 
 class ScheduleApi {

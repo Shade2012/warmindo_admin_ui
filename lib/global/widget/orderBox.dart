@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/model/model_order.dart';
+import 'package:warmindo_admin_ui/pages/cancel_order_page/controller/cancel_order_controller.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
 import 'package:warmindo_admin_ui/pages/cancel_order_page/widget/dialog_cancel_order.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
@@ -22,6 +23,7 @@ class OrderBox extends StatelessWidget {
   final String customerName;
   final OrderController controller = Get.find<OrderController>();
   final EditOrderController editOrderController = Get.put(EditOrderController());
+  final CancelOrderController cancelOrderController = Get.put(CancelOrderController());
 
   Color _getLabelColor(String? status) {
     switch (status?.toLowerCase()) {
@@ -35,6 +37,8 @@ class OrderBox extends StatelessWidget {
         return ColorResources.labelcancel;
       case 'batal':
         return ColorResources.labelcancel;
+      case 'menunggu pengembalian dana':
+        return Colors.grey[600]!;
       default:
         return Colors.black;
     }
@@ -75,7 +79,7 @@ class OrderBox extends StatelessWidget {
               return DialogCancelOrder(
                 title: 'Alasan: ${order.reasonCancel}',
                 content: 'Jika Anda membatalkan pesanan ini, anda harus mengembalikan uang pelanggan!',
-                content2: 'No Rekening : ${order.noRekening} || Metode Pembatalan : ${order.cancelMethod}',
+                content2: 'Metode Pembatalan : ${order.cancelMethod}',
                 cancelText: 'Tolak',
                 confirmText: 'Terima',
                 dialogImage: Image.asset(Images.cancelDialog),
@@ -84,10 +88,12 @@ class OrderBox extends StatelessWidget {
                 cancelButtonTextColor: Colors.black,
                 confirmButtonTextColor: Colors.white,
                 onCancelPressed: () {
-                  editOrderController.updateOrder(orderId: order.id.toString(), status: 'sedang diproses');
+                  cancelOrderController.rejectCancel(order.id);
+                  Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
                 },
                 onConfirmPressed: () {
-                  editOrderController.updateOrder(orderId: order.id.toString(), status: 'batal');
+                  cancelOrderController.acceptCancel(order.id);
+                  Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
                 },
               );
             },
