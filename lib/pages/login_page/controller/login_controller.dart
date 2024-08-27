@@ -13,6 +13,7 @@ class LoginController extends GetxController {
   RxBool isLoading = false.obs;
   var obscureText = true.obs;
   var token = ''.obs;
+  var email = ''.obs;
   TextEditingController ctrEmail = TextEditingController();
   TextEditingController ctrPassword = TextEditingController();
 

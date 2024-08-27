@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:warmindo_admin_ui/pages/ChangePassword_page/binding/change_password_binding.dart';
+import 'package:warmindo_admin_ui/pages/ChangePassword_page/view/change_password_page.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/binding/add_product_binding.dart';
 import 'package:warmindo_admin_ui/pages/add_product_page/view/add_product_page.dart';
 import 'package:warmindo_admin_ui/pages/add_topping_page/binding/add_topping_binding.dart';
@@ -37,6 +39,8 @@ import 'package:warmindo_admin_ui/pages/login_page/view/login_page.dart';
 import 'package:warmindo_admin_ui/pages/navigator_page/view/navigator_page.dart';
 import 'package:warmindo_admin_ui/pages/order_page/binding/order_binding.dart';
 import 'package:warmindo_admin_ui/pages/order_page/view/order_page.dart';
+import 'package:warmindo_admin_ui/pages/otp_page/binding/otp_binding.dart';
+import 'package:warmindo_admin_ui/pages/otp_page/view/otp_page.dart';
 import 'package:warmindo_admin_ui/pages/product_page/binding/product_binding.dart';
 import 'package:warmindo_admin_ui/pages/product_page/view/product_page.dart';
 import 'package:warmindo_admin_ui/pages/sales_detail_page/binding/sales_detail_binding.dart';
@@ -221,6 +225,18 @@ class AppPages {
         page: () => InputNotificationPage(),
         binding: InputNotificationBinding(),
         transition: Transition.fadeIn,
-        transitionDuration: const Duration(milliseconds: 100))
+        transitionDuration: const Duration(milliseconds: 100)),
+    GetPage(
+        name: _Paths.OTP_PAGE,
+        page: () => OtpPage(),
+        binding: OtpBinding(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100)),
+    GetPage(
+        name: _Paths.FORGOT_PASS,
+        page: () => ForgotPass(),
+        binding: ChangePassBin(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(milliseconds: 100)),
   ];
 }
