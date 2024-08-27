@@ -261,14 +261,6 @@ class DetailOrderPage extends StatelessWidget {
                       Text(order.cancelMethod ?? '-', style: receiptcontentTextStyle),
                     ],
                   ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Nomor Rekening:', style: receiptcontentTextStyle),
-                      Text(order.noRekening ?? '-', style: receiptcontentTextStyle),
-                    ],
-                  ),
                 ],
               ],
             ),

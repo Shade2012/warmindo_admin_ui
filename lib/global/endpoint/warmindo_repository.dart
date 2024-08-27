@@ -38,6 +38,9 @@ class AuthEndpoint {
   final String login = '$apiUrl/api/admins/login';
   final String detailUser = '$apiUrl/api/admins/details';
   final String updateAdminData = '$apiUrl/api/admins/update?_method=PUT';
+  final String checkEmail = '$apiUrl/api/admins/checkEmail';
+  final String verifyEmail = '$apiUrl/api/admins/verify';
+  final String changePassword = '$apiUrl/api/admins/reset';
 }
 
 class AllCustomers {

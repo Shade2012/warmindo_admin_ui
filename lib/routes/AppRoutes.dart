@@ -29,6 +29,8 @@ abstract class Routes {
   static const EDIT_VARIAN_PAGE = _Paths.EDIT_VARIAN_PAGE;
   static const EDIT_TOPPING_PAGE = _Paths.EDIT_TOPPING_PAGE;
   static const INPUT_NOTIFICATION_PAGE = _Paths.INPUT_NOTIFICATION_PAGE;
+  static const OTP_PAGE = _Paths.OTP_PAGE;
+  static const FORGOT_PASS = _Paths.FORGOT_PASS;
 }
 
 abstract class _Paths {
@@ -61,4 +63,6 @@ abstract class _Paths {
   static const EDIT_TOPPING_PAGE = '/edit-topping-page';
   static const DETAIL_HISTORY_PAGE = '/detail-history-page';
   static const INPUT_NOTIFICATION_PAGE = '/input-notification-page';
+  static const OTP_PAGE = '/otp-page';
+  static const FORGOT_PASS = '/forgot-pass';
 }

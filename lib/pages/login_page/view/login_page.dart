@@ -5,9 +5,12 @@ import 'package:warmindo_admin_ui/global/widget/inputfield.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/pages/otp_page/controller/otp_controller.dart';
+import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class LoginPage extends StatelessWidget {
   final LoginController controller = Get.put(LoginController());
+  final OtpController otpController = Get.put(OtpController());
   LoginPage({Key? key}) : super(key: key);
 
   String? isPassword(String value) {
@@ -37,7 +40,7 @@ class LoginPage extends StatelessWidget {
   ) {
     return Obx(
       () => Container(
-        margin: EdgeInsets.only(top: 20, bottom: 20),
+        margin: EdgeInsets.only(top: 20, bottom: 5), // Adjusted bottom margin
         child: TextField(
           controller: controller2,
           obscureText: controller.obscureText.value,
@@ -115,6 +118,36 @@ class LoginPage extends StatelessWidget {
                           controller.ctrPassword,
                           isPassword,
                         ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (controller.ctrEmail.text.isEmpty ) {
+                                Get.snackbar(
+                                  'Error',
+                                  'Masukkan email terlebih dahulu',
+                                  snackPosition: SnackPosition.TOP,
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                );
+                              } else {
+                                otpController.sendOtp(controller.ctrEmail.text);
+                                Get.toNamed(Routes.OTP_PAGE);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                'Lupa kata sandi?',
+                                style: TextStyle(
+                                  color: Colors.blue, // Blue color for the text
+                                  fontSize: 14, // Adjust font size if needed
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.02),
                         GestureDetector(
                           onTap: () async {
                             if (isPassword(controller.ctrPassword.text) == null &&

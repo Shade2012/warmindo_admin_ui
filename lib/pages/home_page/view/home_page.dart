@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/widget/analyticBox.dart';
 import 'package:warmindo_admin_ui/global/widget/customAppBar.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
+import 'package:warmindo_admin_ui/pages/general_information_page/controller/general_info_controller.dart';
 import 'package:warmindo_admin_ui/pages/home_page/controller/home_controller.dart';
 import 'package:warmindo_admin_ui/pages/home_page/widget/homepage_shimmer.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
@@ -23,12 +24,13 @@ class HomePage extends StatelessWidget {
     final OrderController controller = Get.put(OrderController());
     final ScheduleController statusController = Get.put(ScheduleController());
     final SalesController salesController = Get.put(SalesController());
+    final GeneralInformationController generalInfor =Get.put(GeneralInformationController());
 
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55),
         child: CustomAppBar(
-          title: 'Halo, Admin!',
+          title: 'Halo, ${generalInfor.fullNameController.text}',
           showSearch: false,
         ),
       ),
