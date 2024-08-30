@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
+import '../../add_topping_page/widget/menu_selected_widget.dart';
+
 class EditToppingController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
   RxString error = ''.obs;
@@ -39,7 +41,19 @@ class EditToppingController extends GetxController {
       print('Gagal mengubah status topping');
     }
   }
+  void showDetailPopupModal(BuildContext context) {
+    showModalBottomSheet<dynamic>(
+      context: context,
+      isScrollControlled: true,
+      elevation: 0,
 
+      builder:(context) {
+
+        return MenuSelected();
+      },
+    );
+
+  }
   Future<void> enabledStatus(String id) async {
     await updateStatusTopping(id: id, statusTopping: true);
   }
