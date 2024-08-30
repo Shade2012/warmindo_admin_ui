@@ -11,11 +11,13 @@ import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.d
 Future<Uint8List> generateOrderPdf(Order order) async {
   final pdf = pw.Document();
   final controller = Get.put(OrderController());
-  final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  final currencyFormat =
+      NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
   // Calculate total price and prepare menu items
   double totalPrice = order.orderDetails.fold(0, (sum, orderDetail) {
-    double itemPrice = double.parse(orderDetail.menu.price) * orderDetail.quantity;
+    double itemPrice =
+        double.parse(orderDetail.menu.price) * orderDetail.quantity;
 
     // Calculate total topping price for the current orderDetail
     double toppingPrice = orderDetail.toppings!.fold(0, (toppingSum, topping) {
@@ -35,8 +37,11 @@ Future<Uint8List> generateOrderPdf(Order order) async {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         pw.Text(menu.nameMenu, style: pw.TextStyle(fontSize: 16)),
-        pw.Text(orderDetail.quantity.toString(), style: pw.TextStyle(fontSize: 16)),
-        pw.Text(currencyFormat.format(double.parse(menu.price) * orderDetail.quantity),
+        pw.Text(orderDetail.quantity.toString(),
+            style: pw.TextStyle(fontSize: 16)),
+        pw.Text(
+            currencyFormat
+                .format(double.parse(menu.price) * orderDetail.quantity),
             style: pw.TextStyle(fontSize: 16)),
       ],
     ));
@@ -46,7 +51,8 @@ Future<Uint8List> generateOrderPdf(Order order) async {
       menuItems.add(pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.start,
         children: [
-          pw.Text('- Variant: ${orderDetail.variant!.nameVarian}', style: pw.TextStyle(fontSize: 14)),
+          pw.Text('- Variant: ${orderDetail.variant!.nameVarian}',
+              style: pw.TextStyle(fontSize: 14)),
         ],
       ));
     }
@@ -57,7 +63,8 @@ Future<Uint8List> generateOrderPdf(Order order) async {
         menuItems.add(pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.start,
           children: [
-            pw.Text('- Topping: ${topping.nameTopping} (${currencyFormat.format(topping.price * orderDetail.quantity)})',
+            pw.Text(
+                '- Topping: ${topping.nameTopping} (${currencyFormat.format(topping.price * orderDetail.quantity)})',
                 style: pw.TextStyle(fontSize: 14)),
           ],
         ));
@@ -65,7 +72,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
     }
   }
 
-  final adminFee = double.parse(order.adminFee);
+  final adminFee = double.parse(order.adminFee ?? '');
   final totalPayment = totalPrice + adminFee;
 
   // Load the logo image
@@ -87,12 +94,14 @@ Future<Uint8List> generateOrderPdf(Order order) async {
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.Text('Warmindo Anggrek Muria', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-                    pw.Text('Jalan Raya Jurang Besito Kulon', style: pw.TextStyle(fontSize: 12)),
-                    pw.Text('Besito, Gebog, Kabupaten Kudus, Jawa Tengah 59333', style: pw.TextStyle(fontSize: 12)),
+                    pw.Text('Warmindo Anggrek Muria',
+                        style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+                    pw.Text('Jalan Raya Jurang Besito Kulon',style: pw.TextStyle(fontSize: 12)),
+                    pw.Text('Besito, Gebog, Kabupaten Kudus, Jawa Tengah 59333',
+                        style: pw.TextStyle(fontSize: 12)),
                   ],
                 ),
-                pw.Image(pw.MemoryImage(logo), width: 100), // Add the logo image
+                pw.Image(pw.MemoryImage(logo),width: 100), 
               ],
             ),
             pw.SizedBox(height: 10),
@@ -105,7 +114,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
             ),
             pw.SizedBox(height: 16),
             pw.Text('Order ID: ${order.id}', style: pw.TextStyle(fontSize: 16)),
-            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(order.createdAt.toString()))}', style: pw.TextStyle(fontSize: 16)),
+            pw.Text( 'Date: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(order.createdAt.toString()))}', style: pw.TextStyle(fontSize: 16)),
             pw.Text('Status: ${order.status}', style: pw.TextStyle(fontSize: 16)),
             pw.SizedBox(height: 16),
             pw.Text('Pesanan', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
@@ -114,28 +123,29 @@ Future<Uint8List> generateOrderPdf(Order order) async {
             pw.SizedBox(height: 16),
             pw.Divider(),
             pw.SizedBox(height: 16),
-            pw.Text('Detail Pembayaran', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
+            pw.Text('Detail Pembayaran',style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: 8),
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text('Harga', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(currencyFormat.format(totalPrice),
-                    style: pw.TextStyle(fontSize: 16)),
+                pw.Text(currencyFormat.format(totalPrice),style: pw.TextStyle(fontSize: 16)),
               ],
             ),
-            pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              children: [
-                pw.Text('Biaya Admin', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(currencyFormat.format(adminFee), style: pw.TextStyle(fontSize: 16)),
-              ],
-            ),
+            if (adminFee > 0)
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text('Biaya Admin', style: pw.TextStyle(fontSize: 16)),
+                  pw.Text(currencyFormat.format(adminFee),style: pw.TextStyle(fontSize: 16)),
+                ],
+              ),
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text('Metode Pembayaran', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(order.paymentMethod!, style: pw.TextStyle(fontSize: 16)),
+                pw.Text(order.paymentMethod!,
+                    style: pw.TextStyle(fontSize: 16)),
               ],
             ),
             pw.SizedBox(height: 16),
@@ -144,9 +154,12 @@ Future<Uint8List> generateOrderPdf(Order order) async {
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
-                pw.Text('Total', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+                pw.Text('Total',
+                    style: pw.TextStyle(
+                        fontSize: 16, fontWeight: pw.FontWeight.bold)),
                 pw.Text(currencyFormat.format(totalPayment),
-                    style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
+                    style: pw.TextStyle(
+                        fontSize: 16, fontWeight: pw.FontWeight.bold)),
               ],
             ),
             pw.SizedBox(height: 16),
@@ -154,11 +167,13 @@ Future<Uint8List> generateOrderPdf(Order order) async {
             pw.SizedBox(height: 4),
             pw.Align(
               alignment: pw.Alignment.center,
-              child: pw.Text('Terima kasih atas pesanan Anda!', style: pw.TextStyle(fontSize: 16)),
+              child: pw.Text('Terima kasih atas pesanan Anda!',
+                  style: pw.TextStyle(fontSize: 16)),
             ),
             pw.Align(
               alignment: pw.Alignment.center,
-              child: pw.Text('Jangan lupa datang lagi yah!', style: pw.TextStyle(fontSize: 16)),
+              child: pw.Text('Jangan lupa datang lagi yah!',
+                  style: pw.TextStyle(fontSize: 16)),
             ),
           ],
         );

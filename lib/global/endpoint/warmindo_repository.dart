@@ -23,7 +23,8 @@ class ToppingsApi {
   static var updateToppings = '$apiUrl/api/toppings/';
   static var deleteToppings = '$apiUrl/api/toppings';
   static var detailToppings = '$apiUrl/api/toppings/';
-  
+  static var enableTopping = '$apiUrl/api/toppings/enable/';
+  static var disableTopping = '$apiUrl/api/toppings/disable/';
 }
 
 class VariantApi {
@@ -32,6 +33,8 @@ class VariantApi {
   static var updateVariant = '$apiUrl/api/variants/';
   static var deleteVariant = '$apiUrl/api/variants';
   static var detailVariant = '$apiUrl/api/variants/';
+  static var enableVariant = '$apiUrl/api/variants/enable/';
+  static var disableVariant = '$apiUrl/api/variants/disable/';
 }
 
 class AuthEndpoint {

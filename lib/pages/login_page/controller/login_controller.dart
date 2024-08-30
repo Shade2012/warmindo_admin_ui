@@ -6,10 +6,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
+import 'package:warmindo_admin_ui/pages/general_information_page/controller/general_info_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class LoginController extends GetxController {
   final firebaseMessaging = FirebaseMessaging.instance;
+  final GeneralInformationController generalinfo = Get.put(GeneralInformationController());
   RxBool isLoading = false.obs;
   var obscureText = true.obs;
   var token = ''.obs;

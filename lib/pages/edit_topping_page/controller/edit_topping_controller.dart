@@ -10,6 +10,44 @@ class EditToppingController extends GetxController {
   RxString error = ''.obs;
   RxBool isLoading = false.obs;
 
+  Future<void> updateStatusTopping({required String id, required bool statusTopping}) async {
+    isLoading.value = true;
+    final String endpoint = statusTopping
+        ? ToppingsApi.enableTopping + id
+        : ToppingsApi.disableTopping + id;
+    print('Sending request to URL: $endpoint with user_verified: $statusTopping');
+
+    final response = await http.put(
+      Uri.parse(endpoint),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+      },
+    );
+    isLoading.value = false;
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200 && response.statusCode == 400) {
+      print('User updated successfully');
+      Get.snackbar(
+        'Berhasil',
+        'Status Topping Berhasil Diubah',
+        snackPosition: SnackPosition.TOP,
+      );
+    } else {
+      print('Gagal mengubah status topping');
+    }
+  }
+
+  Future<void> enabledStatus(String id) async {
+    await updateStatusTopping(id: id, statusTopping: true);
+  }
+
+  Future<void> disabledStatus(String id) async {
+    await updateStatusTopping(id: id, statusTopping: false);
+  }
+
   Future<void> updateTopping({
     required String toppingId,
     required String nameTopping,

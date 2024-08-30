@@ -140,8 +140,8 @@ class LoginPage extends StatelessWidget {
                               child: Text(
                                 'Lupa kata sandi?',
                                 style: TextStyle(
-                                  color: Colors.blue, // Blue color for the text
-                                  fontSize: 14, // Adjust font size if needed
+                                  color: Colors.blue, 
+                                  fontSize: 14, 
                                 ),
                               ),
                             ),
@@ -150,8 +150,7 @@ class LoginPage extends StatelessWidget {
                         SizedBox(height: screenHeight * 0.02),
                         GestureDetector(
                           onTap: () async {
-                            if (isPassword(controller.ctrPassword.text) == null &&
-                                isEmail(controller.ctrEmail.text) == null) {
+                            if (isPassword(controller.ctrPassword.text) == null &&isEmail(controller.ctrEmail.text) == null) {
                               await controller.loginAdmin(controller.ctrEmail.text, controller.ctrPassword.text);
                             } else {
                               Get.snackbar(

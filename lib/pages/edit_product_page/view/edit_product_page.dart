@@ -21,7 +21,6 @@ class EditProductPage extends StatelessWidget {
   final selectedCategory = RxString('');
   final selectedSecondCategory = RxString('');
   final selectedStock = RxString('');
-  final selectedStatusMenu = RxString('');
   final ProductController productController = Get.put(ProductController());
   final EditProductController editProductController = Get.put(EditProductController());
 
@@ -38,7 +37,6 @@ class EditProductPage extends StatelessWidget {
     selectedStock.value = product.stock;
     selectedSecondCategory.value = product.secondCategory;
     ctrProductDesc.text = product.description;
-    selectedStatusMenu.value = product.status == 1 ? 'Aktif' : 'Tidak Aktif';
   }
 
   @override
@@ -236,24 +234,6 @@ class EditProductPage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Status Produk", style: titleAddProductTextStyle),
-                    SizedBox(height: screenHeight * 0.01),
-                    Obx(() => CustomDropdown(
-                          items: ['Aktif', 'Tidak Aktif'],
-                          value: selectedStatusMenu.value.isNotEmpty
-                              ? selectedStatusMenu.value
-                              : null,
-                          onChanged: (String? value) {
-                            selectedStatusMenu.value = value ?? '';
-                          },
-                          dropdownType: DropdownType.StatusMenu,
-                        )),
-                  ],
-                ),
-                SizedBox(height: screenHeight * 0.02),
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -282,13 +262,6 @@ class EditProductPage extends StatelessWidget {
                           description: ctrProductDesc.text,
                           second_category: selectedSecondCategory.value,
                         );
-                      }
-
-                      // Update the status of the product
-                      if (selectedStatusMenu.value == 'Aktif') {
-                        await editProductController.enabledStatus(product.id.toString());
-                      } else {
-                        await editProductController.disabledStatus(product.id.toString());
                       }
 
                       // Optionally, navigate back or give feedback to the user

@@ -25,7 +25,7 @@ class ForgotPass extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: screenHeight * 0.03),
-                  Center(child: Text("Ubah Password2", style: appBarTextStyle)),
+                  Center(child: Text("Lupa Kata Sandi", style: appBarTextStyle)),
                   SizedBox(height: screenHeight * 0.03),
                   Form(
                     key: _formKey,
@@ -35,24 +35,6 @@ class ForgotPass extends StatelessWidget {
                         Text(
                           "Untuk mengubah password, silakan isi formulir di bawah ini:",
                           style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: screenHeight * 0.05),
-                        // Add Email Input Field
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Email diperlukan";
-                            }
-                            // Add more validation if needed
-                            return null;
-                          },
                         ),
                         SizedBox(height: screenHeight * 0.05),
                         typePass(
@@ -88,7 +70,7 @@ class ForgotPass extends StatelessWidget {
                           false.obs,
                           screenWidth,
                         ),
-                        SizedBox(height: screenHeight * 0.3),
+                        SizedBox(height: screenHeight * 0.5),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
@@ -102,7 +84,6 @@ class ForgotPass extends StatelessWidget {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               controller.changePass(
-                                email: _emailController.text,
                                 password: _newPasswordController.text,
                                 password_confirmation: _confirmNewPasswordController.text,
                               );

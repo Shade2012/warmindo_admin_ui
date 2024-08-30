@@ -20,12 +20,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final GeneralInformationController generalInfor =Get.put(GeneralInformationController());
     final HomeController homeController = Get.put(HomeController());
     final OrderController controller = Get.put(OrderController());
     final ScheduleController statusController = Get.put(ScheduleController());
     final SalesController salesController = Get.put(SalesController());
-    final GeneralInformationController generalInfor =Get.put(GeneralInformationController());
-
+    
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55),
@@ -134,8 +134,8 @@ class HomePage extends StatelessWidget {
                     child: Obx(() {
                       final filteredOrders = controller.orderList
                           .where((order) =>
-                              order.status?.toLowerCase() !='menunggu pembayaran' &&
-                              order.status?.toLowerCase() != 'menunggu batal')
+                              order.status.toLowerCase() !='menunggu pembayaran' &&
+                              order.status.toLowerCase() != 'menunggu batal')
                           .toList()
                         ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
                       return ListView.separated(

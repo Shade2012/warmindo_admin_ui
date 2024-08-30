@@ -15,6 +15,7 @@ class GeneralInformationController extends GetxController {
   RxString email = "".obs;
   RxString phoneNumber = "".obs;
   RxString token = "".obs;
+  var fullName = "".obs;
   SharedPreferences? prefs;
 
   final TextEditingController fullNameController = TextEditingController();
@@ -27,6 +28,10 @@ class GeneralInformationController extends GetxController {
     super.onInit();
     checkConnectivity();
     initializeControllers();
+  }
+
+  void setFullName(String value) {
+    fullName.value = name.value;
   }
 
   void initializeControllers() {

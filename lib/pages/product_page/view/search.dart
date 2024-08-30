@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
+import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/global/widget/reusable_dialog.dart';
+import 'package:warmindo_admin_ui/pages/edit_product_page/controller/edit_product_controller.dart';
+import 'package:warmindo_admin_ui/pages/edit_topping_page/controller/edit_topping_controller.dart';
+import 'package:warmindo_admin_ui/pages/edit_varian_page/controller/edit_varian_controller.dart';
 import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:get/get.dart';
-import '../../../routes/AppPages.dart';
-import '../../../global/themes/color_themes.dart';
-import '../../../global/themes/image_themes.dart';
-import '../../../global/themes/textstyle_themes.dart';
-import '../../../global/widget/reusable_dialog.dart';
+import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class Search extends StatelessWidget {
   final ProductController productController = Get.put(ProductController());
+  final EditProductController editProductController = Get.put(EditProductController());
+  final EditToppingController editToppingController = Get.put(EditToppingController());
+  final EditVariantController editVariantController = Get.put(EditVariantController());
   Search({Key? key}) : super(key: key);
 
   @override
@@ -116,8 +122,7 @@ class Search extends StatelessWidget {
                               Get.back();
                             },
                             onConfirmPressed: () {
-                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
-                                  arguments: product);
+                              Get.toNamed(Routes.EDIT_PRODUCT_PAGE,arguments: product);
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
                             confirmButtonColor: ColorResources.buttonedit,
@@ -127,32 +132,44 @@ class Search extends StatelessWidget {
                       );
                     },
                   ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ReusableDialog(
-                            title: "Delete",
-                            content: "Apakah Kamu yakin ingin menghapus data?",
-                            cancelText: "Tidak",
-                            confirmText: "Iya",
-                            onCancelPressed: () {
-                              Get.back();
-                            },
-                            onConfirmPressed: () {
-                              productController.deleteProduct(product.id);
+                     Transform.scale(
+                      scale: 0.8,
+                      child: Switch(
+                        value: product.status == '1' ? true : false,
+                        onChanged: (value) {
+                          if (product.category == 'Topping') {
+                            if (product.status == '1') {
+                              editToppingController.disabledStatus(product.id.toString());
                               productController.fetchAllData();
-                            },
-                            cancelButtonColor: ColorResources.primaryColorLight,
-                            confirmButtonColor: ColorResources.buttondelete,
-                            dialogImage: Image.asset(Images.askDialog),
-                          );
+                            } else {
+                              editToppingController.enabledStatus(product.id.toString());
+                              productController.fetchAllData();
+                            }
+                            product.status = value ? '1' : '0';
+                          } else if (product.category == 'Variant') {
+                            if (product.status == '1') {
+                              editVariantController.disabledStatus(product.id.toString());
+                              productController.fetchAllData();
+                            } else {
+                              editVariantController.enabledStatus(product.id.toString());
+                              productController.fetchAllData();
+                            }
+                            product.status = value ? '1' : '0';
+                          } else {
+                            // Logika untuk kategori lainnya
+                            if (product.status == '1') {
+                              editProductController.disabledStatus(product.id.toString());
+                              productController.fetchAllData();
+                            } else {
+                              editProductController.enabledStatus(product.id.toString());
+                              productController.fetchAllData();
+                            }
+                            product.status = value ? '1' : '0';
+                          }
                         },
-                      );
-                    },
-                  ),
+                        activeColor: ColorResources.labelcomplete,
+                      ),
+                    ),
                 ],
               ),
             );

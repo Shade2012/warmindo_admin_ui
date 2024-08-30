@@ -55,7 +55,7 @@ class Order {
   String? cancelMethod;
   String? reasonCancel;
   String? noRekening;
-  String adminFee;
+  String? adminFee;
   DateTime? createdAt;   
   DateTime? updatedAt;   
   List<OrderDetail> orderDetails;
@@ -71,7 +71,7 @@ class Order {
     this.cancelMethod,
     this.reasonCancel,
     this.noRekening,
-    required this.adminFee,
+    this.adminFee,
     this.createdAt,
     this.updatedAt,
     required this.orderDetails,

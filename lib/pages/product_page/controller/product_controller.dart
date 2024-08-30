@@ -74,7 +74,7 @@ class ProductController extends GetxController {
         category: 'Topping',
         rating: 0.0,
         description: '',
-        status: '',
+        status: topping.status_topping,
         createdAt: topping.createdAt,
         updatedAt: topping.updatedAt,
         secondCategory: topping.menuId.toString(),
@@ -82,7 +82,7 @@ class ProductController extends GetxController {
       searchResults.addAll(variantList.where((variant) {
         return variant.nameVarian.toLowerCase().contains(enteredKeyword);
       }).map((variant) => model.Menu(
-        id: variant.idVarian,
+        id: variant.id,
         nameMenu: variant.nameVarian,
         price: '0',
         image: variant.image ?? '',
@@ -90,7 +90,7 @@ class ProductController extends GetxController {
         category: variant.category,
         rating: 0.0,
         description: '',
-        status: '',
+        status: variant.status_variant,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         secondCategory: '',
@@ -311,8 +311,9 @@ class ProductController extends GetxController {
       filteredProductList.assignAll(
         allProductList.where((product) => product.status != '0').toList()
       );
+
       filteredProductList.addAll(
-        toppingList.map((topping) => model.Menu(
+        toppingList.where((topping) => topping.status_topping != '0').map((topping) => model.Menu(
           id: topping.id,
           nameMenu: topping.nameTopping,
           price: topping.price.toString(),
@@ -321,15 +322,15 @@ class ProductController extends GetxController {
           category: 'Topping',
           rating: 0.0,
           description: '',
-          status: '',
+          status: topping.status_topping,
           createdAt: topping.createdAt,
           updatedAt: topping.updatedAt,
           secondCategory: topping.menuId.toString(),
         )).toList()
       );
       filteredProductList.addAll(
-        variantList.map((variant) => model.Menu(
-          id: variant.idVarian,
+        variantList.where((variant) => variant.status_variant != '0').map((variant) => model.Menu(
+          id: variant.id,
           nameMenu: variant.nameVarian,
           price: '0',
           image: variant.image ?? '',
@@ -337,7 +338,7 @@ class ProductController extends GetxController {
           category: 'Variant',
           rating: 0.0,
           description: '',
-          status: '',
+          status: variant.status_variant,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           secondCategory: variant.category,
@@ -357,7 +358,7 @@ class ProductController extends GetxController {
       );
     } else if (selectedCategory.value == 'Topping') {
       filteredProductList.assignAll(
-        toppingList.map((topping) => model.Menu(
+        toppingList.where((topping) => topping.status_topping != '0').map((topping) => model.Menu(
           id: topping.id,
           nameMenu: topping.nameTopping,
           price: topping.price.toString(),
@@ -366,7 +367,7 @@ class ProductController extends GetxController {
           category: 'Topping',
           rating: 0.0,
           description: '',
-          status: '',
+          status: topping.status_topping,
           createdAt: topping.createdAt,
           updatedAt: topping.updatedAt,
           secondCategory: topping.menuId.toString(),
@@ -374,8 +375,8 @@ class ProductController extends GetxController {
       );
     } else if (selectedCategory.value == 'Varian') {
       filteredProductList.assignAll(
-        variantList.map((variant) => model.Menu(
-          id: variant.idVarian,
+        variantList.where((variant) => variant.status_variant != '0').map((variant) => model.Menu(
+          id: variant.id,
           nameMenu: variant.nameVarian,
           price: '0',
           image: variant.image ?? '',
@@ -383,7 +384,7 @@ class ProductController extends GetxController {
           category: 'Variant',
           rating: 0.0,
           description: '',
-          status: '',
+          status: variant.status_variant,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           secondCategory: '',
@@ -393,6 +394,40 @@ class ProductController extends GetxController {
       filteredProductList.assignAll(
         allProductList.where((product) => product.status == '0').toList()
       );
+
+      filteredProductList.addAll(
+      toppingList.where((topping) => topping.status_topping == '0').map((topping) => model.Menu(
+        id: topping.id,
+        nameMenu: topping.nameTopping,
+        price: topping.price.toString(),
+        image: '',
+        stock: topping.stockTopping.toString(),
+        category: 'Topping',
+        rating: 0.0,
+        description: '',
+        status: topping.status_topping,
+        createdAt: topping.createdAt,
+        updatedAt: topping.updatedAt,
+        secondCategory: topping.menuId.toString(),
+      )).toList()
+    );
+
+    filteredProductList.addAll(
+      variantList.where((variant) => variant.status_variant == '0').map((variant) => model.Menu(
+        id: variant.id,
+        nameMenu: variant.nameVarian,
+        price: '0',
+        image: variant.image ?? '',
+        stock: variant.stockVarian,
+        category: 'Variant',
+        rating: 0.0,
+        description: '',
+        status: variant.status_variant,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        secondCategory: variant.category,
+      )).toList()
+    );
     }
 
     print('Filtered products count: ${filteredProductList.length}');
