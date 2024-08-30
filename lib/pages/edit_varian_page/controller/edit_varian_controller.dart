@@ -11,6 +11,63 @@ class EditVariantController extends GetxController {
   RxString error = ''.obs;
   RxBool isLoading = false.obs;
 
+  Future<void> updateStatusVariant({required String id, required bool statusVariant}) async {
+    if (id == '0' || id.isEmpty) {
+      print('Invalid ID detected: $id');
+      Get.snackbar(
+        'Error',
+        'Invalid product ID',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    isLoading.value = true;
+    final String endpoint = statusVariant
+        ? VariantApi.enableVariant + id
+        : VariantApi.disableVariant + id;
+    print('Sending request to URL: $endpoint with statusVariant: $statusVariant');
+
+    final response = await http.put(
+      Uri.parse(endpoint),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+      },
+    );
+    isLoading.value = false;
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      print('Status varian berhasil diubah');
+      Get.snackbar(
+        'Berhasil',
+        'Status Varian Berhasil Diubah',
+        snackPosition: SnackPosition.TOP,
+      );
+    } else {
+      print('Gagal mengubah status varian');
+      Get.snackbar(
+        'Error',
+        'Gagal mengubah status varian: ${response.body}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  Future<void> enabledStatus(String idVarian) async {
+    await updateStatusVariant(id: idVarian, statusVariant: true);
+  }
+
+  Future<void> disabledStatus(String idVarian) async {
+    await updateStatusVariant(id: idVarian, statusVariant: false);
+  }
+
   Future<void> updateVarian({
     required String varianId,
     required String nameVarian,
@@ -18,6 +75,17 @@ class EditVariantController extends GetxController {
     required int stock,
     File? image,
   }) async {
+    if (varianId == '0' || varianId.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Invalid varian ID',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
     try {
       isLoading.value = true;
       var uri = Uri.parse('${VariantApi.updateVariant}$varianId?_method=PUT');
@@ -40,7 +108,7 @@ class EditVariantController extends GetxController {
       if (response.statusCode == 200) {
         print('Varian updated successfully');
         print('Response: ${response.body}');
-        // Update state lokal dengan data baru
+        isLoading.value = false;
         Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
       } else {
         isLoading.value = false;

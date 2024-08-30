@@ -1,4 +1,3 @@
-// Import necessary packages
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/model/model_order.dart';
@@ -64,7 +63,7 @@ class OrderBox extends StatelessWidget {
       totalPrice += (itemPrice * (detail.quantity)) + toppingPrice;
     }
 
-    double totalPriceWithAdminFee = totalPrice + (order.adminFee != null ? double.tryParse(order.adminFee) ?? 0.0 : 0.0);
+    double totalPriceWithAdminFee = totalPrice + (order.adminFee != null ? double.tryParse(order.adminFee ?? '') ?? 0.0 : 0.0);
 
     String formattedPrice = totalPriceWithAdminFee.toStringAsFixed(
       totalPriceWithAdminFee.truncateToDouble() == totalPriceWithAdminFee ? 0 : 2,

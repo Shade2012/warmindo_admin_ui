@@ -55,7 +55,7 @@ class OtpPage extends StatelessWidget {
   }
 
   void _resendCode() {
-    // Logic to resend the code
+    otpController.sendOtp(loginController.ctrEmail.text);
     print('Resend code tapped!');
     Get.snackbar(
       'Berhasil',
