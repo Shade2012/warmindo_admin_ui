@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
+
+import '../widget/menu_selected_widget.dart';
 
 class AddToppingController extends GetxController {
   RxBool isLoading = false.obs;
@@ -26,7 +30,7 @@ class AddToppingController extends GetxController {
       try {
         isLoading.value = true;
         var request = http.MultipartRequest('POST', Uri.parse(ToppingsApi.storeToppings))
-          ..fields['name_topping'] = nameTopping 
+          ..fields['name_topping'] = nameTopping
           ..fields['price'] = price.toString()
           ..fields['stock_topping'] = stock.toString()
           ..fields['menu_id'] = menu_id.toString();
@@ -46,5 +50,45 @@ class AddToppingController extends GetxController {
         print('Error: $e');
       }
     }
+  }
+  Future<void> postSelectedToppings( {
+      required String nameTopping,
+      required double price,
+      required int stock,
+    required List<int> menu_ids}) async {
+    final response = await http.post(
+      Uri.parse(ToppingsApi.storeToppings),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'name_topping': nameTopping, // Replace with actual name if needed
+        'stock_topping': stock, // Replace with actual stock if needed
+        'price': price, // Replace with actual price if needed
+        'menu_ids': menu_ids,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // Handle success
+      print('success');
+      Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+    } else {
+      // Handle error
+      print('Failed to add toppings');
+      print('Response: ${response.body}');
+      print('gagal');
+    }
+  }
+  void showDetailPopupModal(BuildContext context) {
+    showModalBottomSheet<dynamic>(
+      context: context,
+      isScrollControlled: true,
+      elevation: 0,
+
+      builder:(context) {
+
+        return MenuSelected();
+      },
+    );
+
   }
 }

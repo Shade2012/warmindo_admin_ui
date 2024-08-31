@@ -1,3 +1,7 @@
+import 'package:get/get.dart';
+
+import 'model_topping.dart';
+
 class ProductResponse {
     Data data;
 
@@ -15,7 +19,7 @@ class ProductResponse {
 
     ProductResponse copyWith({
         Data? data,
-    }) => 
+    }) =>
         ProductResponse(
             data: data ?? this.data,
         );
@@ -48,7 +52,7 @@ class Data {
         bool? success,
         String? message,
         List<Menu>? menu,
-    }) => 
+    }) =>
         Data(
             success: success ?? this.success,
             message: message ?? this.message,
@@ -69,6 +73,8 @@ class Menu {
     String status;
     DateTime createdAt;
     DateTime updatedAt;
+    final List<Topping>? toppings;
+    var isSelected = false.obs;
 
     Menu({
         required this.id,
@@ -81,6 +87,7 @@ class Menu {
         this.rating,
         required this.description,
         required this.status,
+      this.toppings = const [],
         required this.createdAt,
         required this.updatedAt,
     });
@@ -128,7 +135,7 @@ class Menu {
         String? status_menu,
         DateTime? createdAt,
         DateTime? updatedAt,
-    }) => 
+    }) =>
         Menu(
             id: id ?? this.id,
             image: image ?? this.image,

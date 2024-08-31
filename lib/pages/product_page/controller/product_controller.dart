@@ -18,6 +18,7 @@ class ProductController extends GetxController {
   var variantList = <Datum>[].obs;
   var selectedCategory = ''.obs;
   var filteredProductList = <model.Menu>[].obs;
+  RxList<int> selectedMenuIds = <int>[].obs;
   Timer? timer;
   RxBool isLoading = true.obs;
   final TextEditingController search = TextEditingController();
@@ -35,6 +36,9 @@ class ProductController extends GetxController {
       searchObx.value = search.text;
       searchFilter(search.text);
     });
+  }
+  void updateSelection() {
+    selectedMenuIds.value = foodList.where((item) => item.isSelected.value).map((item) => item.id).toList();
   }
 
   void _updateConnectionStatus(bool connected) {
@@ -152,7 +156,7 @@ class ProductController extends GetxController {
   //         allProductList.value = allProductListData
   //             .map((json) => model.Menu.fromJson(json))
   //             .toList();
-          
+
   //         for (var product in allProductList) {
   //           if (product.stock == '0') {
   //             Get.snackbar(
@@ -257,7 +261,7 @@ class ProductController extends GetxController {
   }
 
   Future<void> getToppingList() async {
-    isLoading.value = true;  
+    isLoading.value = true;
     try {
       final response = await http.get(Uri.parse(ToppingsApi.getallToppingsList));
       if (response.statusCode == 200) {
@@ -265,7 +269,7 @@ class ProductController extends GetxController {
         if (responseData is Map<String, dynamic>) {
           ToppingList toppingListData = ToppingList.fromJson(responseData);
           toppingList.value = toppingListData.data;
-          filterProducts(); 
+          filterProducts();
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
         }
@@ -275,13 +279,13 @@ class ProductController extends GetxController {
     } catch (error) {
       print("Error while fetching data: $error");
     } finally {
-      isLoading.value = false;  
+      isLoading.value = false;
       print('Selesai fetching data');
     }
   }
 
   Future<void> getVariantList() async {
-    isLoading.value = true;  
+    isLoading.value = true;
     try {
       final response = await http.get(Uri.parse(VariantApi.getallVariantList));
       if (response.statusCode == 200) {
@@ -289,7 +293,7 @@ class ProductController extends GetxController {
         if (responseData is Map<String, dynamic>) {
           VarianList variantListData = VarianList.fromJson(responseData);
           variantList.value = variantListData.data;
-          filterProducts(); 
+          filterProducts();
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
         }
@@ -299,14 +303,14 @@ class ProductController extends GetxController {
     } catch (error) {
       print("Error while fetching data: $error");
     } finally {
-      isLoading.value = false;  
+      isLoading.value = false;
       print('Selesai fetching data');
     }
   }
 
   void filterProducts() {
     print('Filtering for category: ${selectedCategory.value}');
-    
+
     if (selectedCategory.value == 'Semua') {
       filteredProductList.assignAll(
         allProductList.where((product) => product.status != '0').toList()

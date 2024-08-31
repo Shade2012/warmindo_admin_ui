@@ -16,6 +16,25 @@ const Color yellowTextColor = Color(0xFFFFA41D);
 const Color redTextColor = Color(0xFFC62828);
 const Color blueTextColor = Color(0xFF4282FF);
 const Color greyTextColor2 = Color(0xFF9B9B9B);
+Color getColorVerify(bool status){
+  if(status == true){
+    return Colors.white;
+  }else{
+    return Colors.black;
+  }
+}
+
+// Create a function to generate dynamic button style
+TextStyle popupText(bool status) {
+  return GoogleFonts.oxygen(
+    textStyle: TextStyle(
+      color: getColorVerify(status),
+      fontWeight: FontWeight.normal,
+      fontSize: figmaFontsize(13),
+    ),
+  );
+}
+
 
 TextStyle BottomNavbarSelectedTextStyle = GoogleFonts.oxygen(
     textStyle: TextStyle(
