@@ -27,7 +27,7 @@ class Topping {
   int id;
   String nameTopping;
   int price;
-  int stockTopping;
+  String stockTopping;
   int menuId;
   String status_topping;
   final List<MenuTopping> menus;
@@ -60,7 +60,7 @@ class Topping {
         id: id ?? this.id,
         nameTopping: nameTopping ?? this.nameTopping,
         price: price ?? this.price,
-        stockTopping: stockTopping ?? this.stockTopping,
+        stockTopping: stockTopping?.toString() ?? this.stockTopping,
         status_topping: status_topping,
         menuId: menuId ?? this.menuId,
         createdAt: createdAt ?? this.createdAt,
@@ -71,7 +71,7 @@ class Topping {
         id: json['id'] ?? 0,
         nameTopping: json['name_topping'] ?? '',
         price: json['price'] ?? 0,
-        stockTopping: int.tryParse(json['stock'].toString()) ?? 0,
+        stockTopping: json['stock_topping'] ?? '',
         status_topping: json['status_topping'] ?? '',
         menuId: int.tryParse(json['menu_id'].toString()) ?? 0,
         createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),

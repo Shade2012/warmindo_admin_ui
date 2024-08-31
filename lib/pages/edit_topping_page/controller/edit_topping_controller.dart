@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,6 +42,7 @@ class EditToppingController extends GetxController {
       print('Gagal mengubah status topping');
     }
   }
+
   void showDetailPopupModal(BuildContext context) {
     showModalBottomSheet<dynamic>(
       context: context,
@@ -67,6 +69,7 @@ class EditToppingController extends GetxController {
     required String nameTopping,
     required double price,
     required String stock,
+    required int menu_id
   }) async {
     try {
       isLoading.value = true;
@@ -75,6 +78,7 @@ class EditToppingController extends GetxController {
         ..fields['name_topping'] = nameTopping
         ..fields['price'] = price.toString()
         ..fields['stock_topping'] = stock.toString()
+        ..fields['menu_ids'] = menu_id.toString()
         ..headers['Accept'] = 'application/json';
 
       var response = await http.Response.fromStream(await request.send());
@@ -113,6 +117,35 @@ class EditToppingController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+    }
+  }
+
+  Future<void> postSelectedToppings( {
+    required int toppingId,
+    required String nameTopping,
+    required double price,
+    required int stock,
+    required List<int> menu_ids
+    }) async {
+    final response = await http.post(
+      Uri.parse('${ToppingsApi.updateToppings}$toppingId?_method=PUT'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'name_topping': nameTopping, // Replace with actual name if needed
+        'stock_topping': stock, // Replace with actual stock if needed
+        'price': price, // Replace with actual price if needed
+        'menu_ids': menu_ids,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('success');
+      Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+    } else {
+      // Handle error
+      print('Failed to edit toppings');
+      print('Response: ${response.body}');
+      print('gagal');
     }
   }
 }
