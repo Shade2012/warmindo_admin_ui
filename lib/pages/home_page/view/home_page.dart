@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55),
         child: CustomAppBar(
-          title: 'Halo, ${generalInfor.fullNameController.text}',
+          title: 'Halo, Selamat Datang',
           showSearch: false,
         ),
       ),

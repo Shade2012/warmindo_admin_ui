@@ -38,7 +38,7 @@ class PopupAddProducts extends StatelessWidget {
                       Icon(Icons.add, color: Colors.white),
                       SizedBox(height: 8), // Space between icon and text
                       Text(
-                        'Add Product',
+                        'Tambah Produk',
                         style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -63,7 +63,7 @@ class PopupAddProducts extends StatelessWidget {
                       Icon(Icons.add, color: Colors.white),
                       SizedBox(height: 8), // Space between icon and text
                       Text(
-                        'Add Variant',
+                        'Tambah Varian',
                         style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -90,7 +90,7 @@ class PopupAddProducts extends StatelessWidget {
                   Icon(Icons.add, color: Colors.white),
                   SizedBox(height: 5), // Space between icon and text
                   Text(
-                    'Add Topping',
+                    'Tambah Topping',
                     style: TextStyle(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
