@@ -24,7 +24,7 @@ class PopupAddProducts extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey,
-                    maximumSize: Size(screenWidth * 0.4, screenHeight * 0.2),
+                    maximumSize: Size(screenWidth * 0.3, screenHeight * 0.2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -49,7 +49,7 @@ class PopupAddProducts extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey,
-                    maximumSize: Size(screenWidth * 0.4, screenHeight * 0.2),
+                    maximumSize: Size(screenWidth * 0.3, screenHeight * 0.2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

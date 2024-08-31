@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/pages/edit_topping_page/controller/edit_topping_controller.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
@@ -13,6 +14,7 @@ class EditToppingPage extends StatelessWidget {
   final TextEditingController ctrToppingPrice = TextEditingController();
   final TextEditingController ctrToppingStock = TextEditingController();
   final EditToppingController editToppingController = Get.put(EditToppingController());
+  final ProductController productController = Get.put(ProductController());
 
   EditToppingPage({required this.topping}) {
     ctrToppingName.text = topping.nameMenu;
@@ -100,25 +102,60 @@ class EditToppingPage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.02),
+                const SizedBox(width: 10,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Menu Id", style: titleAddProductTextStyle),
+                    SizedBox(height: screenHeight * 0.01),
+                    InkWell(
+                      onTap: () {
+                        editToppingController.showDetailPopupModal(context);
+                      },
+                      child: Container(
+                        width: screenWidth * 0.15, // Adjust width as needed
+                        padding: EdgeInsets.all(17),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(7.0),
+                        ),
+                        child: Center(
+                          child: Obx(() {
+                            final selectedMenuIds = productController.selectedMenuIds.reversed; // Assuming this is an RxList<int> in your controller
+                            final idsText = selectedMenuIds.isNotEmpty
+                                ? selectedMenuIds.join(', ')
+                                : 'Id';
+
+                            return Text(
+                              idsText,
+                              style: regulargreyText,
+                              overflow: TextOverflow.ellipsis, // Handle overflow
+                              maxLines: 1, // Ensure text doesn't wrap to a new line
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      final stockValue =
-                          int.tryParse(ctrToppingStock.text) ?? 0;
-                      final priceValue =
-                          double.tryParse(ctrToppingPrice.text) ?? 0.0;
+                      final stockValue = int.tryParse(ctrToppingStock.text) ?? 0;
+                      final priceValue = double.tryParse(ctrToppingPrice.text) ?? 0.0;
 
                       // Debug print to check the values
                       print("Name: ${ctrToppingName.text}");
                       print("Price: $priceValue");
                       print("Stock: $stockValue");
 
-                      editToppingController.updateTopping(
-                        toppingId: topping.id.toString(),
+                      editToppingController.postSelectedToppings(
+                        toppingId: topping.id,
                         nameTopping: ctrToppingName.text,
                         price: priceValue,
-                        stock: ctrToppingStock.text,
+                        stock: stockValue,
+                        menu_ids: productController.selectedMenuIds,
                       );
                     },
                     child: Text('Ubah Data Topping'),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:warmindo_admin_ui/global/model/model_topping.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 import '../widget/menu_selected_widget.dart';
@@ -51,9 +52,11 @@ class AddToppingController extends GetxController {
       }
     }
   }
+  
   Future<void> postSelectedToppings( {
       required String nameTopping,
       required double price,
+      required String statusTopping,
       required int stock,
     required List<int> menu_ids}) async {
     final response = await http.post(
@@ -62,6 +65,7 @@ class AddToppingController extends GetxController {
       body: jsonEncode({
         'name_topping': nameTopping, // Replace with actual name if needed
         'stock_topping': stock, // Replace with actual stock if needed
+        'status_topping': statusTopping, // Replace with actual status if needed
         'price': price, // Replace with actual price if needed
         'menu_ids': menu_ids,
       }),
@@ -78,6 +82,7 @@ class AddToppingController extends GetxController {
       print('gagal');
     }
   }
+
   void showDetailPopupModal(BuildContext context) {
     showModalBottomSheet<dynamic>(
       context: context,

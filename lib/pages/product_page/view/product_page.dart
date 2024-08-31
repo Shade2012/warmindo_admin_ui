@@ -44,9 +44,9 @@ class ProductPage extends StatelessWidget {
                 case 'Minuman':
                   productController.getDrinkList();
                   break;
-                case 'Snack':
-                  productController.getSnackList();
-                  break;
+                // case 'Snack':
+                //   productController.getSnackList();
+                //   break;
                 case 'Topping':
                   productController.getToppingList();
                   break;

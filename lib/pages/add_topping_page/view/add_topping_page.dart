@@ -164,6 +164,7 @@ class AddToppingPage extends StatelessWidget {
                     toppingController.postSelectedToppings(
                       nameTopping: toppingName,
                       price: toppingPrice,
+                      statusTopping: '1',
                       stock: toppingStock,
                       menu_ids: productController.selectedMenuIds.value
                     );
