@@ -187,11 +187,11 @@ class SalesDetailPage extends StatelessWidget {
                                   ),
                                   leftTitles: AxisTitles(
                                     sideTitles: SideTitles(
-                                      showTitles: true,
+                                      showTitles: false,
                                       interval: 10000,
                                       getTitlesWidget: (value, meta) {
                                         return Text(
-                                          '${value.toInt()}K',
+                                          leftTitle,
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,

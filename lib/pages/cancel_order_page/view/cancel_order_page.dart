@@ -17,9 +17,7 @@ class CancelOrderPage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     // Filter pesanan dengan status permintaan pembatalan
-    List<Order> cancelOrders = controller.orderList
-        .where((order) => order.status == 'menunggu batal')
-        .toList();
+   
 
     return Scaffold(
       appBar: AppBar(
@@ -28,6 +26,9 @@ class CancelOrderPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() {
+         List<Order> cancelOrders = controller.orderList
+        .where((order) => order.status == 'menunggu batal')
+        .toList();
         if (!dataController.isConnected.value) {
           return Center(
             child: Text(
@@ -46,28 +47,34 @@ class CancelOrderPage extends StatelessWidget {
             ),
           );
         }
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: cancelOrders
-                  .map(
-                    (order) => Column(
-                      children: [
-                        Container(
-                          height: screenHeight * 0.2,
-                          width: screenWidth,
-                          child: OrderBox(
-                            order: order,
-                            customerName: controller.getCustomerById(int.tryParse(order.userId) ?? 0)?.name ?? '',
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.fetchDataOrder();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: cancelOrders
+                    .map(
+                      (order) => Column(
+                        children: [
+                          Container(
+                            height: screenHeight * 0.2,
+                            width: screenWidth,
+                            child: OrderBox(
+                              order: order,
+                              customerName: controller.getCustomerById(int.tryParse(order.userId) ?? 0)?.name ?? '',
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 8), // Add space between OrderBox widgets
-                      ],
-                    ),
-                  )
-                  .toList(),
+                          SizedBox(height: 8), // Add space between OrderBox widgets
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
           ),
         );

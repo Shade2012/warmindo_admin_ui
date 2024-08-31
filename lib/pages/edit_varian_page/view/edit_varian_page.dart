@@ -33,7 +33,7 @@ class EditVarianPage extends StatelessWidget {
     }
 
     final stockItems = ['Tersedia', 'Tidak Tersedia'];
-    final categories = ['Mie', 'Pop Ice'];
+    final categories = ['Mie Indomie', 'Mie Sedaap', 'Pop Ice', 'Es teh', 'Kapal Api', 'Nutrisari'];
 
     // Ensure the selected values are valid
     if (!categories.contains(selectedCategory.value)) {
