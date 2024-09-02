@@ -37,12 +37,12 @@ Future<Uint8List> generateOrderPdf(Order order) async {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         pw.Text(menu.nameMenu, style: pw.TextStyle(fontSize: 16)),
-        pw.Text(orderDetail.quantity.toString(),
-            style: pw.TextStyle(fontSize: 16)),
+        // pw.Text(orderDetail.quantity.toString(),
+        // style: pw.TextStyle(fontSize: 16)),
         pw.Text(
-            currencyFormat
-                .format(double.parse(menu.price) * orderDetail.quantity),
-            style: pw.TextStyle(fontSize: 16)),
+          '${currencyFormat.format(double.parse(menu.price) * orderDetail.quantity)} (${orderDetail.quantity}x)',
+          style: pw.TextStyle(fontSize: 16),
+        ),
       ],
     ));
 
@@ -95,13 +95,15 @@ Future<Uint8List> generateOrderPdf(Order order) async {
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
                     pw.Text('Warmindo Anggrek Muria',
-                        style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-                    pw.Text('Jalan Raya Jurang Besito Kulon',style: pw.TextStyle(fontSize: 12)),
+                        style: pw.TextStyle(
+                            fontSize: 24, fontWeight: pw.FontWeight.bold)),
+                    pw.Text('Jalan Raya Jurang Besito Kulon',
+                        style: pw.TextStyle(fontSize: 12)),
                     pw.Text('Besito, Gebog, Kabupaten Kudus, Jawa Tengah 59333',
                         style: pw.TextStyle(fontSize: 12)),
                   ],
                 ),
-                pw.Image(pw.MemoryImage(logo),width: 100), 
+                pw.Image(pw.MemoryImage(logo), width: 100),
               ],
             ),
             pw.SizedBox(height: 10),
@@ -114,22 +116,30 @@ Future<Uint8List> generateOrderPdf(Order order) async {
             ),
             pw.SizedBox(height: 16),
             pw.Text('Order ID: ${order.id}', style: pw.TextStyle(fontSize: 16)),
-            pw.Text( 'Date: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(order.createdAt.toString()))}', style: pw.TextStyle(fontSize: 16)),
-            pw.Text('Status: ${order.status}', style: pw.TextStyle(fontSize: 16)),
+            pw.Text(
+                'Date: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(order.createdAt.toString()))}',
+                style: pw.TextStyle(fontSize: 16)),
+            pw.Text('Status: ${order.status}',
+                style: pw.TextStyle(fontSize: 16)),
             pw.SizedBox(height: 16),
-            pw.Text('Pesanan', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
+            pw.Text('Pesanan',
+                style:
+                    pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: 8),
             ...menuItems,
             pw.SizedBox(height: 16),
             pw.Divider(),
             pw.SizedBox(height: 16),
-            pw.Text('Detail Pembayaran',style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
+            pw.Text('Detail Pembayaran',
+                style:
+                    pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
             pw.SizedBox(height: 8),
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text('Harga', style: pw.TextStyle(fontSize: 16)),
-                pw.Text(currencyFormat.format(totalPrice),style: pw.TextStyle(fontSize: 16)),
+                pw.Text(currencyFormat.format(totalPrice),
+                    style: pw.TextStyle(fontSize: 16)),
               ],
             ),
             // if (adminFee > 0)

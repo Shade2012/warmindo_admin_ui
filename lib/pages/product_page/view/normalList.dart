@@ -72,7 +72,14 @@ class ProductList extends StatelessWidget {
                   children: [
                     Icon(Icons.edit, color: Colors.grey),
                     SizedBox(width: 8),
-                    Icon(Icons.delete, color: Colors.grey),
+                    Transform.scale(
+                      scale: 0.8,
+                      child: Switch(
+                        value: false,
+                        onChanged: (value) {},
+                        activeColor: Colors.grey,
+                      ),
+                    ),
                   ],
                 ),
               ),

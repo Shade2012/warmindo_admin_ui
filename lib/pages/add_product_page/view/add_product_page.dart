@@ -37,7 +37,10 @@ class AddProductPage extends StatelessWidget {
             leading: Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-                onTap: () => Get.back(),
+                onTap: () {
+                  Get.back();
+                  Get.back();
+                },
                 child: Container(
                   width: 32,
                   height: 32,
@@ -168,7 +171,7 @@ class AddProductPage extends StatelessWidget {
                             style: titleAddProductTextStyle),
                         SizedBox(height: screenHeight * 0.01),
                         Obx(() => CustomDropdown(
-                              items: ['Makanan', 'Minuman', 'Snack'],
+                              items: ['Makanan', 'Minuman'],
                               value: selectedCategory.value.isNotEmpty
                                   ? selectedCategory.value
                                   : null,
