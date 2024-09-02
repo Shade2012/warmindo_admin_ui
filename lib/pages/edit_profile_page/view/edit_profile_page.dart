@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,18 +28,18 @@ class EditProfilPage extends StatelessWidget {
             Container(
               color: ColorResources.primaryColor,
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(screenWidth * 0.05),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10),
+                    SizedBox(height: screenHeight * 0.01),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
                           icon: Icon(
                             Icons.arrow_back_ios_new,
-                            size: 20,
+                            size: screenWidth * 0.05,
                             color: Colors.white,
                           ),
                           onPressed: () {
@@ -49,14 +48,16 @@ class EditProfilPage extends StatelessWidget {
                         ),
                         Spacer(),
                         Center(
-                          child: Text("Edit Profile",
-                              style: subheaderRegularStyle),
+                          child: Text(
+                            "Ubah Profil",
+                            style: subheaderRegularStyle,
+                          ),
                         ),
                         SizedBox(width: screenWidth * 0.13),
                         Spacer(),
                       ],
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: screenHeight * 0.03),
                     GestureDetector(
                       onTap: () => showModalBottomSheet(
                         context: context,
@@ -67,20 +68,25 @@ class EditProfilPage extends StatelessWidget {
                       child: Obx(() {
                         if (controller.selectedImage.value != null) {
                           return CircleAvatar(
-                            radius: 75,
+                            radius: screenWidth * 0.2,
                             backgroundColor: Colors.grey.shade200,
                             backgroundImage:
                                 FileImage(controller.selectedImage.value!),
                           );
                         } else {
                           return CircleAvatar(
-                            radius: 75,
+                            radius: screenWidth * 0.2,
                             backgroundColor: Colors.grey.shade200,
-                            backgroundImage: AssetImage(Images.userImage),
+                            backgroundImage: Image.network(
+                              controller.image.value.isEmpty
+                                  ? Images.userImage
+                                  : 'https://warmindo.pradiptaahmad.tech/image/' +
+                                      controller.image.value,
+                            ).image,
                             child: Align(
                               alignment: Alignment.bottomRight,
                               child: Container(
-                                width: screenHeight * 0.04,
+                                width: screenWidth * 0.1,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(4),
@@ -88,7 +94,7 @@ class EditProfilPage extends StatelessWidget {
                                 child: Icon(
                                   Icons.camera_alt,
                                   color: Colors.black,
-                                  size: 30,
+                                  size: screenWidth * 0.08,
                                 ),
                               ),
                             ),
@@ -96,29 +102,29 @@ class EditProfilPage extends StatelessWidget {
                         }
                       }),
                     ),
-                    const SizedBox(height: 20.0),
+                    SizedBox(height: screenHeight * 0.02),
                   ],
                 ),
               ),
             ),
             Container(
               color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
               child: SingleChildScrollView(
                 child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 20),
+                      SizedBox(height: screenHeight * 0.02),
                       Text("Nama", style: regularInputTextStyle),
-                      SizedBox(height: 10.0),
+                      SizedBox(height: screenHeight * 0.01),
                       TextFormField(
-                        controller: controller.fullNameController,
+                        controller: controller.usernameController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: 10.0), // Adjust padding here
+                              vertical: screenHeight * 0.015,
+                              horizontal: screenWidth * 0.03),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
@@ -126,12 +132,9 @@ class EditProfilPage extends StatelessWidget {
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.clear,
-                                color: Colors
-                                    .black), // Set clear icon color to white
+                            icon: Icon(Icons.clear, color: Colors.black),
                             onPressed: () {
-                              controller.fullNameController
-                                  .clear(); // Clear text when icon is pressed
+                              controller.fullNameController.clear();
                             },
                           ),
                         ),
@@ -143,16 +146,16 @@ class EditProfilPage extends StatelessWidget {
                         },
                         style: regularInputTextStyle,
                       ),
-                      const SizedBox(height: 20.0),
+                      SizedBox(height: screenHeight * 0.02),
                       Text("Email", style: regularInputTextStyle),
-                      const SizedBox(height: 10.0),
+                      SizedBox(height: screenHeight * 0.01),
                       TextFormField(
                         controller: controller.emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: 10.0), // Adjust padding here
+                              vertical: screenHeight * 0.015,
+                              horizontal: screenWidth * 0.03),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
@@ -160,12 +163,9 @@ class EditProfilPage extends StatelessWidget {
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.clear,
-                                color: Colors
-                                    .black), // Set clear icon color to white
+                            icon: Icon(Icons.clear, color: Colors.black),
                             onPressed: () {
-                              controller.emailController
-                                  .clear(); // Clear text when icon is pressed
+                              controller.emailController.clear();
                             },
                           ),
                         ),
@@ -180,16 +180,16 @@ class EditProfilPage extends StatelessWidget {
                         },
                         style: regularInputTextStyle,
                       ),
-                      const SizedBox(height: 10.0),
+                      SizedBox(height: screenHeight * 0.02),
                       Text("Nomor Hp", style: regularInputTextStyle),
-                      const SizedBox(height: 10.0),
+                      SizedBox(height: screenHeight * 0.01),
                       TextFormField(
                         controller: controller.phoneNumberController,
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: 10.0), // Adjust padding here
+                              vertical: screenHeight * 0.015,
+                              horizontal: screenWidth * 0.03),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey),
                           ),
@@ -197,12 +197,9 @@ class EditProfilPage extends StatelessWidget {
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.clear,
-                                color: Colors
-                                    .black), // Set clear icon color to white
+                            icon: Icon(Icons.clear, color: Colors.black),
                             onPressed: () {
-                              controller.phoneNumberController
-                                  .clear(); // Clear text when icon is pressed
+                              controller.phoneNumberController.clear();
                             },
                           ),
                         ),
@@ -217,15 +214,15 @@ class EditProfilPage extends StatelessWidget {
                         },
                         style: regularInputTextStyle,
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: screenHeight * 0.22),
                       Center(
                         child: Obx(() {
                           return ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               foregroundColor: Colors.white,
-                              minimumSize: Size(211, 46),
-                              padding: EdgeInsets.all(8.0),
+                              minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
+                              padding: EdgeInsets.all(screenWidth * 0.02),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -233,38 +230,32 @@ class EditProfilPage extends StatelessWidget {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 print('berhasil tahap 1');
-                                if (controller.selectedImage.value?.path ==
-                                    '') {
+                                if (controller.selectedImage.value?.path == '') {
                                   await controller.editProfile(
                                     name: controller.fullNameController.text,
-                                    username:
-                                        controller.usernameController.text,
+                                    username: controller.usernameController.text,
                                     email: controller.emailController.text,
                                     numberPhone: controller.phoneNumberController.text,
-                                    
                                   );
                                   print('image ada');
                                 } else {
                                   await controller.editProfile(
                                     name: controller.fullNameController.text,
-                                    username:
-                                        controller.usernameController.text,
+                                    username: controller.usernameController.text,
                                     email: controller.emailController.text,
                                     image: controller.selectedImage.value,
                                     numberPhone: controller.phoneNumberController.text,
                                   );
-                                  print(
-                                      'image saat ini : ${controller.selectedImage.value}');
+                                  print('image saat ini : ${controller.selectedImage.value}');
                                   controller.selectedImage.value = File('');
-                                  print(
-                                      'image setelah proses kossong : ${controller.selectedImage.value}');
+                                  print('image setelah proses kosong : ${controller.selectedImage.value}');
                                   print('image kosong');
                                 }
                               }
                             },
                             child: controller.isLoading.value
                                 ? CircularProgressIndicator(color: Colors.white)
-                                : Text("Edit"),
+                                : Text("Ubah Data"),
                           );
                         }),
                       ),

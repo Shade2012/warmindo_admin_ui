@@ -74,7 +74,8 @@ class AddToppingController extends GetxController {
     if (response.statusCode == 201) {
       // Handle success
       print('success');
-      Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+      Get.back();
+      Get.back();
     } else {
       // Handle error
       print('Failed to add toppings');

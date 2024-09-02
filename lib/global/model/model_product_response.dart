@@ -75,6 +75,7 @@ class Menu {
     DateTime updatedAt;
     final List<Topping>? toppings;
     var isSelected = false.obs;
+    // int? relatedIdMenu;
 
     Menu({
         required this.id,
@@ -87,9 +88,10 @@ class Menu {
         this.rating,
         required this.description,
         required this.status,
-      this.toppings = const [],
+        this.toppings = const [],
         required this.createdAt,
         required this.updatedAt,
+        // this.relatedIdMenu
     });
 
     factory Menu.fromJson(Map<String, dynamic> json) => Menu(
@@ -105,6 +107,7 @@ class Menu {
         status: json["status_menu"] ?? 'Available',
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        // relatedIdMenu: json["related_id_menu"] ?? 0,
     );
 
     Map<String, dynamic> toJson() => {
@@ -120,6 +123,7 @@ class Menu {
         "status_menu": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        // "related_id_menu": relatedIdMenu
     };
 
     Menu copyWith({
@@ -135,6 +139,7 @@ class Menu {
         String? status_menu,
         DateTime? createdAt,
         DateTime? updatedAt,
+        // int? relatedIdMenu
     }) =>
         Menu(
             id: id ?? this.id,
@@ -149,5 +154,6 @@ class Menu {
             status: status_menu ?? this.status,
             createdAt: createdAt ?? this.createdAt,
             updatedAt: updatedAt ?? this.updatedAt,
+            // relatedIdMenu: relatedIdMenu ?? this.relatedIdMenu
         );
 }

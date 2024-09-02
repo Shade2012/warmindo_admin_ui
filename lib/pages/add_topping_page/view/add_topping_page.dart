@@ -166,7 +166,7 @@ class AddToppingPage extends StatelessWidget {
                       price: toppingPrice,
                       statusTopping: '1',
                       stock: toppingStock,
-                      menu_ids: productController.selectedMenuIds.value
+                      menu_ids: productController.selectedMenuIds.value 
                     );
                   }
                 },

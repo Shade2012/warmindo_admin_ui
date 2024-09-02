@@ -62,7 +62,7 @@ class InputNotificationPage extends StatelessWidget {
               hintText: 'Deskripsi Notifikasi',
               onChanged: (value) => controller.description.value = value,
             ),
-            SizedBox(height: screenHeight * 0.025),
+            SizedBox(height: screenHeight * 0.38),
             Center(
               child: Container(
                 decoration: BoxDecoration(
@@ -77,15 +77,14 @@ class InputNotificationPage extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    minimumSize: Size(screenWidth * 0.5, screenHeight * 0.07),
-                    foregroundColor: ColorResources.primaryColorDark,
-                    backgroundColor: ColorResources.backgroundColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: ColorResources.primaryColorDark),
-                    ),
-                  ),
+                   backgroundColor: Colors.black,
+                   foregroundColor: Colors.white,
+                   minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
+                   padding: EdgeInsets.all(screenWidth * 0.03),
+                   shape: RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(8.0),
+                   ),
+                   ),
                   onPressed: () {
                     controller.sendNotification();
                   },

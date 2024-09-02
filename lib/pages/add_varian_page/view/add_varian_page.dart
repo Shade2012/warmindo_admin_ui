@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
-import 'package:warmindo_admin_ui/global/widget/up_image_bottomsheet.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
-import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/add_varian_page/controller/add_varian_controller.dart';
 
@@ -17,10 +14,6 @@ class AddVarianPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void getImage(ImageSource source) async {
-      varianController.getImage(source);
-    }
-
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -59,46 +52,6 @@ class AddVarianPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Stack(
-                children: [
-                  Obx(() {
-                    return SizedBox(
-                      height: screenHeight * 0.15,
-                      width: screenHeight * 0.15,
-                      child: varianController.selectedImage.value != null
-                          ? Image.file(varianController.selectedImage.value!,
-                              fit: BoxFit.cover)
-                          : Image.asset(Images.defaultImage),
-                    );
-                  }),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => UploadImage(
-                            onImageCapture: getImage,
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: screenHeight * 0.04,
-                        height: screenHeight * 0.04,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child:
-                            Icon(Icons.camera_alt, size: screenHeight * 0.05),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: screenHeight * 0.02),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,12 +104,12 @@ class AddVarianPage extends StatelessWidget {
                     )),
               ],
             ),
-            SizedBox(height: screenHeight * 0.20),
+            SizedBox(height: screenHeight * 0.42),
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   // Validate inputs
-                  if (ctrProductName.text.isEmpty || varianController.selectedImage.value == null || selectedCategory.value.isEmpty) {
+                  if (ctrProductName.text.isEmpty || selectedCategory.value.isEmpty) {
                     Get.snackbar(
                       'Warning',
                       'Semua data harus diisi dan valid',
@@ -168,7 +121,6 @@ class AddVarianPage extends StatelessWidget {
                   }
 
                   varianController.addVariants(
-                    image: varianController.selectedImage.value,
                     nameVariant: ctrProductName.text,
                     category: selectedCategory.value,
                     stock: selectedStock.value,

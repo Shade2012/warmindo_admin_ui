@@ -47,7 +47,8 @@ class AddVarianController extends GetxController {
         if (response.statusCode == 200 || response.statusCode == 201) {
           print('Variants added successfully');
           print('Response: ${response.body}');
-          Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+          Get.back();
+          Get.back();
         } else {
           print('Failed to add variants');
           print('Response: ${response.body}');

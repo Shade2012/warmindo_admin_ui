@@ -86,7 +86,7 @@ class DetailProductPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.002),
                 Text(
-                  product.category ?? 'No Category', // Handle null category
+                  product.category, // Handle null category
                   style: categoryProductDetailTextStyle,
                 ),
               ],
@@ -97,7 +97,7 @@ class DetailProductPage extends StatelessWidget {
                 Icon(Icons.star, color: Colors.amber),
                 SizedBox(width: screenWidth * 0.02),
                 Text(
-                  product.rating.toString() ?? 'N/A', 
+                  product.rating.toString(), 
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -113,7 +113,7 @@ class DetailProductPage extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  product.description ?? 'No Description', 
+                  product.description, 
                   style: desccontentProductDetailTextStyle,
                 ),
               ],
@@ -173,7 +173,18 @@ class DetailProductPage extends StatelessWidget {
                                 Get.back();
                               },
                               onConfirmPressed: () {
-                                Get.toNamed(Routes.EDIT_PRODUCT_PAGE, arguments: product);
+                                if (product.category == 'Topping') {
+                                  Get.toNamed(Routes.EDIT_TOPPING_PAGE,
+                                      arguments: product);
+                                } else if (product.category == 'Variant') {
+                                  Get.toNamed(Routes.EDIT_VARIAN_PAGE,
+                                      arguments: product);
+                                  print(product.category);
+                                } else {
+                                  Get.toNamed(Routes.EDIT_PRODUCT_PAGE,
+                                      arguments: product);
+                                }
+                                productController.fetchAllData();
                               },
                               cancelButtonColor: ColorResources.primaryColorLight,
                               confirmButtonColor: ColorResources.buttonedit,
@@ -185,41 +196,41 @@ class DetailProductPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: screenWidth * 0.02),
-                  Container(
-                    width: screenWidth * 0.1,
-                    height: screenHeight * 0.1,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey[200],
-                    ),
-                    child: IconButton(
-                      icon: Icon(FontAwesomeIcons.solidTrashCan),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ReusableDialog(
-                              title: "Delete",
-                              content: "Apakah Kamu yakin ingin menghapus data?",
-                              cancelText: "Tidak",
-                              confirmText: "Iya",
-                              onCancelPressed: () {
-                                Get.back();
-                              },
-                              onConfirmPressed: () {
-                                productController.deleteProduct(product.id);
-                                productController.fetchAllData();
-                                Get.back();
-                              },
-                              cancelButtonColor: ColorResources.primaryColorLight,
-                              confirmButtonColor: ColorResources.buttondelete,
-                              dialogImage: Image.asset(Images.askDialog),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                  // Container(
+                  //   width: screenWidth * 0.1,
+                  //   height: screenHeight * 0.1,
+                  //   decoration: BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     color: Colors.grey[200],
+                    // ),
+                    // child: IconButton(
+                    //   icon: Icon(FontAwesomeIcons.solidTrashCan),
+                    //   onPressed: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (BuildContext context) {
+                    //         return ReusableDialog(
+                    //           title: "Delete",
+                    //           content: "Apakah Kamu yakin ingin menghapus data?",
+                    //           cancelText: "Tidak",
+                    //           confirmText: "Iya",
+                    //           onCancelPressed: () {
+                    //             Get.back();
+                    //           },
+                    //           onConfirmPressed: () {
+                    //             productController.deleteProduct(product.id);
+                    //             productController.fetchAllData();
+                    //             Get.back();
+                    //           },
+                    //           cancelButtonColor: ColorResources.primaryColorLight,
+                    //           confirmButtonColor: ColorResources.buttondelete,
+                    //           dialogImage: Image.asset(Images.askDialog),
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    // ),
+                  // ),
                 ],
               ),
             ),

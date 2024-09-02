@@ -58,7 +58,7 @@ class GeneralInformation extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.16),
                   TextFormField(
                     readOnly: true,
-                    controller: controller.fullNameController,
+                    controller: controller.usernameController,
                     decoration: InputDecoration(
                       labelText: "Nama",
                     ),
@@ -96,7 +96,7 @@ class GeneralInformation extends StatelessWidget {
                     ),
                     keyboardType: TextInputType.phone,
                   ),
-                  SizedBox(height: screenHeight * 0.10),
+                  SizedBox(height: screenHeight * 0.18),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,

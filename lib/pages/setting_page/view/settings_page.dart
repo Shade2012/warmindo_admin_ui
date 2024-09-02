@@ -13,8 +13,7 @@ class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
 
   final SettingsController controller = Get.put(SettingsController());
-  final GeneralInformationController generalInfor =
-      Get.put(GeneralInformationController());
+  final GeneralInformationController generalInfor = Get.put(GeneralInformationController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,68 +23,63 @@ class SettingsPage extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         backgroundColor: ColorResources.primaryColor,
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Container(
-              width: screenWidth,
-              height: screenHeight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: screenHeight * 0.05),
-                  Container(
-                    margin: EdgeInsets.only(bottom: screenWidth * 0.05),
-                    width: screenWidth,
-                    height: screenHeight * 0.35,
-                    color: ColorResources.transparent,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ClipOval(
-                          child: FadeInImage(
-                            placeholder: AssetImage(Images.userImage),
-                            image: NetworkImage(generalInfor.image.value.isEmpty
-                                ? Images.userImage
-                                : 'https://warmindo.pradiptaahmad.tech/image/' +
-                                    generalInfor.image.value),
-                            imageErrorBuilder: (context, error, stackTrace) =>
-                                Container(
-                              width: screenWidth * 0.4,
-                              child: Image.asset(Images.userImage),
-                            ),
-                            width: screenWidth * 0.4,
-                            height: screenWidth * 0.4,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.center,
-                          ),
-                        ),
-                        SizedBox(height: screenHeight * 0.02),
-                        Text(
-                          generalInfor.fullNameController.text,
-                          style: nameProfileTextStyle,
-                        ),
-                        SizedBox(height: screenHeight * 0.01),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Expanded(
-                    child: Container(
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              generalInfor.fetchData(); // Assuming this method refreshes the general information
+            },
+            child: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.only(top: screenHeight * 0.05),
+                width: screenWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Profile Section
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenWidth * 0.05),
                       width: screenWidth,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                      height: screenHeight * 0.3,
+                      color: ColorResources.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipOval(
+                            child: FadeInImage(
+                              placeholder: AssetImage(Images.userImage),
+                              image: NetworkImage(generalInfor.image.value.isEmpty
+                                  ? 'https://ui-avatars.com/api/?background=random&color=ffffff&name=${generalInfor.usernameController.value}&size=128'
+                                  : 'https://warmindo.pradiptaahmad.tech/image/' + generalInfor.image.value),
+                              width: screenWidth * 0.4,
+                              height: screenWidth * 0.4,
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                            ),
+                          ),
+                          SizedBox(height: screenHeight * 0.02),
+                          Text(
+                            generalInfor.usernameController.text,
+                            style: nameProfileTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Settings Sections
+                    Container(
+                      width: screenWidth,
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(0),
-                          topRight: Radius.circular(0),
+                          topLeft: Radius.circular(22),
+                          topRight: Radius.circular(22),
                         ),
                       ),
-                      child: ListView(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: screenHeight * 0.05),
+                          // Account Section
                           Text(
                             'Akun',
                             style: headercontentProfileTextStyle,
@@ -109,8 +103,7 @@ class SettingsPage extends StatelessWidget {
                                   ),
                                   trailing: Icon(Icons.arrow_forward_ios),
                                   onTap: () {
-                                    Get.toNamed(
-                                        Routes.GENERAL_INFORMATION_PAGE);
+                                    Get.toNamed(Routes.GENERAL_INFORMATION_PAGE);
                                   },
                                 ),
                                 ListTile(
@@ -128,6 +121,7 @@ class SettingsPage extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: screenHeight * 0.02),
+                          // Shop Section
                           Text(
                             'Toko',
                             style: headercontentProfileTextStyle,
@@ -146,7 +140,7 @@ class SettingsPage extends StatelessWidget {
                                 ListTile(
                                   leading: Icon(FontAwesomeIcons.store),
                                   title: Text(
-                                    'Toko',
+                                    'Pengaturan Toko',
                                     style: contentProfileTextStyle,
                                   ),
                                   trailing: Icon(Icons.arrow_forward_ios),
@@ -155,7 +149,10 @@ class SettingsPage extends StatelessWidget {
                                       context: context,
                                       isScrollControlled: true,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.zero,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                        ),
                                       ),
                                       builder: (BuildContext context) {
                                         return BottomSheetShop(
@@ -193,8 +190,8 @@ class SettingsPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

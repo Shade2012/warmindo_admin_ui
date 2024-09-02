@@ -32,7 +32,8 @@ class OrderFilterDropdown extends StatelessWidget {
             'Pesanan Siap',
             'Selesai',
             'Menunggu Batal',
-            'Batal'
+            'Batal',
+            'Menunggu Pengembalian Dana',
           ].map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,

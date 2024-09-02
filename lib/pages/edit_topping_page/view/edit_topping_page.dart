@@ -113,7 +113,7 @@ class EditToppingPage extends StatelessWidget {
                         editToppingController.showDetailPopupModal(context);
                       },
                       child: Container(
-                        width: screenWidth * 0.15, // Adjust width as needed
+                        width: screenWidth * 0.4, 
                         padding: EdgeInsets.all(17),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black),
@@ -124,7 +124,7 @@ class EditToppingPage extends StatelessWidget {
                             final selectedMenuIds = productController.selectedMenuIds.reversed; // Assuming this is an RxList<int> in your controller
                             final idsText = selectedMenuIds.isNotEmpty
                                 ? selectedMenuIds.join(', ')
-                                : 'Id';
+                                : topping.description;
 
                             return Text(
                               idsText,
@@ -145,17 +145,30 @@ class EditToppingPage extends StatelessWidget {
                       final stockValue = int.tryParse(ctrToppingStock.text) ?? 0;
                       final priceValue = double.tryParse(ctrToppingPrice.text) ?? 0.0;
 
+                      // Jika selectedMenuIds kosong, ambil dari description
+                      var menuIds = productController.selectedMenuIds;
+                      if (menuIds.isEmpty) {
+                        menuIds = RxList<int>(
+                          topping.description
+                              .split(',')
+                              .map((id) => int.tryParse(id.trim()) ?? 0)
+                              .where((id) => id != 0)
+                              .toList(),
+                        );
+                      }
+
                       // Debug print to check the values
                       print("Name: ${ctrToppingName.text}");
                       print("Price: $priceValue");
                       print("Stock: $stockValue");
+                      print("Menu IDs: ${menuIds.join(', ')}");
 
                       editToppingController.postSelectedToppings(
                         toppingId: topping.id,
                         nameTopping: ctrToppingName.text,
                         price: priceValue,
                         stock: stockValue,
-                        menu_ids: productController.selectedMenuIds,
+                        menu_ids: menuIds,
                       );
                     },
                     child: Text('Ubah Data Topping'),

@@ -77,7 +77,7 @@ class ProductController extends GetxController {
         stock: topping.stockTopping.toString(),
         category: 'Topping',
         rating: 0.0,
-        description: '',
+        description: topping.menus.map((menu) => menu.menuID).join(', '),
         status: topping.status_topping,
         createdAt: topping.createdAt,
         updatedAt: topping.updatedAt,
@@ -97,7 +97,7 @@ class ProductController extends GetxController {
         status: variant.status_variant,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        secondCategory: '',
+        secondCategory: variant.category,
       )).toList());
     }
   }
@@ -325,7 +325,7 @@ class ProductController extends GetxController {
           stock: topping.stockTopping.toString(),
           category: 'Topping',
           rating: 0.0,
-          description: '',
+          description: topping.menus.map((menu) => menu.menuID).join(', '),
           status: topping.status_topping,
           createdAt: topping.createdAt,
           updatedAt: topping.updatedAt,
@@ -370,11 +370,12 @@ class ProductController extends GetxController {
           stock: topping.stockTopping.toString(),
           category: 'Topping',
           rating: 0.0,
-          description: '',
+          description: topping.menus.map((menu) => menu.menuID).join(', '),
           status: topping.status_topping,
           createdAt: topping.createdAt,
           updatedAt: topping.updatedAt,
           secondCategory: topping.menuId.toString(),
+
         )).toList()
       );
     } else if (selectedCategory.value == 'Varian') {
@@ -391,7 +392,7 @@ class ProductController extends GetxController {
           status: variant.status_variant,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
-          secondCategory: '',
+          secondCategory: variant.category,
         )).toList()
       );
     } else if (selectedCategory.value == 'Tidak Aktif') {
@@ -408,7 +409,7 @@ class ProductController extends GetxController {
         stock: topping.stockTopping.toString(),
         category: 'Topping',
         rating: 0.0,
-        description: '',
+        description: topping.menus.map((menu) => menu.menuID).join(', '),
         status: topping.status_topping,
         createdAt: topping.createdAt,
         updatedAt: topping.updatedAt,

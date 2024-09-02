@@ -57,7 +57,7 @@ class DetailOrderPage extends StatelessWidget {
       return sum + itemPrice + toppingPrice;
     });
 
-    final totalPayment = totalPrice + adminFee;
+    final totalPayment = totalPrice;
 
     final labelColor = _getLabelColor(order.status);
     final formattedDate = DateFormat('dd-MM-yyyy')
@@ -221,16 +221,16 @@ class DetailOrderPage extends StatelessWidget {
                         style: receiptcontentTextStyle),
                   ],
                 ),
-                SizedBox(height: 8.0),
-                if (adminFee > 0)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Biaya Admin', style: receiptcontentTextStyle),
-                      Text(currencyFormat.format(adminFee),
-                          style: receiptcontentTextStyle),
-                    ],
-                  ),
+                // SizedBox(height: 8.0),
+                // if (adminFee > 0)
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text('Biaya Admin', style: receiptcontentTextStyle),
+                //       Text(currencyFormat.format(adminFee),
+                //           style: receiptcontentTextStyle),
+                //     ],
+                //   ),
                 SizedBox(height: adminFee > 0 ? 8.0 : 0.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

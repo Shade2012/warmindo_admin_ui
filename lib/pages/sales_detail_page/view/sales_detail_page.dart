@@ -162,12 +162,7 @@ class SalesDetailPage extends StatelessWidget {
                                               ? revenueData[value.toInt()].date
                                               : salesData[value.toInt()].date;
 
-                                          final formattedDate =
-                                              _getFormattedDate(
-                                                  date.toString(),
-                                                  controller
-                                                      .selectedInterval.value);
-
+                                          final formattedDate = _getFormattedDate(date.toString(),controller.selectedInterval.value);
                                           return Padding(
                                             padding:
                                                 const EdgeInsets.only(top: 8.0),

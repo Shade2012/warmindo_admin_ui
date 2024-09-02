@@ -85,8 +85,8 @@ class EditProductController extends GetxController {
         isLoading.value = false;
         print('Product updated successfully');
         print('Response: ${response.body}');
-
-        Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+        Get.back();
+        Get.back();
       } else {
         // Error occurred
         isLoading.value = false;

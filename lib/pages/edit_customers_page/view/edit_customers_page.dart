@@ -101,8 +101,12 @@ class EditCustomersPage extends StatelessWidget {
                     try {
                       if (selectedStatus.value == 'Terverifikasi') {
                         await editCustomersController.verifyUser(customers.id.toString());
+                        Get.back();
+                        dataCustomers.fetchDataCustomer();
                       } if (selectedStatus.value == 'Belum Terverifikasi') {
                         await editCustomersController.unverifyUser(customers.id.toString());
+                        Get.back();
+                        dataCustomers.fetchDataCustomer();
                       }
                       Get.back();
                       dataCustomers.fetchDataCustomer();

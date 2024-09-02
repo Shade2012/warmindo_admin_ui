@@ -140,7 +140,8 @@ class EditToppingController extends GetxController {
 
     if (response.statusCode == 200) {
       print('success');
-      Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+      Get.back();
+      Get.back();
     } else {
       // Handle error
       print('Failed to edit toppings');
