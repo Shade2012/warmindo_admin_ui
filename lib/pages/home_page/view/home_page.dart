@@ -20,12 +20,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final GeneralInformationController generalInfor =Get.put(GeneralInformationController());
+    final GeneralInformationController generalInfor = Get.put(GeneralInformationController());
     final HomeController homeController = Get.put(HomeController());
     final OrderController controller = Get.put(OrderController());
     final ScheduleController statusController = Get.put(ScheduleController());
     final SalesController salesController = Get.put(SalesController());
-    
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55),
@@ -64,9 +64,7 @@ class HomePage extends StatelessWidget {
                     child: Text(
                       'Status Toko : ${() {
                         try {
-                          return statusController.jadwalElement[0].is_open
-                              ? 'Buka'
-                              : 'Tutup';
+                          return statusController.jadwalElement[0].is_open ? 'Buka' : 'Tutup';
                         } catch (e) {
                           return 'Tidak Diketahui';
                         }
@@ -134,30 +132,35 @@ class HomePage extends StatelessWidget {
                     child: Obx(() {
                       final filteredOrders = controller.orderList
                           .where((order) =>
-                              order.status.toLowerCase() !='menunggu pembayaran' &&
-                              order.status.toLowerCase() != 'menunggu batal')
+                              order.status.toLowerCase() != 'menunggu pembayaran' &&
+                              order.status.toLowerCase() != 'menunggu batal' &&
+                              order.status.toLowerCase() != 'batal' &&
+                              order.status.toLowerCase() != 'selesai' &&
+                              order.status.toLowerCase() != 'pesanan siap' &&
+                              order.status.toLowerCase() != 'menunggu pengembalian dana'
+                          )
                           .toList()
                         ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
+                      if (filteredOrders.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'Tidak ada pesanan yang harus diproses',
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
+
                       return ListView.separated(
                         shrinkWrap: true,
                         physics: const AlwaysScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         itemCount: filteredOrders.length.clamp(0, 3),
                         itemBuilder: (context, index) {
-                          if (controller.orderList.isEmpty) {
-                            return Center(
-                              child: Text(
-                                'Tidak ada pesanan',
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          }
                           final order = filteredOrders[index];
-                          final userId =
-                              int.tryParse(order.userId.toString()) ?? 0;
+                          final userId = int.tryParse(order.userId.toString()) ?? 0;
                           final customer = controller.getCustomerById(userId);
-                          print(
-                              'Order ID: ${order.id}, User ID: ${order.userId}, Customer: ${customer?.name}');
+                          print('Order ID: ${order.id}, User ID: ${order.userId}, Customer: ${customer?.name}');
                           return OrderBox(
                             order: order,
                             customerName: customer?.name ?? 'Unknown Customer',

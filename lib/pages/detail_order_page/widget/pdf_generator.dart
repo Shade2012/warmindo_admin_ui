@@ -73,7 +73,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
   }
 
   final adminFee = double.parse(order.adminFee ?? '');
-  final totalPayment = totalPrice + adminFee;
+  final totalPayment = totalPrice;
 
   // Load the logo image
   final ByteData bytes = await rootBundle.load('assets/images/logo.png');
@@ -132,14 +132,14 @@ Future<Uint8List> generateOrderPdf(Order order) async {
                 pw.Text(currencyFormat.format(totalPrice),style: pw.TextStyle(fontSize: 16)),
               ],
             ),
-            if (adminFee > 0)
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Biaya Admin', style: pw.TextStyle(fontSize: 16)),
-                  pw.Text(currencyFormat.format(adminFee),style: pw.TextStyle(fontSize: 16)),
-                ],
-              ),
+            // if (adminFee > 0)
+            //   pw.Row(
+            //     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       pw.Text('Biaya Admin', style: pw.TextStyle(fontSize: 16)),
+            //       pw.Text(currencyFormat.format(adminFee),style: pw.TextStyle(fontSize: 16)),
+            //     ],
+            //   ),
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [

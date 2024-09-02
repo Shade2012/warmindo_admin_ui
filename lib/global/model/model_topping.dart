@@ -75,7 +75,8 @@ class Topping {
         status_topping: json['status_topping'] ?? '',
         menuId: int.tryParse(json['menu_id'].toString()) ?? 0,
         createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
-        updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),     menus: json["menus"] != null
+        updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),    
+        menus: json["menus"] != null
       ? List<MenuTopping>.from(json["menus"].map((x) => MenuTopping.fromJson(x)))
       : [], //
       );

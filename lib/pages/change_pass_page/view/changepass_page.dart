@@ -84,7 +84,7 @@ class ChangePassPage extends StatelessWidget {
                           false.obs,
                           screenWidth,
                         ),
-                        SizedBox(height: screenHeight * 0.3),
+                        SizedBox(height: screenHeight * 0.4),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,

@@ -109,7 +109,8 @@ class EditVariantController extends GetxController {
         print('Varian updated successfully');
         print('Response: ${response.body}');
         isLoading.value = false;
-        Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+        Get.back();
+        Get.back();
       } else {
         isLoading.value = false;
         print('Failed to update varian: ${response.statusCode}');

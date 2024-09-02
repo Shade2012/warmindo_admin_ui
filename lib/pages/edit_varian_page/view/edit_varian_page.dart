@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/global/widget/custom_dropdown.dart';
 import 'package:warmindo_admin_ui/global/widget/textfield.dart';
-import 'package:warmindo_admin_ui/global/widget/up_image_bottomsheet.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/edit_varian_page/controller/edit_varian_controller.dart';
@@ -20,6 +18,7 @@ class EditVarianPage extends StatelessWidget {
   EditVarianPage({required this.varian}) {
     ctrProductName.text = varian.nameMenu;
     selectedCategory.value = varian.secondCategory;
+    print(selectedCategory.value);
     selectedStock.value = varian.stock == '0' ? 'Tidak Tersedia' : 'Tersedia';
   }
 
@@ -27,10 +26,6 @@ class EditVarianPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
-    void getImage(ImageSource source) async {
-      varianController.getImage(source);
-    }
 
     final stockItems = ['Tersedia', 'Tidak Tersedia'];
     final categories = ['Mie Indomie', 'Mie Sedaap', 'Pop Ice', 'Es teh', 'Kapal Api', 'Nutrisari'];
@@ -70,7 +65,7 @@ class EditVarianPage extends StatelessWidget {
             ),
           ),
         ),
-        title: Text('Ubah Varian Produk'),
+        title: Text('Ubah Varian'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -78,45 +73,6 @@ class EditVarianPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Stack(
-                children: [
-                  Obx(() {
-                    return SizedBox(
-                      height: screenHeight * 0.15,
-                      width: screenHeight * 0.15,
-                      child: varianController.selectedImage.value != null
-                          ? Image.file(varianController.selectedImage.value!,
-                              fit: BoxFit.cover)
-                          : Image.network(varian.image, fit: BoxFit.cover),
-                    );
-                  }),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => UploadImage(
-                            onImageCapture: getImage,
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: screenHeight * 0.04,
-                        height: screenHeight * 0.04,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Icon(Icons.camera_alt, size: screenHeight * 0.05),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: screenHeight * 0.02),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +89,7 @@ class EditVarianPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Kategori Produk", style: titleAddProductTextStyle),
+                Text("Kategori", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
                       items: categories,
@@ -165,7 +121,7 @@ class EditVarianPage extends StatelessWidget {
                     )),
               ],
             ),
-            SizedBox(height: screenHeight * 0.02),
+            SizedBox(height: screenHeight * 0.024),
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -187,7 +143,6 @@ class EditVarianPage extends StatelessWidget {
                     nameVarian: ctrProductName.text,
                     category: selectedCategory.value,
                     stock: selectedStock.value == 'Tersedia' ? 20 : 0,
-                    image: varianController.selectedImage.value,
                   );
                 },
                 child: Text('Ubah Produk'),

@@ -55,8 +55,8 @@ class AddProductController extends GetxController {
           isLoading.value = false;
           print('Product added successfully');
           print('Response: ${response.body}');
-
-          Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+          Get.back();
+          Get.back();
         }
         else {
           // Error occurred

@@ -63,10 +63,10 @@ class OrderBox extends StatelessWidget {
       totalPrice += (itemPrice * (detail.quantity)) + toppingPrice;
     }
 
-    double totalPriceWithAdminFee = totalPrice + (order.adminFee != null ? double.tryParse(order.adminFee ?? '') ?? 0.0 : 0.0);
+    // double totalPriceWithAdminFee = totalPrice + (order.adminFee != null ? double.tryParse(order.adminFee ?? '') ?? 0.0 : 0.0);
 
-    String formattedPrice = totalPriceWithAdminFee.toStringAsFixed(
-      totalPriceWithAdminFee.truncateToDouble() == totalPriceWithAdminFee ? 0 : 2,
+    String formattedPrice = totalPrice.toStringAsFixed(
+      totalPrice.truncateToDouble() == totalPrice ? 0 : 2,
     );
 
     return GestureDetector(
