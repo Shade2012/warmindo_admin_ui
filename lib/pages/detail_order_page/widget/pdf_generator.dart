@@ -64,7 +64,7 @@ Future<Uint8List> generateOrderPdf(Order order) async {
           mainAxisAlignment: pw.MainAxisAlignment.start,
           children: [
             pw.Text(
-                '- Topping: ${topping.nameTopping} (${currencyFormat.format(topping.price * orderDetail.quantity)})',
+                '- Topping: ${topping.nameTopping} (${currencyFormat.format(topping.price * orderDetail.quantity)} || ${orderDetail.quantity}x)',
                 style: pw.TextStyle(fontSize: 14)),
           ],
         ));

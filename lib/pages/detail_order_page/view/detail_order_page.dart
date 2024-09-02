@@ -190,7 +190,7 @@ class DetailOrderPage extends StatelessWidget {
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      '- ${topping.nameTopping} (${currencyFormat.format(double.parse(topping.price.toString()))})',
+                                                      '- ${topping.nameTopping} (${currencyFormat.format(double.parse(topping.price.toString()))} || ${detail.quantity}x) ',
                                                       style: receiptcontentTextStyle
                                                           .copyWith(
                                                               fontStyle:
