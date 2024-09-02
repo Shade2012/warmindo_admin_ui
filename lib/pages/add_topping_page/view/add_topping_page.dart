@@ -24,7 +24,10 @@ class AddToppingPage extends StatelessWidget {
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
-            onTap: () => Get.back(),
+            onTap: () {
+              Get.back();
+              Get.back();
+            },
             child: Container(
               width: 32,
               height: 32,

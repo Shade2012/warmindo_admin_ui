@@ -235,29 +235,29 @@ class ProductController extends GetxController {
   }
 
   // Future<void> getSnackList() async {
-  //   try {
-  //     final response = await http.get(Uri.parse(FoodApi.getSnackList));
-  //     if (response.statusCode == 200) {
-  //       final responseData = json.decode(response.body);
-  //       if (responseData is Map<String, dynamic> &&
-  //           responseData['data'] is Map<String, dynamic> &&
-  //           responseData['data']['menu'] is List) {
-  //         final List<dynamic> snackListData = responseData['data']['menu'];
-  //         snackList.value =
-  //             snackListData.map((json) => model.Menu.fromJson(json)).toList();
-  //         filterProducts();
-  //       } else {
-  //         print('Data yang diterima tidak sesuai format yang diharapkan.');
-  //       }
-  //     } else {
-  //       print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
-  //     }
-  //   } catch (error) {
-  //     print("Error while fetching data: $error");
-  //   } finally {
-  //     isLoading.value = false;
-  //     print('Selesai fetching data');
-  //   }
+    // try {
+      // final response = await http.get(Uri.parse(FoodApi.getSnackList));
+      // if (response.statusCode == 200) {
+        // final responseData = json.decode(response.body);
+        // if (responseData is Map<String, dynamic> &&
+            // responseData['data'] is Map<String, dynamic> &&
+            // responseData['data']['menu'] is List) {
+          // final List<dynamic> snackListData = responseData['data']['menu'];
+          // snackList.value =
+              // snackListData.map((json) => model.Menu.fromJson(json)).toList();
+          // filterProducts();
+        // } else {
+          // print('Data yang diterima tidak sesuai format yang diharapkan.');
+        // }
+      // } else {
+        // print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
+      // }
+    // } catch (error) {
+      // print("Error while fetching data: $error");
+    // } finally {
+      // isLoading.value = false;
+      // print('Selesai fetching data');
+    // }
   // }
 
   Future<void> getToppingList() async {

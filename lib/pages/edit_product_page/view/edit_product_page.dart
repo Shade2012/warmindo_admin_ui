@@ -51,7 +51,10 @@ class EditProductPage extends StatelessWidget {
             leading: Padding(
               padding: EdgeInsets.all(screenHeight * 0.01),
               child: GestureDetector(
-                onTap: () => Get.offNamed(Routes.BOTTOM_NAVIGATION),
+                onTap: () {
+                  Get.back();
+                  Get.back();
+                },
                 child: Container(
                   width: screenHeight * 0.08,
                   height: screenHeight * 0.08,
@@ -176,7 +179,7 @@ class EditProductPage extends StatelessWidget {
                     Text("Kategori Produk", style: titleAddProductTextStyle),
                     SizedBox(height: screenHeight * 0.01),
                     Obx(() => CustomDropdown(
-                          items: ['Makanan', 'Minuman', 'Snack'],
+                          items: ['Makanan', 'Minuman'],
                           value: selectedCategory.value.isNotEmpty
                               ? selectedCategory.value
                               : null,

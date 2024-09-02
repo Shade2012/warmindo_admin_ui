@@ -11,7 +11,7 @@ class CategoryWidget extends StatelessWidget {
     required this.selectedCategory,
   }) : super(key: key);
 
-  final List<String> categories = ['Semua', 'Makanan', 'Minuman', 'Topping', 'Varian', 'Tidak Aktif'];
+  final List<String> categories = ['Semua','Makanan','Minuman','Topping','Varian','Tidak Aktif'];
 
   @override
   Widget build(BuildContext context) {

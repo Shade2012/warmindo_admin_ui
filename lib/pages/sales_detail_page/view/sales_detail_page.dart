@@ -43,9 +43,9 @@ class SalesDetailPage extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.all(screenWidth * 0.02),
                               child: AnalyticBox(
-                                totalSales:
-                                    controller.revenueChart.value.overalltotal ??
-                                        0,
+                                totalSales: controller
+                                        .revenueChart.value.overalltotal ??
+                                    0,
                                 titleAnalyticBox: 'Total Penjualan',
                                 imagePath: IconThemes.iconCoin,
                                 onTap: () {
@@ -162,7 +162,11 @@ class SalesDetailPage extends StatelessWidget {
                                               ? revenueData[value.toInt()].date
                                               : salesData[value.toInt()].date;
 
-                                          final formattedDate = _getFormattedDate(date.toString(),controller.selectedInterval.value);
+                                          final formattedDate =
+                                              _getFormattedDate(
+                                                  date.toString(),
+                                                  controller
+                                                      .selectedInterval.value);
                                           return Padding(
                                             padding:
                                                 const EdgeInsets.only(top: 8.0),
@@ -180,21 +184,61 @@ class SalesDetailPage extends StatelessWidget {
                                       reservedSize: 22,
                                     ),
                                   ),
+                                  rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      interval: controller.isShowingRevenueChart.value? 20000: 1, 
+                                      getTitlesWidget: (value, meta) {
+                                        if (controller
+                                            .isShowingRevenueChart.value) {
+                                          // Revenue chart: format with K (thousands)
+                                          return SideTitleWidget(
+                                            axisSide: meta.axisSide,
+                                            space: 10,
+                                            child: Text(
+                                              '${(value / 1000).toStringAsFixed(0)}K',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12.5,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          );
+                                        } else {
+                                          // Sales chart: show raw numbers
+                                          return Text(
+                                            value.toInt().toString(),
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12.5,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      reservedSize: 50, // Space reserved for the titles
+                                    ),
+                                  ),
                                   leftTitles: AxisTitles(
                                     sideTitles: SideTitles(
                                       showTitles: false,
-                                      interval: 10000,
                                       getTitlesWidget: (value, meta) {
-                                        return Text(
-                                          leftTitle,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10,
+                                        return SideTitleWidget(
+                                          axisSide: meta.axisSide,
+                                          space: 8,
+                                          child: Text(
+                                            '${leftTitle}',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10,
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
                                         );
                                       },
-                                      reservedSize: 50,
+                                      reservedSize: 60,
                                     ),
                                   ),
                                 ),

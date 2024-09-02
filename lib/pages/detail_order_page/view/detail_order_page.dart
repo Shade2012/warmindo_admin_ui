@@ -149,16 +149,18 @@ class DetailOrderPage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(detail.menu.nameMenu,
-                                      style: receiptcontentTextStyle),
-                                  SizedBox(width: 9),
-                                  Text(detail.quantity.toString(),
-                                      style: receiptcontentTextStyle),
                                   Text(
-                                      currencyFormat.format(
-                                          double.parse(detail.menu.price) *
-                                              detail.quantity),
-                                      style: receiptcontentTextStyle),
+                                    '${detail.menu.nameMenu}',
+                                    style: receiptcontentTextStyle,
+                                  ),
+
+                                  // Text(detail.quantity.toString(),
+                                  // style: receiptcontentTextStyle),
+
+                                  Text(
+                                    '${currencyFormat.format(double.parse(detail.menu.price) * detail.quantity)} (${detail.quantity}x)',
+                                    style: receiptcontentTextStyle,
+                                  ),
                                 ],
                               ),
                               if (detail.variant != null)
@@ -190,7 +192,7 @@ class DetailOrderPage extends StatelessWidget {
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      '- ${topping.nameTopping} (${currencyFormat.format(double.parse(topping.price.toString()))})',
+                                                      '- ${topping.nameTopping} (${currencyFormat.format(double.parse(topping.price.toString()))} || ${detail.quantity}x) ',
                                                       style: receiptcontentTextStyle
                                                           .copyWith(
                                                               fontStyle:
@@ -296,7 +298,8 @@ class DetailOrderPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Metode:', style: receiptcontentTextStyle),
-                      Text(order.cancelMethod ?? '-',style: receiptcontentTextStyle),
+                      Text(order.cancelMethod ?? '-',
+                          style: receiptcontentTextStyle),
                     ],
                   ),
                 ],

@@ -34,7 +34,10 @@ class EditToppingPage extends StatelessWidget {
             leading: Padding(
               padding: EdgeInsets.all(screenHeight * 0.01),
               child: GestureDetector(
-                onTap: () => Get.offNamed(Routes.BOTTOM_NAVIGATION),
+                onTap: () {
+                  Get.back();
+                  Get.back();
+                },
                 child: Container(
                   width: screenHeight * 0.08,
                   height: screenHeight * 0.08,
