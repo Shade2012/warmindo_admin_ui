@@ -110,7 +110,7 @@ class ChangePassPage extends StatelessWidget {
                                   backgroundColor: Colors.green,
                                   colorText: Colors.white,
                                 );
-                                Get.back();
+                                Get.back(closeOverlays: true); 
                               }
                             } else {
                               Get.snackbar(

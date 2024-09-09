@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
-import 'package:warmindo_admin_ui/global/model/model_product_response.dart'
-    as model;
+import 'package:warmindo_admin_ui/global/model/model_product_response.dart' as model;
 import 'package:warmindo_admin_ui/global/model/model_topping.dart';
 import 'package:warmindo_admin_ui/global/model/model_varian.dart';
 import 'package:warmindo_admin_ui/global/services/intenet_service.dart';
@@ -158,44 +157,6 @@ class ProductController extends GetxController {
     }
   }
 
-  // Future<void> getAllProductList() async {
-  //   try {
-  //     final response = await http.get(Uri.parse(FoodApi.getallProductList));
-  //     if (response.statusCode == 200) {
-  //       final responseData = json.decode(response.body);
-  //       if (responseData != null && responseData['menu'] is List) {
-  //         final List<dynamic> allProductListData = responseData['menu'];
-  //         allProductList.value = allProductListData
-  //             .map((json) => model.Menu.fromJson(json))
-  //             .toList();
-
-  //         for (var product in allProductList) {
-  //           if (product.stock == '0') {
-  //             Get.snackbar(
-  //               'Stok ${product.nameMenu} kosong',
-  //               'Harap cek lagi stok produk anda!',
-  //               snackPosition: SnackPosition.TOP,
-  //               backgroundColor: Colors.redAccent,
-  //               colorText: Colors.white,
-  //             );
-  //           }
-  //         }
-
-  //         filterProducts();
-  //       } else {
-  //         print('Data yang diterima tidak sesuai format yang diharapkan.');
-  //       }
-  //     } else {
-  //       print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
-  //     }
-  //   } catch (error) {
-  //     print("Error while fetching data: $error");
-  //   } finally {
-  //     isLoading.value = false;
-  //     print('Selesai fetching data');
-  //   }
-  // }
-
   Future<void> getFoodList() async {
     try {
       final response = await http.get(Uri.parse(FoodApi.getFoodList));
@@ -245,32 +206,6 @@ class ProductController extends GetxController {
       print('Selesai fetching data');
     }
   }
-
-  // Future<void> getSnackList() async {
-  // try {
-  // final response = await http.get(Uri.parse(FoodApi.getSnackList));
-  // if (response.statusCode == 200) {
-  // final responseData = json.decode(response.body);
-  // if (responseData is Map<String, dynamic> &&
-  // responseData['data'] is Map<String, dynamic> &&
-  // responseData['data']['menu'] is List) {
-  // final List<dynamic> snackListData = responseData['data']['menu'];
-  // snackList.value =
-  // snackListData.map((json) => model.Menu.fromJson(json)).toList();
-  // filterProducts();
-  // } else {
-  // print('Data yang diterima tidak sesuai format yang diharapkan.');
-  // }
-  // } else {
-  // print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
-  // }
-  // } catch (error) {
-  // print("Error while fetching data: $error");
-  // } finally {
-  // isLoading.value = false;
-  // print('Selesai fetching data');
-  // }
-  // }
 
   Future<void> getToppingList() async {
     isLoading.value = true;
@@ -325,8 +260,9 @@ class ProductController extends GetxController {
     print('Filtering for category: ${selectedCategory.value}');
 
     if (selectedCategory.value == 'Semua') {
-      var allProducts =
-          allProductList.where((product) => product.status != '0').toList();
+      var allProducts = allProductList
+          .where((product) => product.status != '0')
+          .toList();
       var toppings = toppingList
           .where((topping) => topping.status_topping != '0')
           .map((topping) => model.Menu(
@@ -363,10 +299,15 @@ class ProductController extends GetxController {
               ))
           .toList();
 
+      // Menggabungkan dan mengurutkan produk berdasarkan createdAt dan updatedAt
       filteredProductList.assignAll([...allProducts, ...toppings, ...variants]);
 
-      // Sort filtered products by creation date, most recent first
-      filteredProductList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      // Sort filtered products by either createdAt or updatedAt, most recent first
+      filteredProductList.sort((a, b) {
+        DateTime lastModifiedA = a.updatedAt ?? a.createdAt;
+        DateTime lastModifiedB = b.updatedAt ?? b.createdAt;
+        return lastModifiedB.compareTo(lastModifiedA); // Sort descending order
+      });
     } else if (selectedCategory.value == 'Makanan') {
       filteredProductList.assignAll(
           foodList.where((product) => product.status != '0').toList());
