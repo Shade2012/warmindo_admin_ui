@@ -54,11 +54,11 @@ class BottomSheetShop extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Beroperasi Normal',
+                            'Buka',
                             style: contentBoldBtsShopTextStyle,
                           ),
                           Text(
-                            'Jam Operasional 24 Jam',
+                            'Toko Buka',
                             style: contentSmallBtsShopTextStyle,
                           ),
                         ],
@@ -155,7 +155,7 @@ class BottomSheetShop extends StatelessWidget {
                             style: contentBoldBtsShopTextStyle,
                           ),
                           Text(
-                            'Tanpa durasi. Resto ditutup sampai dibuka kembali.',
+                            'Toko Tutup',
                             style: contentSmallBtsShopTextStyle,
                           ),
                         ],
@@ -218,11 +218,12 @@ class BottomSheetShop extends StatelessWidget {
                   Get.toNamed(Routes.SCHEDULE_PAGE);
                 } else {
                   if(statusController.selectedStatus.value == 'Beroperasi Normal'){
-                    await statusController.updateStatusSchedule(
-                      start_time: '00:00:00',
-                      temporaryClosureDuration: '0',
-                      end_time: '23:59:59',
-                    );
+                    // await statusController.updateStatusSchedule(
+                    //   start_time: '00:00:00',
+                    //   temporaryClosureDuration: '0',
+                    //   end_time: '23:59:59',
+                    // );
+                    await statusController.openStore();
                   }else if(statusController.selectedStatus.value == 'Tutup Sementara'){
                     if(statusController.selectedChip.value == '30 menit'){
                       await statusController.updateStatusSchedule(
@@ -240,9 +241,10 @@ class BottomSheetShop extends StatelessWidget {
                       );
                     }
                   }else if(statusController.selectedStatus.value == 'Tutup'){
-                    await statusController.updateStatusSchedule(
-                        end_time: '00:00:00'
-                    );
+                    // await statusController.updateStatusSchedule(
+                    //     end_time: '00:00:00'
+                    // );
+                    await statusController.closeStore();
                   }
                   print('Selected status: ${statusController.selectedStatus.value}');
                   print('Selected chip: ${statusController.selectedChip.value}');

@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
+import 'package:warmindo_admin_ui/pages/order_page/view/order_page.dart';
 
-class AnalyticBox extends StatelessWidget {
-  const AnalyticBox({
+class OrderFilterBox extends StatelessWidget {
+  const OrderFilterBox({
     Key? key,
-    required this.totalSales,
-    required this.titleAnalyticBox,
+    required this.totalOrders,
+    required this.titleFilterBox,
     required this.imagePath,
-    this.onTap,
+    required this.filterStatus, // Tambahkan parameter untuk filter status
   }) : super(key: key);
 
-  final int totalSales;
-  final String titleAnalyticBox;
+  final int totalOrders;
+  final String titleFilterBox;
   final String imagePath;
-  final Function()? onTap;
+  final String filterStatus; // Status filter
 
   @override
   Widget build(BuildContext context) {
-    String formattedTotalSales = _formatTotalSales(totalSales);
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Get.to(() => OrderPage(), arguments: filterStatus); // Kirim filter status ke halaman OrderPage
+      },
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
@@ -40,7 +42,7 @@ class AnalyticBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '$titleAnalyticBox',
+              titleFilterBox,
               style: headerAnalyticBoxTextStyle,
             ),
             const SizedBox(height: 8.0),
@@ -48,7 +50,7 @@ class AnalyticBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  formattedTotalSales,
+                  totalOrders.toString(),
                   style: valueAnalyticBoxTextStyle,
                 ),
                 SizedBox(width: 10.0),
@@ -63,16 +65,5 @@ class AnalyticBox extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _formatTotalSales(int totalSales) {
-    if (totalSales >= 1000000) {
-      double formattedValue = totalSales / 1000000;
-      String formattedString = formattedValue.toString();
-      formattedString = formattedString.replaceAll(RegExp(r'\.0+$'), '');
-      return '$formattedString M';
-    } else {
-      return NumberFormat.compact().format(totalSales);
-    }
   }
 }

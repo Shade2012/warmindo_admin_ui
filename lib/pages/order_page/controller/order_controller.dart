@@ -50,7 +50,6 @@ class OrderController extends GetxController {
           menuList.value =
               allProductListData.map((json) => Menu.fromJson(json)).toList();
           print('Fetched Menu List: ${menuList.length}');
-          // isLoading.value = false;
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
         }
@@ -75,7 +74,6 @@ class OrderController extends GetxController {
               .map((json) => CustomerData.fromJson(json))
               .toList();
           print('Fetched Customer List: ${customersList.length}');
-          // isLoading.value = false;
         } else {
           print('Data yang diterima tidak sesuai format yang diharapkan.');
         }
@@ -118,5 +116,57 @@ class OrderController extends GetxController {
 
   Menu? getMenuById(int id) {
     return menuList.firstWhereOrNull((menu) => menu.id == id);
+  }
+
+  List<Order> getFilteredOrders(
+      List<Order> orders, String? selectedStatus, String searchTerm) {
+    // Filter orders based on status
+    orders = getFilteredOrdersByStatus(orders, selectedStatus);
+
+    // Filter out orders with specific statuses
+    orders = orders.where((order) {
+      final status = order.status.toLowerCase();
+      return status != 'menunggu pembayaran' && status != 'menunggu batal';
+    }).toList();
+
+    // Sort orders by status priority
+    orders.sort((a, b) {
+      return compareOrderStatus(a.status?.toLowerCase(), b.status?.toLowerCase());
+    });
+
+    // Further filter based on search term
+    orders = orders.where((order) {
+      final customer = getCustomerById(int.tryParse(order.userId) ?? 0);
+      return customer?.name.toLowerCase().contains(searchTerm.toLowerCase()) ?? false;
+    }).toList();
+
+    return orders;
+  }
+
+  List<Order> getFilteredOrdersByStatus(
+      List<Order> orders, String? selectedStatus) {
+    if (selectedStatus == null || selectedStatus == 'Semua') {
+      return orders;
+    } else {
+      return orders.where((order) => order.status.toLowerCase() == selectedStatus.toLowerCase()).toList();
+    }
+  }
+
+  int compareOrderStatus(String? statusA, String? statusB) {
+    final statusOrder = {
+      'sedang diproses': 1,
+      'selesai': 2,
+      'batal': 3,
+      'menunggu pengembalian dana': 4,
+    };
+
+    final priorityA = statusOrder[statusA] ?? 5;
+    final priorityB = statusOrder[statusB] ?? 5;
+
+    return priorityA.compareTo(priorityB);
+  }
+
+   int getOrderCountByStatus(String status) {
+    return orderList.where((order) => order.status.toLowerCase() == status.toLowerCase()).length;
   }
 }

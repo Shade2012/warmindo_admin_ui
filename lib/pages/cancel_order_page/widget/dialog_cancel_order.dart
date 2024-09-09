@@ -5,7 +5,7 @@ import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 class DialogCancelOrder extends StatelessWidget {
   final String title;
   final String content;
-  final String content2;
+  String? content2;
   final String cancelText;
   final String confirmText;
   final Function onCancelPressed;
@@ -19,7 +19,7 @@ class DialogCancelOrder extends StatelessWidget {
   DialogCancelOrder({
     required this.title,
     required this.content,
-    required this.content2,
+    this.content2,
     required this.cancelText,
     required this.confirmText,
     required this.onCancelPressed,
@@ -99,11 +99,11 @@ class DialogCancelOrder extends StatelessWidget {
                       content,
                       style: contentDialogButtonTextStyle,
                     ),
-                    SizedBox(height: height * 0.01),
-                    Text(
-                      content2,
-                      style: contentDialogButtonTextStyle,
-                    ),
+                    if (content2 != null)
+                      Text(
+                        content2!,
+                        style: contentDialogButtonTextStyle,
+                      ),
                   ],
                 ),
               ),

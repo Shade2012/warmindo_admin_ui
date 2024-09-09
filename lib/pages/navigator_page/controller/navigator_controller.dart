@@ -11,6 +11,10 @@ class NavigatorController extends GetxController {
     currentIndex.value = 0; //index untuk homepage
   }
 
+  void goToProductPage() {
+    currentIndex.value = 1; // index untuk productpage
+  }
+
   void goToCartPage() {
     currentIndex.value = 2; // index untuk cartpage
   }

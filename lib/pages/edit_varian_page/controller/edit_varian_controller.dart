@@ -4,12 +4,13 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 
 class EditVariantController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
   RxString error = ''.obs;
   RxBool isLoading = false.obs;
+  final ProductController productController = Get.put(ProductController());
 
   Future<void> updateStatusVariant({required String id, required bool statusVariant}) async {
     if (id == '0' || id.isEmpty) {
@@ -111,6 +112,7 @@ class EditVariantController extends GetxController {
         isLoading.value = false;
         Get.back();
         Get.back();
+        productController.fetchAllData();
       } else {
         isLoading.value = false;
         print('Failed to update varian: ${response.statusCode}');

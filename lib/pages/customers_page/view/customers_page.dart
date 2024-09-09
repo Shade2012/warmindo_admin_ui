@@ -12,7 +12,7 @@ class CustomersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomersController controller = Get.put(CustomersController());
+    final CustomersController controller = Get.put(CustomersController()); // Initialize the controller
     final TextEditingController searchController = TextEditingController();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -42,7 +42,9 @@ class CustomersPage extends StatelessWidget {
             );
           } else {
             return RefreshIndicator(
-              onRefresh: controller.fetchDataCustomer,
+              onRefresh: () async {
+                await controller.fetchDataCustomer();
+              },
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(

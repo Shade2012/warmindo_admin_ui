@@ -80,7 +80,7 @@ class EditProfilPage extends StatelessWidget {
                             backgroundImage: Image.network(
                               controller.image.value.isEmpty
                                   ? Images.userImage
-                                  : 'https://warmindo.pradiptaahmad.tech/image/' +
+                                  : 'https://warmindoanggrekmuria.my.id/image/' +
                                       controller.image.value,
                             ).image,
                             child: Align(

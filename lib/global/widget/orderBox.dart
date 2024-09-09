@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/model/model_order.dart';
+import 'package:warmindo_admin_ui/global/widget/reusable_dialog.dart';
 import 'package:warmindo_admin_ui/pages/cancel_order_page/controller/cancel_order_controller.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/view/detail_order_page.dart';
 import 'package:warmindo_admin_ui/pages/cancel_order_page/widget/dialog_cancel_order.dart';
@@ -9,7 +10,9 @@ import 'package:warmindo_admin_ui/global/themes/image_themes.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/edit_order_page/controller/edit_order_controller.dart';
 import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart';
+import 'package:warmindo_admin_ui/pages/order_page/widget/bts_edit_status_order.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
+import 'package:intl/intl.dart';
 
 class OrderBox extends StatelessWidget {
   OrderBox({
@@ -23,6 +26,14 @@ class OrderBox extends StatelessWidget {
   final OrderController controller = Get.find<OrderController>();
   final EditOrderController editOrderController = Get.put(EditOrderController());
   final CancelOrderController cancelOrderController = Get.put(CancelOrderController());
+
+  // Admin fee as a double
+  
+
+  String _formatPrice(double price) {
+    final formatter = NumberFormat('#,##0', 'id_ID');
+    return formatter.format(price);
+  }
 
   Color _getLabelColor(String? status) {
     switch (status?.toLowerCase()) {
@@ -38,6 +49,8 @@ class OrderBox extends StatelessWidget {
         return ColorResources.labelcancel;
       case 'menunggu pengembalian dana':
         return Colors.grey[600]!;
+      case 'konfirmasi pesanan': 
+        return ColorResources.primaryColorDark; 
       default:
         return Colors.black;
     }
@@ -49,7 +62,7 @@ class OrderBox extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final labelColor = _getLabelColor(order.status);
     final borderColor = _getLabelColor(order.status);
-
+    final double adminFee = double.tryParse(order.adminFee ?? '0') ?? 0;
     final orderDetails = order.orderDetails;
 
     double totalPrice = 0;
@@ -60,14 +73,17 @@ class OrderBox extends StatelessWidget {
         return sum + (double.tryParse(topping.price.toString()) ?? 0.0) * (detail.quantity);
       });
 
-      totalPrice += (itemPrice * (detail.quantity)) + toppingPrice;
+      totalPrice += (itemPrice * detail.quantity) + toppingPrice;
     }
 
-    // double totalPriceWithAdminFee = totalPrice + (order.adminFee != null ? double.tryParse(order.adminFee ?? '') ?? 0.0 : 0.0);
+    String formattedPrice;
+    double finalPrice = totalPrice;
 
-    String formattedPrice = totalPrice.toStringAsFixed(
-      totalPrice.truncateToDouble() == totalPrice ? 0 : 2,
-    );
+    if (order.status.toLowerCase() == 'batal' || order.status.toLowerCase() == 'menunggu pengembalian dana') {
+      finalPrice -= adminFee;  // Deduct admin fee for "batal" or "menunggu pengembalian dana"
+    }
+
+    formattedPrice = _formatPrice(finalPrice);
 
     return GestureDetector(
       onTap: () {
@@ -78,7 +94,6 @@ class OrderBox extends StatelessWidget {
               return DialogCancelOrder(
                 title: 'Alasan: ${order.reasonCancel}',
                 content: 'Jika Anda membatalkan pesanan ini, anda harus mengembalikan uang pelanggan!',
-                content2: 'Metode Pembatalan : ${order.cancelMethod}',
                 cancelText: 'Tolak',
                 confirmText: 'Terima',
                 dialogImage: Image.asset(Images.cancelDialog),
@@ -117,87 +132,170 @@ class OrderBox extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('#ID ${order.id}', style: idOrderBoxTextStyle),
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: labelColor,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(order.status, style: labelOrderBoxTextStyle),
-                ),
-              ],
-            ),
-            SizedBox(height: 8.0),
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: orderDetails.length,
-                itemBuilder: (context, index) {
-                  final detail = orderDetails[index];
-                  double price = double.tryParse(detail.menu.price) ?? 0.0;
-
-                  double toppingPrice = detail.toppings!.fold(0.0, (sum, topping) {
-                    return sum + (double.tryParse(topping.price.toString()) ?? 0.0) * (detail.quantity);
-                  });
-
-                  double itemTotalPrice = (price * (detail.quantity)) + toppingPrice;
-                  String formattedItemPrice = itemTotalPrice.toStringAsFixed(
-                    itemTotalPrice.truncateToDouble() == itemTotalPrice ? 0 : 2,
-                  );
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.DETAIL_ORDER_PAGE, arguments: order);
-                          },
-                          child: Image.network(
-                            detail.menu.image,
-                            width: 55.0,
-                            height: 55.0,
-                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('#ID ${order.id}', style: idOrderBoxTextStyle),
+                      Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: labelColor,
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
-                        SizedBox(width: 10.0),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.DETAIL_ORDER_PAGE, arguments: order);
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Text(order.status, style: labelOrderBoxTextStyle),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: orderDetails.length,
+                      itemBuilder: (context, index) {
+                        final detail = orderDetails[index];
+                        double price = double.tryParse(detail.menu.price) ?? 0.0;
+
+                        double toppingPrice = detail.toppings!.fold(0.0, (sum, topping) {
+                          return sum + (double.tryParse(topping.price.toString()) ?? 0.0) * (detail.quantity);
+                        });
+
+                        double itemTotalPrice = (price * detail.quantity) + toppingPrice;
+                        String formattedItemPrice = _formatPrice(itemTotalPrice);
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(detail.menu.nameMenu, style: titleMenuOrderTextStyle),
-                              SizedBox(height: 4.0),
-                              Text('Rp $formattedItemPrice', style: priceMenuOrderTextStyle),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.DETAIL_ORDER_PAGE, arguments: order);
+                                },
+                                child: Image.network(
+                                  detail.menu.image,
+                                  width: 55.0,
+                                  height: 55.0,
+                                ),
+                              ),
+                              SizedBox(width: 10.0),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.DETAIL_ORDER_PAGE, arguments: order);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(detail.menu.nameMenu, style: titleMenuOrderTextStyle),
+                                    SizedBox(height: 4.0),
+                                    Text('Rp $formattedItemPrice', style: priceMenuOrderTextStyle),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      Text(
+                        customerName,
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Spacer(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          if (order.status.toLowerCase() == 'batal' || order.status.toLowerCase() == 'menunggu pengembalian dana')
+                            // Text(
+                            //   'Biaya Admin: Rp ${_formatPrice(adminFee)}',
+                            //   style: priceMenuOrderTextStyle,
+                            // ),
+                          Text(
+                            'Rp $formattedPrice',
+                            style: viewAllTextStyle2,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 8.0),
-            Row(
+            SizedBox(width: screenWidth * 0.023),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  customerName,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Spacer(),
-                Text(
-                  'Rp $formattedPrice',
-                  style: viewAllTextStyle2,
-                ),
+                if (order.status.toLowerCase() == 'konfirmasi pesanan') // Check for "Konfirmasi Pesanan" status
+                  IconButton(
+                    icon: Icon(Icons.check),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ReusableDialog(
+                            title: "Konfirmasi Pesanan",
+                            content: "Apakah Kamu yakin ingin mengkonfirmasi pesanan ini?",
+                            cancelText: "Tidak",
+                            confirmText: "Iya",
+                            onCancelPressed: () {
+                              Get.back();
+                            },
+                            onConfirmPressed: () {
+                              cancelOrderController.rejectCancel(order.id);
+                              Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+                            },
+                            cancelButtonColor: ColorResources.primaryColorLight,
+                            confirmButtonColor: ColorResources.buttonadd,
+                            dialogImage: Image.asset(Images.askDialog),
+                          );
+                        },
+                      );
+                    },
+                  )
+                else
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      showEditOrderBottomSheet(context, order);
+                    },
+                  ),
+                SizedBox(height: screenHeight * 0.02),
+                // Hanya tampilkan tombol Cancel jika status order bukan "batal" dan "menunggu pengembalian dana"
+                if (order.status.toLowerCase() != 'batal' && order.status.toLowerCase() != 'menunggu pengembalian dana')
+                  IconButton(
+                    icon: Icon(Icons.cancel),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ReusableDialog(
+                            title: "Konfirmasi",
+                            content: "Apakah Kamu yakin ingin membatalkan pesanan ini?",
+                            cancelText: "Tidak",
+                            confirmText: "Iya",
+                            onCancelPressed: () {
+                              Get.back();
+                            },
+                            onConfirmPressed: () {
+                              editOrderController.updateCancelOrder(order.id);
+                              Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+                            },
+                            cancelButtonColor: ColorResources.primaryColorLight,
+                            confirmButtonColor: ColorResources.buttondelete,
+                            dialogImage: Image.asset(Images.askDialog),
+                          );
+                        },
+                      );
+                    },
+                  ),
               ],
             ),
           ],

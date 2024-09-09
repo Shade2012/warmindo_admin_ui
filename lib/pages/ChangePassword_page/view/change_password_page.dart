@@ -7,7 +7,6 @@ import 'package:warmindo_admin_ui/pages/change_pass_page/widget/typePassword.dar
 class ForgotPass extends StatelessWidget {
   final ForgotPassController controller = Get.put(ForgotPassController());
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmNewPasswordController = TextEditingController();
 

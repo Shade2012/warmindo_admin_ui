@@ -34,6 +34,7 @@ class Order {
     this.reason,
     this.paymentMethod,
   });
+
 }
 
 List<Order> orderList = [

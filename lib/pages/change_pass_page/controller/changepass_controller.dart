@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:http/http.dart' as http;
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 class ChangePassController extends GetxController {
   RxBool isLoading = false.obs;
@@ -16,7 +15,7 @@ class ChangePassController extends GetxController {
     super.onInit();
   }
 
-  Future<void> changePassword({
+  Future<bool> changePassword({
     required String password,
     required String current_password,
     required String password_confirmation,
@@ -34,7 +33,7 @@ class ChangePassController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
-      return;
+      return false;
     }
 
     try {
@@ -56,19 +55,24 @@ class ChangePassController extends GetxController {
       final responseData = jsonDecode(response.body);
       isLoading.value = false;
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         Get.snackbar(
           'Berhasil',
           'Password berhasil diubah',
           snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
         );
-        logOut();
+        return true;
       } else {
         Get.snackbar(
           'Gagal',
           responseData['message'] ?? 'Password Gagal Diubah',
           snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
         );
+        return false;
       }
     } catch (e) {
       isLoading.value = false;
@@ -79,16 +83,9 @@ class ChangePassController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+      return false;
     } finally {
       client.close();
     }
-  }
-
-  void logOut() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('token');
-    prefs.remove('email');
-    prefs.remove('password');
-    Get.offAllNamed(Routes.SPLASH_PAGE);
   }
 }

@@ -1,16 +1,16 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
-import '../../../routes/AppPages.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 
 class EditProductController extends GetxController {
   Rx<File> selectedImage = Rx<File>(File(''));
   RxString error = ''.obs;
   RxBool isLoading = false.obs;
+  final ProductController productController = Get.put(ProductController());
 
   Future<void> updateStatusMenu({required String id, required bool statusMenu}) async {
     isLoading.value = true;
@@ -87,6 +87,7 @@ class EditProductController extends GetxController {
         print('Response: ${response.body}');
         Get.back();
         Get.back();
+        productController.fetchAllData();
       } else {
         // Error occurred
         isLoading.value = false;

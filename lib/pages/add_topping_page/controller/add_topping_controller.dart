@@ -1,16 +1,15 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:http/http.dart' as http;
-import 'package:warmindo_admin_ui/global/model/model_topping.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
-
 import '../widget/menu_selected_widget.dart';
 
 class AddToppingController extends GetxController {
   RxBool isLoading = false.obs;
+  final ProductController productController = Get.put(ProductController());
 
   Future<void> addToppings({
     required String nameTopping,
@@ -76,6 +75,7 @@ class AddToppingController extends GetxController {
       print('success');
       Get.back();
       Get.back();
+      productController.fetchAllData();
     } else {
       // Handle error
       print('Failed to add toppings');

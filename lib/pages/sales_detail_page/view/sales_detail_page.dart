@@ -194,13 +194,13 @@ class SalesDetailPage extends StatelessWidget {
                                           // Revenue chart: format with K (thousands)
                                           return SideTitleWidget(
                                             axisSide: meta.axisSide,
-                                            space: 10,
+                                            space: 8,
                                             child: Text(
                                               '${(value / 1000).toStringAsFixed(0)}K',
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 12.5,
+                                                fontSize: 13,
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -238,7 +238,7 @@ class SalesDetailPage extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                      reservedSize: 60,
+                                      reservedSize: 50,
                                     ),
                                   ),
                                 ),

@@ -41,7 +41,7 @@ class GeneralInformation extends StatelessWidget {
                           : Image.network(
                               controller.image.value.isEmpty
                                   ? Images.userImage
-                                  : 'https://warmindo.pradiptaahmad.tech/image/' +
+                                  : 'https://warmindoanggrekmuria.my.id/image/' +
                                       controller.image.value,
                               errorBuilder: (context, error, stackTrace) =>
                                   Container(
