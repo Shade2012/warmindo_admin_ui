@@ -37,8 +37,12 @@ class ProductController extends GetxController {
       searchFilter(search.text);
     });
   }
+
   void updateSelection() {
-    selectedMenuIds.value = foodList.where((item) => item.isSelected.value).map((item) => item.id).toList();
+    selectedMenuIds.value = foodList
+        .where((item) => item.isSelected.value)
+        .map((item) => item.id)
+        .toList();
   }
 
   void _updateConnectionStatus(bool connected) {
@@ -67,38 +71,45 @@ class ProductController extends GetxController {
       searchResults.assignAll(allProductList.where((product) {
         return product.nameMenu.toLowerCase().contains(enteredKeyword);
       }).toList());
-      searchResults.addAll(toppingList.where((topping) {
-        return topping.nameTopping.toLowerCase().contains(enteredKeyword);
-      }).map((topping) => model.Menu(
-        id: topping.id,
-        nameMenu: topping.nameTopping,
-        price: topping.price.toString(),
-        image: '',
-        stock: topping.stockTopping.toString(),
-        category: 'Topping',
-        rating: 0.0,
-        description: topping.menus.map((menu) => menu.menuID).join(', '),
-        status: topping.status_topping,
-        createdAt: topping.createdAt,
-        updatedAt: topping.updatedAt,
-        secondCategory: topping.menuId.toString(),
-      )).toList());
-      searchResults.addAll(variantList.where((variant) {
-        return variant.nameVarian.toLowerCase().contains(enteredKeyword);
-      }).map((variant) => model.Menu(
-        id: variant.id,
-        nameMenu: variant.nameVarian,
-        price: '0',
-        image: variant.image ?? '',
-        stock: variant.stockVarian,
-        category: variant.category,
-        rating: 0.0,
-        description: '',
-        status: variant.status_variant,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        secondCategory: variant.category,
-      )).toList());
+      searchResults.addAll(toppingList
+          .where((topping) {
+            return topping.nameTopping.toLowerCase().contains(enteredKeyword);
+          })
+          .map((topping) => model.Menu(
+                id: topping.id,
+                nameMenu: topping.nameTopping,
+                price: topping.price.toString(),
+                image: '',
+                stock: topping.stockTopping.toString(),
+                category: 'Topping',
+                rating: 0.0,
+                description:
+                    topping.menus.map((menu) => menu.menuID).join(', '),
+                status: topping.status_topping,
+                createdAt: topping.createdAt,
+                updatedAt: topping.updatedAt,
+                secondCategory: topping.menuId.toString(),
+              ))
+          .toList());
+      searchResults.addAll(variantList
+          .where((variant) {
+            return variant.nameVarian.toLowerCase().contains(enteredKeyword);
+          })
+          .map((variant) => model.Menu(
+                id: variant.id,
+                nameMenu: variant.nameVarian,
+                price: '0',
+                image: variant.image ?? '',
+                stock: variant.stockVarian,
+                category: variant.category,
+                rating: 0.0,
+                description: '',
+                status: variant.status_variant,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+                secondCategory: variant.category,
+              ))
+          .toList());
     }
   }
 
@@ -119,7 +130,8 @@ class ProductController extends GetxController {
       if (response.statusCode == 200) {
         final List<dynamic> responseData = json.decode(response.body);
         if (responseData is List) {
-          allProductList.value = responseData.map((json) => model.Menu.fromJson(json)).toList();
+          allProductList.value =
+              responseData.map((json) => model.Menu.fromJson(json)).toList();
           for (var product in allProductList) {
             if (product.stock == '0') {
               Get.snackbar(
@@ -132,7 +144,6 @@ class ProductController extends GetxController {
             }
           }
           filterProducts();
-
         } else {
           print('Unexpected response format: ${responseData.runtimeType}');
         }
@@ -145,44 +156,6 @@ class ProductController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  // Future<void> getAllProductList() async {
-  //   try {
-  //     final response = await http.get(Uri.parse(FoodApi.getallProductList));
-  //     if (response.statusCode == 200) {
-  //       final responseData = json.decode(response.body);
-  //       if (responseData != null && responseData['menu'] is List) {
-  //         final List<dynamic> allProductListData = responseData['menu'];
-  //         allProductList.value = allProductListData
-  //             .map((json) => model.Menu.fromJson(json))
-  //             .toList();
-
-  //         for (var product in allProductList) {
-  //           if (product.stock == '0') {
-  //             Get.snackbar(
-  //               'Stok ${product.nameMenu} kosong',
-  //               'Harap cek lagi stok produk anda!',
-  //               snackPosition: SnackPosition.TOP,
-  //               backgroundColor: Colors.redAccent,
-  //               colorText: Colors.white,
-  //             );
-  //           }
-  //         }
-
-  //         filterProducts();
-  //       } else {
-  //         print('Data yang diterima tidak sesuai format yang diharapkan.');
-  //       }
-  //     } else {
-  //       print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
-  //     }
-  //   } catch (error) {
-  //     print("Error while fetching data: $error");
-  //   } finally {
-  //     isLoading.value = false;
-  //     print('Selesai fetching data');
-  //   }
-  // }
 
   Future<void> getFoodList() async {
     try {
@@ -234,36 +207,11 @@ class ProductController extends GetxController {
     }
   }
 
-  // Future<void> getSnackList() async {
-    // try {
-      // final response = await http.get(Uri.parse(FoodApi.getSnackList));
-      // if (response.statusCode == 200) {
-        // final responseData = json.decode(response.body);
-        // if (responseData is Map<String, dynamic> &&
-            // responseData['data'] is Map<String, dynamic> &&
-            // responseData['data']['menu'] is List) {
-          // final List<dynamic> snackListData = responseData['data']['menu'];
-          // snackList.value =
-              // snackListData.map((json) => model.Menu.fromJson(json)).toList();
-          // filterProducts();
-        // } else {
-          // print('Data yang diterima tidak sesuai format yang diharapkan.');
-        // }
-      // } else {
-        // print('Gagal mendapatkan data. Status respon: ${response.statusCode}');
-      // }
-    // } catch (error) {
-      // print("Error while fetching data: $error");
-    // } finally {
-      // isLoading.value = false;
-      // print('Selesai fetching data');
-    // }
-  // }
-
   Future<void> getToppingList() async {
     isLoading.value = true;
     try {
-      final response = await http.get(Uri.parse(ToppingsApi.getallToppingsList));
+      final response =
+          await http.get(Uri.parse(ToppingsApi.getallToppingsList));
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData is Map<String, dynamic>) {
@@ -312,127 +260,140 @@ class ProductController extends GetxController {
     print('Filtering for category: ${selectedCategory.value}');
 
     if (selectedCategory.value == 'Semua') {
-      filteredProductList.assignAll(
-        allProductList.where((product) => product.status != '0').toList()
-      );
+      var allProducts = allProductList
+          .where((product) => product.status != '0')
+          .toList();
+      var toppings = toppingList
+          .where((topping) => topping.status_topping != '0')
+          .map((topping) => model.Menu(
+                id: topping.id,
+                nameMenu: topping.nameTopping,
+                price: topping.price.toString(),
+                image: '',
+                stock: topping.stockTopping.toString(),
+                category: 'Topping',
+                rating: 0.0,
+                description:
+                    topping.menus.map((menu) => menu.menuID).join(', '),
+                status: topping.status_topping,
+                createdAt: topping.createdAt,
+                updatedAt: topping.updatedAt,
+                secondCategory: topping.menuId.toString(),
+              ))
+          .toList();
+      var variants = variantList
+          .where((variant) => variant.status_variant != '0')
+          .map((variant) => model.Menu(
+                id: variant.id,
+                nameMenu: variant.nameVarian,
+                price: '0',
+                image: variant.image ?? '',
+                stock: variant.stockVarian,
+                category: 'Variant',
+                rating: 0.0,
+                description: '',
+                status: variant.status_variant,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+                secondCategory: variant.category,
+              ))
+          .toList();
 
-      filteredProductList.addAll(
-        toppingList.where((topping) => topping.status_topping != '0').map((topping) => model.Menu(
-          id: topping.id,
-          nameMenu: topping.nameTopping,
-          price: topping.price.toString(),
-          image: '',
-          stock: topping.stockTopping.toString(),
-          category: 'Topping',
-          rating: 0.0,
-          description: topping.menus.map((menu) => menu.menuID).join(', '),
-          status: topping.status_topping,
-          createdAt: topping.createdAt,
-          updatedAt: topping.updatedAt,
-          secondCategory: topping.menuId.toString(),
-        )).toList()
-      );
-      filteredProductList.addAll(
-        variantList.where((variant) => variant.status_variant != '0').map((variant) => model.Menu(
-          id: variant.id,
-          nameMenu: variant.nameVarian,
-          price: '0',
-          image: variant.image ?? '',
-          stock: variant.stockVarian,
-          category: 'Variant',
-          rating: 0.0,
-          description: '',
-          status: variant.status_variant,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          secondCategory: variant.category,
-        )).toList()
-      );
+      // Menggabungkan dan mengurutkan produk berdasarkan createdAt dan updatedAt
+      filteredProductList.assignAll([...allProducts, ...toppings, ...variants]);
+
+      // Sort filtered products by either createdAt or updatedAt, most recent first
+      filteredProductList.sort((a, b) {
+        DateTime lastModifiedA = a.updatedAt ?? a.createdAt;
+        DateTime lastModifiedB = b.updatedAt ?? b.createdAt;
+        return lastModifiedB.compareTo(lastModifiedA); // Sort descending order
+      });
     } else if (selectedCategory.value == 'Makanan') {
       filteredProductList.assignAll(
-        foodList.where((product) => product.status != '0').toList()
-      );
+          foodList.where((product) => product.status != '0').toList());
     } else if (selectedCategory.value == 'Minuman') {
       filteredProductList.assignAll(
-        drinklist.where((product) => product.status != '0').toList()
-      );
+          drinklist.where((product) => product.status != '0').toList());
     } else if (selectedCategory.value == 'Snack') {
       filteredProductList.assignAll(
-        snackList.where((product) => product.status != '0').toList()
-      );
+          snackList.where((product) => product.status != '0').toList());
     } else if (selectedCategory.value == 'Topping') {
-      filteredProductList.assignAll(
-        toppingList.where((topping) => topping.status_topping != '0').map((topping) => model.Menu(
-          id: topping.id,
-          nameMenu: topping.nameTopping,
-          price: topping.price.toString(),
-          image: '',
-          stock: topping.stockTopping.toString(),
-          category: 'Topping',
-          rating: 0.0,
-          description: topping.menus.map((menu) => menu.menuID).join(', '),
-          status: topping.status_topping,
-          createdAt: topping.createdAt,
-          updatedAt: topping.updatedAt,
-          secondCategory: topping.menuId.toString(),
-
-        )).toList()
-      );
+      filteredProductList.assignAll(toppingList
+          .where((topping) => topping.status_topping != '0')
+          .map((topping) => model.Menu(
+                id: topping.id,
+                nameMenu: topping.nameTopping,
+                price: topping.price.toString(),
+                image: '',
+                stock: topping.stockTopping.toString(),
+                category: 'Topping',
+                rating: 0.0,
+                description:
+                    topping.menus.map((menu) => menu.menuID).join(', '),
+                status: topping.status_topping,
+                createdAt: topping.createdAt,
+                updatedAt: topping.updatedAt,
+                secondCategory: topping.menuId.toString(),
+              ))
+          .toList());
     } else if (selectedCategory.value == 'Varian') {
-      filteredProductList.assignAll(
-        variantList.where((variant) => variant.status_variant != '0').map((variant) => model.Menu(
-          id: variant.id,
-          nameMenu: variant.nameVarian,
-          price: '0',
-          image: variant.image ?? '',
-          stock: variant.stockVarian,
-          category: 'Variant',
-          rating: 0.0,
-          description: '',
-          status: variant.status_variant,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          secondCategory: variant.category,
-        )).toList()
-      );
+      filteredProductList.assignAll(variantList
+          .where((variant) => variant.status_variant != '0')
+          .map((variant) => model.Menu(
+                id: variant.id,
+                nameMenu: variant.nameVarian,
+                price: '0',
+                image: variant.image ?? '',
+                stock: variant.stockVarian,
+                category: 'Variant',
+                rating: 0.0,
+                description: '',
+                status: variant.status_variant,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+                secondCategory: variant.category,
+              ))
+          .toList());
     } else if (selectedCategory.value == 'Tidak Aktif') {
       filteredProductList.assignAll(
-        allProductList.where((product) => product.status == '0').toList()
-      );
+          allProductList.where((product) => product.status == '0').toList());
 
-      filteredProductList.addAll(
-      toppingList.where((topping) => topping.status_topping == '0').map((topping) => model.Menu(
-        id: topping.id,
-        nameMenu: topping.nameTopping,
-        price: topping.price.toString(),
-        image: '',
-        stock: topping.stockTopping.toString(),
-        category: 'Topping',
-        rating: 0.0,
-        description: topping.menus.map((menu) => menu.menuID).join(', '),
-        status: topping.status_topping,
-        createdAt: topping.createdAt,
-        updatedAt: topping.updatedAt,
-        secondCategory: topping.menuId.toString(),
-      )).toList()
-    );
+      filteredProductList.addAll(toppingList
+          .where((topping) => topping.status_topping == '0')
+          .map((topping) => model.Menu(
+                id: topping.id,
+                nameMenu: topping.nameTopping,
+                price: topping.price.toString(),
+                image: '',
+                stock: topping.stockTopping.toString(),
+                category: 'Topping',
+                rating: 0.0,
+                description:
+                    topping.menus.map((menu) => menu.menuID).join(', '),
+                status: topping.status_topping,
+                createdAt: topping.createdAt,
+                updatedAt: topping.updatedAt,
+                secondCategory: topping.menuId.toString(),
+              ))
+          .toList());
 
-    filteredProductList.addAll(
-      variantList.where((variant) => variant.status_variant == '0').map((variant) => model.Menu(
-        id: variant.id,
-        nameMenu: variant.nameVarian,
-        price: '0',
-        image: variant.image ?? '',
-        stock: variant.stockVarian,
-        category: 'Variant',
-        rating: 0.0,
-        description: '',
-        status: variant.status_variant,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        secondCategory: variant.category,
-      )).toList()
-    );
+      filteredProductList.addAll(variantList
+          .where((variant) => variant.status_variant == '0')
+          .map((variant) => model.Menu(
+                id: variant.id,
+                nameMenu: variant.nameVarian,
+                price: '0',
+                image: variant.image ?? '',
+                stock: variant.stockVarian,
+                category: 'Variant',
+                rating: 0.0,
+                description: '',
+                status: variant.status_variant,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+                secondCategory: variant.category,
+              ))
+          .toList());
     }
 
     print('Filtered products count: ${filteredProductList.length}');
@@ -501,5 +462,11 @@ class ProductController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  @override
+  void onClose() {
+    timer?.cancel();
+    super.onClose();
   }
 }

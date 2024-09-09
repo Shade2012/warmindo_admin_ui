@@ -49,7 +49,7 @@ class SettingsPage extends StatelessWidget {
                               placeholder: AssetImage(Images.userImage),
                               image: NetworkImage(generalInfor.image.value.isEmpty
                                   ? 'https://ui-avatars.com/api/?background=random&color=ffffff&name=${generalInfor.usernameController.value}&size=128'
-                                  : 'https://warmindo.pradiptaahmad.tech/image/' + generalInfor.image.value),
+                                  : 'https://warmindoanggrekmuria.my.id/image/' + generalInfor.image.value),
                               width: screenWidth * 0.4,
                               height: screenWidth * 0.4,
                               fit: BoxFit.cover,

@@ -64,6 +64,8 @@ class ScheduleApi {
   static var getallScheduleList = '$apiUrl/api/store-statuses';
   static var storeSchedule = '$apiUrl/api/store-statuses/store';
   static var updateSchedule = '$apiUrl/api/store-statuses/';
+  static var closeSchedule = '$apiUrl/api/store-statuses/closed/';
+  static var openSchedule = '$apiUrl/api/store-statuses/open/';
 }
 
 class NotificationApi {

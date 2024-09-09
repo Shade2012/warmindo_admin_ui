@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
-import 'package:warmindo_admin_ui/routes/AppPages.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:http/http.dart' as http;
 
 class AddVarianController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
   RxBool isLoading = false.obs;
   final ImagePicker _picker = ImagePicker();
+  final ProductController productController = Get.put(ProductController());
 
   Future<void> addVariants({
     File? image,
@@ -49,6 +50,7 @@ class AddVarianController extends GetxController {
           print('Response: ${response.body}');
           Get.back();
           Get.back();
+          productController.fetchAllData();
         } else {
           print('Failed to add variants');
           print('Response: ${response.body}');

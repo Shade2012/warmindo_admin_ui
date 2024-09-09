@@ -33,7 +33,7 @@ class BottomNavbar extends StatelessWidget {
         },
         child: Obx(() => Container(
             width: 30,
-            child: Image.asset(controller.currentIndex.value == 2
+            child: SvgPicture.asset(controller.currentIndex.value == 2
                 ? IconThemes.iconcancelSelected
                 : IconThemes.iconcancel))),
         backgroundColor: ColorResources.bgfloatingActionButtonColor,

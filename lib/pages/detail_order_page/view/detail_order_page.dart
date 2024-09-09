@@ -40,24 +40,30 @@ class DetailOrderPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final currencyFormat =
         NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
-    final adminFee =
-        order.adminFee != null ? double.parse(order.adminFee ?? '') : 0;
+    
+    // Admin Fee
+    final adminFee = order.adminFee != null && order.adminFee!.isNotEmpty
+        ? double.tryParse(order.adminFee!) ?? 0.0
+        : 0.0;
 
     // Calculate total price using OrderDetails, including toppings
     double totalPrice = order.orderDetails.fold(0, (sum, detail) {
       // Menghitung harga item
-      double itemPrice = double.parse(detail.menu.price) * detail.quantity;
+      double itemPrice =
+          (double.tryParse(detail.menu.price) ?? 0.0) * detail.quantity;
 
       // Menghitung harga topping dan menjumlahkannya
       double toppingPrice = detail.toppings!.fold(0, (toppingSum, topping) {
         return toppingSum +
-            (double.parse(topping.price.toString()) * detail.quantity);
+            ((double.tryParse(topping.price.toString()) ?? 0.0) *
+                detail.quantity);
       });
 
       return sum + itemPrice + toppingPrice;
     });
 
-    final totalPayment = totalPrice;
+    // Total Payment Adjustment (Total = Total Price - Admin Fee)
+    double totalPayment = totalPrice - adminFee;
 
     final labelColor = _getLabelColor(order.status);
     final formattedDate = DateFormat('dd-MM-yyyy')
@@ -153,12 +159,8 @@ class DetailOrderPage extends StatelessWidget {
                                     '${detail.menu.nameMenu}',
                                     style: receiptcontentTextStyle,
                                   ),
-
-                                  // Text(detail.quantity.toString(),
-                                  // style: receiptcontentTextStyle),
-
                                   Text(
-                                    '${currencyFormat.format(double.parse(detail.menu.price) * detail.quantity)} (${detail.quantity}x)',
+                                    '${currencyFormat.format((double.tryParse(detail.menu.price) ?? 0.0) * detail.quantity)} (${detail.quantity}x)',
                                     style: receiptcontentTextStyle,
                                   ),
                                 ],
@@ -192,7 +194,7 @@ class DetailOrderPage extends StatelessWidget {
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      '- ${topping.nameTopping} (${currencyFormat.format(double.parse(topping.price.toString()))} || ${detail.quantity}x) ',
+                                                      '- ${topping.nameTopping} (${currencyFormat.format(double.tryParse(topping.price.toString()) ?? 0.0)} || ${detail.quantity}x) ',
                                                       style: receiptcontentTextStyle
                                                           .copyWith(
                                                               fontStyle:
@@ -223,17 +225,17 @@ class DetailOrderPage extends StatelessWidget {
                         style: receiptcontentTextStyle),
                   ],
                 ),
-                // SizedBox(height: 8.0),
-                // if (adminFee > 0)
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Text('Biaya Admin', style: receiptcontentTextStyle),
-                //       Text(currencyFormat.format(adminFee),
-                //           style: receiptcontentTextStyle),
-                //     ],
-                //   ),
-                SizedBox(height: adminFee > 0 ? 8.0 : 0.0),
+                if (order.status.toLowerCase() == 'batal' ||
+                    order.status.toLowerCase() == 'menunggu pengembalian dana')
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Biaya Admin', style: receiptcontentTextStyle),
+                      Text(currencyFormat.format(adminFee),
+                          style: receiptcontentTextStyle),
+                    ],
+                  ),
+                SizedBox(height: 8.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -241,7 +243,6 @@ class DetailOrderPage extends StatelessWidget {
                     Text(order.paymentMethod!, style: receiptcontentTextStyle),
                   ],
                 ),
-                SizedBox(height: 8.0),
                 SizedBox(height: 16.0),
                 Divider(),
                 SizedBox(height: 16.0),
@@ -249,6 +250,7 @@ class DetailOrderPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Total', style: receiptcontentTextStyle),
+                    // Display the total payment (price - admin fee)
                     Text(currencyFormat.format(totalPayment),
                         style: receiptcontentTextStyle),
                   ],
@@ -286,7 +288,6 @@ class DetailOrderPage extends StatelessWidget {
                   Text('Pelanggan tidak ditemukan',
                       style: receiptcontentTextStyle),
                 ],
-                // Display Return Method and Account Number if the status is "batal" or "menunggu batal"
                 if (order.status.toLowerCase() == 'batal' ||
                     order.status.toLowerCase() == 'menunggu batal') ...[
                   SizedBox(height: 16.0),
@@ -306,7 +307,6 @@ class DetailOrderPage extends StatelessWidget {
               ],
             ),
             SizedBox(height: screenHeight * 0.04),
-            // Notes Section
             if (order.note != null && order.note!.isNotEmpty) ...[
               Divider(),
               SizedBox(height: 16.0),

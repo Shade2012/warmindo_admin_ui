@@ -45,6 +45,7 @@ class ScheduleList {
   final String days;
   final String start_time;
   final String end_time;
+  String? forceClose;
   final int? temporary_closure_duration;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -56,6 +57,7 @@ class ScheduleList {
         required this.days,
         required  this.start_time,
         required this.end_time,
+        this.forceClose,
         this.temporary_closure_duration,
         this.createdAt,
         this.updatedAt,
@@ -68,6 +70,7 @@ class ScheduleList {
     days: json["days"],
     start_time: json["start_time"],
     end_time: json["end_time"],
+    forceClose: json["force_close"],
     temporary_closure_duration: json["temporary_closure_duration"] != null ? int.parse(json["temporary_closure_duration"]) : null,
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -79,6 +82,7 @@ class ScheduleList {
     "days": days,
     "start_time": start_time,
     "end_time": end_time,
+    "force_close": forceClose,
     "temporary_closure_duration": temporary_closure_duration,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
@@ -86,7 +90,7 @@ class ScheduleList {
 
   @override
   String toString() {
-    return 'ScheduleList(id: $id, is_open: $is_open, days: $days, start_time: $start_time, end_time: $end_time,temporary_closure_duration: $temporary_closure_duration)';
+    return 'ScheduleList(id: $id, is_open: $is_open, days: $days, start_time: $start_time, end_time: $end_time, force_close: $forceClose ,temporary_closure_duration: $temporary_closure_duration)';
   }
 }
 

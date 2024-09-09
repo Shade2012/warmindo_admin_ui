@@ -4,12 +4,13 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 
-import '../../../routes/AppPages.dart';
 
 class AddProductController extends GetxController {
   Rx<File> selectedImage = Rx<File>(File(''));
   RxBool isLoading = false.obs;
+  final ProductController productController = Get.put(ProductController());
 
   Future<void> addProduct({
     required File image,
@@ -57,6 +58,7 @@ class AddProductController extends GetxController {
           print('Response: ${response.body}');
           Get.back();
           Get.back();
+          productController.fetchAllData();
         }
         else {
           // Error occurred

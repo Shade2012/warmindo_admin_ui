@@ -95,12 +95,30 @@ class ChangePassPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              controller.changePassword(
+                              final success = await controller.changePassword(
                                 password: _newPasswordController.text,
                                 current_password: _currentPasswordController.text,
                                 password_confirmation: _confirmNewPasswordController.text,
+                              );
+                              if (success) {
+                                Get.snackbar(
+                                  "Berhasil",
+                                  "Password berhasil diubah",
+                                  snackPosition: SnackPosition.TOP,
+                                  backgroundColor: Colors.green,
+                                  colorText: Colors.white,
+                                );
+                                Get.back(closeOverlays: true); 
+                              }
+                            } else {
+                              Get.snackbar(
+                                "Error",
+                                "Silakan periksa kembali data yang dimasukkan",
+                                snackPosition: SnackPosition.TOP,
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
                               );
                             }
                           },
@@ -134,4 +152,3 @@ class ChangePassPage extends StatelessWidget {
     );
   }
 }
-

@@ -64,7 +64,7 @@ Future<void> rejectCancel(int id) async {
       },
     );
     if (response.statusCode == 200) {
-      Get.snackbar('Sukses', 'Pesanan berhasil dibatalkan', snackPosition: SnackPosition.TOP);
+      Get.snackbar('Sukses', 'status berhasil diubah', snackPosition: SnackPosition.TOP);
     } else {
       print('Gagal membatalkan pesanan. Status respon: ${response.statusCode}');
     }
@@ -73,7 +73,5 @@ Future<void> rejectCancel(int id) async {
   } finally {
     isLoading.value = false;
   }
-}
-
-  
+}  
 }

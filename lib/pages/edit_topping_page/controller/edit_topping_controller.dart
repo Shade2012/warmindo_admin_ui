@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
+import 'package:warmindo_admin_ui/pages/product_page/controller/product_controller.dart';
 import 'package:warmindo_admin_ui/routes/AppPages.dart';
 
 import '../../add_topping_page/widget/menu_selected_widget.dart';
@@ -12,6 +13,7 @@ class EditToppingController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
   RxString error = ''.obs;
   RxBool isLoading = false.obs;
+  final ProductController productController = Get.put(ProductController());
 
   Future<void> updateStatusTopping({required String id, required bool statusTopping}) async {
     isLoading.value = true;
@@ -142,6 +144,7 @@ class EditToppingController extends GetxController {
       print('success');
       Get.back();
       Get.back();
+      productController.fetchAllData();
     } else {
       // Handle error
       print('Failed to edit toppings');

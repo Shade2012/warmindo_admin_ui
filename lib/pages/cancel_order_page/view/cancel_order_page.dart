@@ -4,7 +4,7 @@ import 'package:warmindo_admin_ui/global/model/model_order.dart';
 import 'package:warmindo_admin_ui/global/widget/orderBox.dart';
 import 'package:warmindo_admin_ui/global/themes/textstyle_themes.dart';
 import 'package:warmindo_admin_ui/pages/cancel_order_page/controller/cancel_order_controller.dart';
-import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart'; // Import DataController
+import 'package:warmindo_admin_ui/pages/order_page/controller/order_controller.dart'; 
 
 class CancelOrderPage extends StatelessWidget {
   CancelOrderPage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class CancelOrderPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pembatalan Pesanan'),
+        title: Text('Pengembalian Dana'),
         titleTextStyle: appBarTextStyle,
         centerTitle: true,
       ),
@@ -28,7 +28,7 @@ class CancelOrderPage extends StatelessWidget {
         },
         child: Obx(() {
           List<Order> cancelOrders = controller.orderList
-              .where((order) => order.status == 'menunggu batal')
+              .where((order) => order.status == 'menunggu pengembalian dana')
               .toList();
 
           if (!dataController.isConnected.value) {
@@ -52,7 +52,7 @@ class CancelOrderPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 300),
                     child: Text(
-                      'Tidak ada pesanan dengan permintaan pembatalan',
+                      'Tidak ada pesanan dengan status pengembalian dana',
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                       textAlign: TextAlign.center,
                     ),

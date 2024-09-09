@@ -108,6 +108,56 @@ class ScheduleController extends GetxController {
     }
   }
 
+  Future<bool> closeStore() async {
+    final url = '${ScheduleApi.closeSchedule}$scheduleId';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      
+      if (response.statusCode == 200) {
+        print('Store closed successfully');
+        SnackBar(content: Text('Store closed successfully'));
+        Get.back();
+        return true;
+      } else {
+        print('Failed to close store: ${response.body}');
+        return false;
+      }
+    } catch (error) {
+      print('Error closing store: $error');
+      return false;
+    }
+  }
+
+  Future<bool> openStore() async {
+    final url = '${ScheduleApi.openSchedule}$scheduleId';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      
+      if (response.statusCode == 200) {
+        print('Store opened successfully');
+        SnackBar(content: Text('Store opened successfully'));
+        Get.back();
+        return true;
+      } else {
+        print('Failed to open store: ${response.body}');
+        return false;
+      }
+    } catch (error) {
+      print('Error opening store: $error');
+      return false;
+    }
+  }
+
   void setStatus(String status) {
     selectedStatus.value = status;
   }

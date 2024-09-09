@@ -4,7 +4,7 @@ import 'package:warmindo_admin_ui/pages/sales_detail_page/model/revenue_model.da
 import 'package:warmindo_admin_ui/pages/sales_detail_page/model/sales_model.dart';
 
 class ApiService {
-  static const String baseUrl = "https://warmindo.pradiptaahmad.tech/api";
+  static const String baseUrl = "https://warmindoanggrekmuria.my.id/api";
 
   // Fungsi untuk mengambil data penjualan
   static Future<SalesChart> fetchSalesData(String interval) async {
