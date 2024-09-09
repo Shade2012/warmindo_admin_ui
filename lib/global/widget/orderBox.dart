@@ -249,7 +249,7 @@ class OrderBox extends StatelessWidget {
                               Get.back();
                             },
                             onConfirmPressed: () {
-                              cancelOrderController.rejectCancel(order.id);
+                              editOrderController.updateOrder(orderId: order.id.toString(), status: 'sedang diproses');
                               Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
                             },
                             cancelButtonColor: ColorResources.primaryColorLight,
