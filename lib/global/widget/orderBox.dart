@@ -27,9 +27,6 @@ class OrderBox extends StatelessWidget {
   final EditOrderController editOrderController = Get.put(EditOrderController());
   final CancelOrderController cancelOrderController = Get.put(CancelOrderController());
 
-  // Admin fee as a double
-  
-
   String _formatPrice(double price) {
     final formatter = NumberFormat('#,##0', 'id_ID');
     return formatter.format(price);
@@ -38,19 +35,17 @@ class OrderBox extends StatelessWidget {
   Color _getLabelColor(String? status) {
     switch (status?.toLowerCase()) {
       case 'selesai':
-        return ColorResources.labelcomplete;
       case 'pesanan siap':
         return ColorResources.labelcomplete;
       case 'sedang diproses':
         return ColorResources.labelinprogg;
       case 'menunggu batal':
-        return ColorResources.labelcancel;
       case 'batal':
         return ColorResources.labelcancel;
       case 'menunggu pengembalian dana':
         return Colors.grey[600]!;
-      case 'konfirmasi pesanan': 
-        return ColorResources.primaryColorDark; 
+      case 'konfirmasi pesanan':
+        return ColorResources.primaryColorDark;
       default:
         return Colors.black;
     }
@@ -213,11 +208,6 @@ class OrderBox extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          if (order.status.toLowerCase() == 'batal' || order.status.toLowerCase() == 'menunggu pengembalian dana')
-                            // Text(
-                            //   'Biaya Admin: Rp ${_formatPrice(adminFee)}',
-                            //   style: priceMenuOrderTextStyle,
-                            // ),
                           Text(
                             'Rp $formattedPrice',
                             style: viewAllTextStyle2,
@@ -233,7 +223,13 @@ class OrderBox extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (order.status.toLowerCase() == 'konfirmasi pesanan') // Check for "Konfirmasi Pesanan" status
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    showEditOrderBottomSheet(context, order);
+                  },
+                ),
+                if (order.status.toLowerCase() == 'konfirmasi pesanan')
                   IconButton(
                     icon: Icon(Icons.check),
                     onPressed: () {
@@ -260,16 +256,7 @@ class OrderBox extends StatelessWidget {
                       );
                     },
                   )
-                else
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      showEditOrderBottomSheet(context, order);
-                    },
-                  ),
-                SizedBox(height: screenHeight * 0.02),
-                // Hanya tampilkan tombol Cancel jika status order bukan "batal" dan "menunggu pengembalian dana"
-                if (order.status.toLowerCase() != 'batal' && order.status.toLowerCase() != 'menunggu pengembalian dana')
+                else if (order.status.toLowerCase() == 'sedang diproses')
                   IconButton(
                     icon: Icon(Icons.cancel),
                     onPressed: () {

@@ -25,13 +25,6 @@ class HomePage extends StatelessWidget {
     final ScheduleController scheduleController = Get.put(ScheduleController());
     final SalesController salesController = Get.put(SalesController());
 
-    bool isOpen = false;
-    try {
-      isOpen = scheduleController.jadwalElement[0].is_open;
-    } catch (e) {
-      isOpen = false;
-    }
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(55),
@@ -59,10 +52,40 @@ class HomePage extends StatelessWidget {
             return HomepageShimmer();
           }
 
+          // Determine if the store is open or closed
+          bool isOpen = false;
+
+          try {
+            final now = DateTime.now();
+            final today = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'][now.weekday - 1];
+            final currentTime = now.hour * 60 + now.minute; // Convert current time to minutes
+
+            for (var schedule in scheduleController.jadwalElement) {
+              if (schedule.days == today) {
+                final startTime = _parseTime(schedule.start_time);
+                final endTime = _parseTime(schedule.end_time);
+                final forceClose = schedule.forceClose == '1'; // Convert to boolean
+
+                // Store is open if not force closed and current time is within open hours
+                isOpen = !forceClose && currentTime >= startTime && currentTime <= endTime;
+                break; // Exit loop after finding today's schedule
+              }
+            }
+          } catch (e) {
+            print('Error determining store status: $e');
+            isOpen = false; // Default to false if there's an error
+          }
+
           return RefreshIndicator(
             onRefresh: () async {
-              await orderController.fetchDataOrder();
-              await scheduleController.fetchScheduleList();
+              await Future.wait([
+                orderController.fetchDataOrder(),
+                scheduleController.fetchScheduleList()
+              ]);
+
+              // Refresh the UI by setting state after fetching data
+              // Since we're using Obx, it will automatically update
+              // the UI with the latest data when it's updated.
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -165,7 +188,6 @@ class HomePage extends StatelessWidget {
                   Container(
                     height: screenHeight * 0.6,
                     child: Obx(() {
-                      // Filter orders based on specific statuses
                       final filteredOrders = orderController.orderList
                           .where((order) =>
                               order.status.toLowerCase() != 'menunggu pembayaran' &&
@@ -215,5 +237,13 @@ class HomePage extends StatelessWidget {
         }),
       ),
     );
+  }
+
+  // Helper function to convert time string to minutes since midnight
+  int _parseTime(String timeStr) {
+    final timeParts = timeStr.split(':');
+    final hours = int.parse(timeParts[0]);
+    final minutes = int.parse(timeParts[1]);
+    return hours * 60 + minutes;
   }
 }

@@ -29,6 +29,19 @@ class EditOrderPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
+    // Determine available status options based on the current status
+    List<String> statusOptions = [
+      'sedang diproses', 
+      'selesai', 
+      'pesanan siap', 
+      'batal', 
+      'menunggu pengembalian dana'
+    ];
+
+    if (selectedCategory.value == 'menunggu pengembalian dana') {
+      statusOptions = ['menunggu pengembalian dana','batal'];
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -85,18 +98,17 @@ class EditOrderPage extends StatelessWidget {
             SizedBox(height: screenHeight * 0.02),
             Text("Status Pesanan", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
-            SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: ['sedang diproses', 'selesai', 'pesanan siap','batal','menunggu pengembalian dana'],
+                  items: statusOptions,
                   value: selectedCategory.value.isNotEmpty
                       ? selectedCategory.value
                       : null,
                   onChanged: (String? value) {
                     selectedCategory.value = value ?? '';
                   },
-                  dropdownType: DropdownType.Category,
+                  dropdownType: DropdownType.Status,
                 )),
-            SizedBox(height: screenHeight * 0.20),
+            SizedBox(height: screenHeight * 0.45),
             Center(
               child: ElevatedButton(
                 onPressed: () {
