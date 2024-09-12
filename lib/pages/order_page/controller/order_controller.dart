@@ -155,9 +155,10 @@ class OrderController extends GetxController {
   int compareOrderStatus(String? statusA, String? statusB) {
     final statusOrder = {
       'sedang diproses': 1,
-      'selesai': 2,
-      'batal': 3,
-      'menunggu pengembalian dana': 4,
+      'sedang diantar': 2,
+      'selesai': 3,
+      'batal': 4,
+      'menunggu pengembalian dana': 5,
     };
 
     final priorityA = statusOrder[statusA] ?? 5;

@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
               if (schedule.days == today) {
                 final startTime = _parseTime(schedule.start_time);
                 final endTime = _parseTime(schedule.end_time);
-                final forceClose = schedule.forceClose == '1'; // Convert to boolean
+                final forceClose = schedule.forceClose == '1'; 
 
                 // Store is open if not force closed and current time is within open hours
                 isOpen = !forceClose && currentTime >= startTime && currentTime <= endTime;
@@ -82,10 +82,6 @@ class HomePage extends StatelessWidget {
                 orderController.fetchDataOrder(),
                 scheduleController.fetchScheduleList()
               ]);
-
-              // Refresh the UI by setting state after fetching data
-              // Since we're using Obx, it will automatically update
-              // the UI with the latest data when it's updated.
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -110,59 +106,65 @@ class HomePage extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.all(screenWidth * 0.03),
-                          child: AnalyticBox(
-                            totalSales: salesController.revenueChart.value.overalltotal ?? 0,
-                            titleAnalyticBox: 'Total Penjualan',
-                            imagePath: IconThemes.iconCoin,
-                            onTap: () {
-                              Get.toNamed(Routes.DETAIL_SALES_PAGE);
-                            },
-                          ),
+                      Container(
+                        width: screenWidth * 0.478,
+                        padding: EdgeInsets.all(screenWidth * 0.03),
+                        child: AnalyticBox(
+                          totalSales: salesController.revenueChart.value.overalltotal ?? 0,
+                          titleAnalyticBox: 'Total Penjualan',
+                          imagePath: IconThemes.iconCoin,
+                          onTap: () {
+                            Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                          },
                         ),
                       ),
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.all(screenWidth * 0.03),
-                          child: AnalyticBox(
-                            totalSales: salesController.salesChart.value.overalltotal ?? 0,
-                            titleAnalyticBox: 'Total Produk Terjual',
-                            imagePath: IconThemes.iconProduct,
-                            onTap: () {
-                              Get.toNamed(Routes.DETAIL_SALES_PAGE);
-                            },
-                          ),
+                      Container(
+                        width: screenWidth * 0.478,
+                        padding: EdgeInsets.all(screenWidth * 0.03),
+                        child: AnalyticBox(
+                          totalSales: salesController.salesChart.value.overalltotal ?? 0,
+                          titleAnalyticBox: 'Total Produk Terjual',
+                          imagePath: IconThemes.iconProduct,
+                          onTap: () {
+                            Get.toNamed(Routes.DETAIL_SALES_PAGE);
+                          },
                         ),
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.all(screenWidth * 0.03),
-                          child: OrderFilterBox(
-                            totalOrders: orderController.getOrderCountByStatus('sedang diproses'),
-                            titleFilterBox: 'Sedang Diproses',
-                            imagePath: IconThemes.iconOrderProgress,
-                            filterStatus: 'sedang diproses',
-                          ),
+                      Container(
+                        width: screenWidth * 0.478,
+                        padding: EdgeInsets.all(screenWidth * 0.03),
+                        child: OrderFilterBox(
+                          totalOrders: orderController.getOrderCountByStatus('sedang diproses'),
+                          titleFilterBox: 'Sedang Diproses',
+                          imagePath: IconThemes.iconOrderProgress,
+                          filterStatus: 'sedang diproses',
                         ),
                       ),
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.all(screenWidth * 0.03),
-                          child: OrderFilterBox(
-                            totalOrders: orderController.getOrderCountByStatus('konfirmasi pesanan'),
-                            titleFilterBox: 'Konfirmasi Pesanan',
-                            imagePath: IconThemes.iconOrderDone,
-                            filterStatus: 'konfirmasi pesanan',
-                          ),
+                      Container(
+                        width: screenWidth * 0.478,
+                        padding: EdgeInsets.all(screenWidth * 0.03),
+                        child: OrderFilterBox(
+                          totalOrders: orderController.getOrderCountByStatus('konfirmasi pesanan'),
+                          titleFilterBox: 'Konfirmasi Pesanan',
+                          imagePath: IconThemes.iconOrderDone,
+                          filterStatus: 'konfirmasi pesanan',
                         ),
                       ),
                     ],
+                  ),
+                  Container(
+                    width: screenWidth * 0.45,
+                    padding: EdgeInsets.all(screenWidth * 0.03),
+                    child: OrderFilterBox(
+                      totalOrders: orderController.getOrderCountByStatus('sedang diantar'),
+                      titleFilterBox: 'Sedang Diantar',
+                      imagePath: IconThemes.iconOrderDelivery,
+                      filterStatus: 'sedang diantar',
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(screenWidth * 0.02),
@@ -185,6 +187,7 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Wrap the list view in a Container with fixed height to avoid unbounded height issues
                   Container(
                     height: screenHeight * 0.6,
                     child: Obx(() {

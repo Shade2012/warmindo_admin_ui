@@ -34,6 +34,7 @@ class OrderFilterDropdown extends StatelessWidget {
             'Menunggu Batal',
             'Batal',
             'Menunggu Pengembalian Dana',
+            'Sedang Diantar',
           ].map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -58,10 +59,10 @@ class OrderFilterDropdown extends StatelessWidget {
               borderRadius: BorderRadius.circular(screenWidth * 0.04),
             ),
           ),
-          dropdownColor: Colors.black, // Warna latar belakang dropdown
+          dropdownColor: Colors.black, 
           icon: Icon(
             Icons.keyboard_arrow_down,
-            color: Colors.white, // Warna ikon putih
+            color: Colors.white,
           ),
         ),
       ],

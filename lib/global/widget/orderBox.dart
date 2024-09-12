@@ -38,6 +38,7 @@ class OrderBox extends StatelessWidget {
       case 'pesanan siap':
         return ColorResources.labelcomplete;
       case 'sedang diproses':
+      case 'sedang dikirim':
         return ColorResources.labelinprogg;
       case 'menunggu batal':
       case 'batal':

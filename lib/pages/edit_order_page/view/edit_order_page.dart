@@ -20,7 +20,6 @@ class EditOrderPage extends StatelessWidget {
     ctrUserId.text = order.userId;
     ctrPrice.text = order.priceOrder.toString();
     ctrMenuId.text = order.id.toString();
-    // ctrRefund.text = order.refund == 0 ? 'Ya' : 'Tidak';
     selectedCategory.value = order.status;
   }
 
@@ -36,6 +35,7 @@ class EditOrderPage extends StatelessWidget {
       'pesanan siap', 
       'batal', 
       'menunggu pengembalian dana'
+      'sedang dikirim'
     ];
 
     if (selectedCategory.value == 'menunggu pengembalian dana') {
