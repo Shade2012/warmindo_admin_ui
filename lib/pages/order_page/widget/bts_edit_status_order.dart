@@ -26,6 +26,12 @@ class EditOrderBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final isPendingCancellation = order.status.toLowerCase() == 'menunggu pengembalian dana';
+
+    // Dropdown items based on the status
+    final dropdownItems = isPendingCancellation
+        ? ['menunggu pengembalian dana','batal']
+        : ['sedang diproses', 'selesai', 'pesanan siap', 'batal', 'menunggu pengembalian dana', 'konfirmasi pesanan', 'sedang diantar'];
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -63,35 +69,18 @@ class EditOrderBottomSheet extends StatelessWidget {
                 Text('Edit Status Pesanan', style: appBarTextStyle),
               ],
             ),
-            // SizedBox(height: screenHeight * 0.02),
-            // Text('Order ID', style: titleAddProductTextStyle),
-            // SizedBox(height: screenHeight * 0.01),
-            // CustomTextField(
-            //   controller: ctrUserId,
-            //   hintText: 'Masukkan ID User',
-            //   readOnly: true,
-            // ),
-            // SizedBox(height: screenHeight * 0.02),
-            // Text('Harga', style: titleAddProductTextStyle),
-            // SizedBox(height: screenHeight * 0.01),
-            // CustomTextField(
-            //   controller: ctrPrice,
-            //   hintText: 'Masukkan Harga',
-            //   readOnly: true,
-            //   keyboardType: TextInputType.number,
-            // ),
             SizedBox(height: screenHeight * 0.02),
             Text("Status Pesanan", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: ['sedang diproses', 'selesai', 'pesanan siap', 'batal', 'menunggu pengembalian dana','konfirmasi pesanan'],
+                  items: dropdownItems,
                   value: selectedCategory.value.isNotEmpty
                       ? selectedCategory.value
                       : null,
                   onChanged: (String? value) {
                     selectedCategory.value = value ?? '';
                   },
-                  dropdownType: DropdownType.Category,
+                  dropdownType: DropdownType.Status,
                 )),
             SizedBox(height: screenHeight * 0.20),
             Center(

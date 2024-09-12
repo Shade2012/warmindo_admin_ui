@@ -20,7 +20,6 @@ class EditOrderPage extends StatelessWidget {
     ctrUserId.text = order.userId;
     ctrPrice.text = order.priceOrder.toString();
     ctrMenuId.text = order.id.toString();
-    // ctrRefund.text = order.refund == 0 ? 'Ya' : 'Tidak';
     selectedCategory.value = order.status;
   }
 
@@ -28,6 +27,20 @@ class EditOrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
+    // Determine available status options based on the current status
+    List<String> statusOptions = [
+      'sedang diproses', 
+      'selesai', 
+      'pesanan siap', 
+      'batal', 
+      'menunggu pengembalian dana'
+      'sedang dikirim'
+    ];
+
+    if (selectedCategory.value == 'menunggu pengembalian dana') {
+      statusOptions = ['menunggu pengembalian dana','batal'];
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -85,18 +98,17 @@ class EditOrderPage extends StatelessWidget {
             SizedBox(height: screenHeight * 0.02),
             Text("Status Pesanan", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
-            SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: ['sedang diproses', 'selesai', 'pesanan siap','batal','menunggu pengembalian dana'],
+                  items: statusOptions,
                   value: selectedCategory.value.isNotEmpty
                       ? selectedCategory.value
                       : null,
                   onChanged: (String? value) {
                     selectedCategory.value = value ?? '';
                   },
-                  dropdownType: DropdownType.Category,
+                  dropdownType: DropdownType.Status,
                 )),
-            SizedBox(height: screenHeight * 0.20),
+            SizedBox(height: screenHeight * 0.45),
             Center(
               child: ElevatedButton(
                 onPressed: () {
