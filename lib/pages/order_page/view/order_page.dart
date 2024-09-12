@@ -35,7 +35,7 @@ class OrderPage extends StatelessWidget {
                     controller: searchController,
                     autofocus: true,
                     onChanged: (value) {
-                      controller.update(); 
+                      controller.update();
                     },
                     decoration: InputDecoration(
                       hintText: 'Cari nama pelanggan',
@@ -64,7 +64,7 @@ class OrderPage extends StatelessWidget {
                   if (isSearchingValue) {
                     searchController.clear();
                     isSearching.value = false;
-                    controller.update(); 
+                    controller.update();
                   } else {
                     isSearching.value = true;
                   }
@@ -89,8 +89,8 @@ class OrderPage extends StatelessWidget {
                       screenWidth: screenWidth,
                       selectedStatus: selectedStatus,
                       onChanged: (String? newValue) async {
-                        selectedStatus.value = newValue ?? 'Semua'; 
-                        await controller.fetchDataOrder(); 
+                        selectedStatus.value = newValue ?? 'Semua';
+                        await controller.fetchDataOrder();
                       },
                     ),
                   )
@@ -118,12 +118,10 @@ class OrderPage extends StatelessWidget {
                         if (controller.isLoading.value) {
                           return OrderShimmer();
                         }
-
                         final filteredOrders = controller.getFilteredOrders(
                             controller.orderList,
                             selectedStatus.value,
                             searchController.text);
-
                         if (filteredOrders.isEmpty) {
                           return Center(
                             child: Text(
@@ -132,7 +130,6 @@ class OrderPage extends StatelessWidget {
                             ),
                           );
                         }
-
                         return Column(
                           children: filteredOrders.map((order) {
                             final customer = controller.getCustomerById(int.tryParse(order.userId) ?? 0);

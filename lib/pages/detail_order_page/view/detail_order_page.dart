@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:warmindo_admin_ui/global/model/model_order.dart';
 import 'package:warmindo_admin_ui/pages/detail_order_page/widget/detail_order_bnb.dart';
 import 'package:warmindo_admin_ui/global/themes/color_themes.dart';
@@ -24,6 +25,7 @@ class DetailOrderPage extends StatelessWidget {
       case 'pesanan siap':
         return ColorResources.labelcomplete;
       case 'sedang diproses':
+      case 'sedang diantar':
         return ColorResources.labelinprogg;
       case 'menunggu batal':
         return ColorResources.labelcancel;
@@ -39,11 +41,15 @@ class DetailOrderPage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final currencyFormat =
-        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
-    
+    NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+
     // Admin Fee
     final adminFee = order.adminFee != null && order.adminFee!.isNotEmpty
         ? double.tryParse(order.adminFee!) ?? 0.0
+        : 0.0;
+
+    final deliveryFee = order.deliveryfee != null
+        ? order.deliveryfee
         : 0.0;
 
     // Calculate total price using OrderDetails, including toppings
@@ -63,7 +69,7 @@ class DetailOrderPage extends StatelessWidget {
     });
 
     // Total Payment Adjustment (Total = Total Price - Admin Fee)
-    double totalPayment = totalPrice - adminFee;
+    double totalPayment = totalPrice + (deliveryFee ?? 0) - adminFee;
 
     final labelColor = _getLabelColor(order.status);
     final formattedDate = DateFormat('dd-MM-yyyy')
@@ -147,70 +153,70 @@ class DetailOrderPage extends StatelessWidget {
                 SizedBox(height: 16.0),
                 ...order.orderDetails
                     .map((detail) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${detail.menu.nameMenu}',
+                            style: receiptcontentTextStyle,
+                          ),
+                          Text(
+                            '${currencyFormat.format((double.tryParse(detail.menu.price) ?? 0.0) * detail.quantity)} (${detail.quantity}x)',
+                            style: receiptcontentTextStyle,
+                          ),
+                        ],
+                      ),
+                      if (detail.variant != null)
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            'Varian: ${detail.variant!.nameVarian}',
+                            style: receiptcontentTextStyle.copyWith(
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                      if (detail.toppings != null &&
+                          detail.toppings!.isNotEmpty)
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 8.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '${detail.menu.nameMenu}',
-                                    style: receiptcontentTextStyle,
-                                  ),
-                                  Text(
-                                    '${currencyFormat.format((double.tryParse(detail.menu.price) ?? 0.0) * detail.quantity)} (${detail.quantity}x)',
-                                    style: receiptcontentTextStyle,
-                                  ),
-                                ],
-                              ),
-                              if (detail.variant != null)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Text(
-                                    'Varian: ${detail.variant!.nameVarian}',
-                                    style: receiptcontentTextStyle.copyWith(
-                                        fontStyle: FontStyle.italic),
-                                  ),
+                              Text('Topping:',
+                                  style: receiptcontentTextStyle),
+                              ...detail.toppings!
+                                  .map((topping) => Padding(
+                                padding:
+                                const EdgeInsets.symmetric(
+                                    vertical: 8),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '- ${topping.nameTopping} (${currencyFormat.format(double.tryParse(topping.price.toString()) ?? 0.0)} || ${detail.quantity}x) ',
+                                      style: receiptcontentTextStyle
+                                          .copyWith(
+                                          fontStyle:
+                                          FontStyle
+                                              .italic),
+                                    ),
+                                  ],
                                 ),
-                              if (detail.toppings != null &&
-                                  detail.toppings!.isNotEmpty)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Topping:',
-                                          style: receiptcontentTextStyle),
-                                      ...detail.toppings!
-                                          .map((topping) => Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 8),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '- ${topping.nameTopping} (${currencyFormat.format(double.tryParse(topping.price.toString()) ?? 0.0)} || ${detail.quantity}x) ',
-                                                      style: receiptcontentTextStyle
-                                                          .copyWith(
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .italic),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ))
-                                          .toList(),
-                                    ],
-                                  ),
-                                ),
+                              ))
+                                  .toList(),
                             ],
                           ),
-                        ))
+                        ),
+                    ],
+                  ),
+                ))
                     .toList(),
                 SizedBox(height: 16.0),
                 Divider(),
@@ -225,6 +231,17 @@ class DetailOrderPage extends StatelessWidget {
                         style: receiptcontentTextStyle),
                   ],
                 ),
+                SizedBox(height: 8.0),
+                if (order.orderMethod == 'delivery')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Biaya Delivery', style: receiptcontentTextStyle),
+                    Text(currencyFormat.format(deliveryFee),
+                        style: receiptcontentTextStyle),
+                  ],
+                ),
+                SizedBox(height: 8.0),
                 if (order.status.toLowerCase() == 'batal' ||
                     order.status.toLowerCase() == 'menunggu pengembalian dana')
                   Row(
@@ -235,7 +252,7 @@ class DetailOrderPage extends StatelessWidget {
                           style: receiptcontentTextStyle),
                     ],
                   ),
-                SizedBox(height: 8.0),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -284,6 +301,8 @@ class DetailOrderPage extends StatelessWidget {
                           style: receiptcontentTextStyle),
                     ],
                   ),
+                  SizedBox(height: 10.0),
+                  Text('Nama Kost : ${order.addressModel?.namaKost}\nCatatan Alamat : ${order.addressModel?.catatanAddress}\nDetail Alamat : ${order.addressModel?.detailAddress} ')
                 ] else ...[
                   Text('Pelanggan tidak ditemukan',
                       style: receiptcontentTextStyle),
@@ -323,18 +342,42 @@ class DetailOrderPage extends StatelessWidget {
               ),
               SizedBox(height: screenHeight * 0.04),
             ],
-            ElevatedButton(
-              onPressed: () async {
-                final pdfFile = await generateOrderPdf(order);
-                await Printing.layoutPdf(
-                    onLayout: (PdfPageFormat format) async => pdfFile);
-              },
-              child: Text('Cetak Bukti'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorResources.primaryColor,
-                foregroundColor: Colors.white,
-              ),
+            Row(
+              children: [
+                Visibility(
+                  visible: order.orderMethod == 'delivery',
+                  child:  Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await controller.checkUserWithinRadar(context);
+                      final uriString = Uri.parse('https://www.google.com/maps/dir/"${order.addressModel?.lagtitude}","${order.addressModel?.longtitude}"/"${controller.latitude.value}",${controller.longtitude.value}"');
+                      launchUrl(uriString,mode: LaunchMode.externalNonBrowserApplication);
+                    },
+                    child: Text('Google Map'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorResources.primaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ),),
+                Visibility(
+                  visible: order.orderMethod == 'delivery',
+                    child: SizedBox(width: 10,)),
+                Expanded(child: ElevatedButton(
+                  onPressed: () async {
+                    final pdfFile = await generateOrderPdf(order);
+                    await Printing.layoutPdf(
+                        onLayout: (PdfPageFormat format) async => pdfFile);
+                  },
+                  child: Text('Cetak Bukti'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorResources.primaryColor,
+                    foregroundColor: Colors.white,
+                  ),
+                ),)
+              ],
             ),
+
           ],
         ),
       ),

@@ -38,7 +38,7 @@ class OrderBox extends StatelessWidget {
       case 'pesanan siap':
         return ColorResources.labelcomplete;
       case 'sedang diproses':
-      case 'sedang dikirim':
+      case 'sedang diantar':
         return ColorResources.labelinprogg;
       case 'menunggu batal':
       case 'batal':
@@ -69,7 +69,8 @@ class OrderBox extends StatelessWidget {
         return sum + (double.tryParse(topping.price.toString()) ?? 0.0) * (detail.quantity);
       });
 
-      totalPrice += (itemPrice * detail.quantity) + toppingPrice;
+      totalPrice += (order.orderMethod == 'delivery' ? (itemPrice * detail.quantity) + (order.deliveryfee?.toInt() ?? 0) : (itemPrice * detail.quantity)) + toppingPrice;
+
     }
 
     String formattedPrice;
@@ -160,8 +161,7 @@ class OrderBox extends StatelessWidget {
                         double toppingPrice = detail.toppings!.fold(0.0, (sum, topping) {
                           return sum + (double.tryParse(topping.price.toString()) ?? 0.0) * (detail.quantity);
                         });
-
-                        double itemTotalPrice = (price * detail.quantity) + toppingPrice;
+                        double itemTotalPrice = (order.orderMethod == 'delivery' ? (price * detail.quantity) + (order.deliveryfee?.toInt() ?? 0) : (price * detail.quantity)) + toppingPrice;
                         String formattedItemPrice = _formatPrice(itemTotalPrice);
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 4.0),
@@ -224,12 +224,33 @@ class OrderBox extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+            if (order.status.toLowerCase() == 'konfirmasi pesanan')
                 IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    showEditOrderBottomSheet(context, order);
-                  },
-                ),
+                icon: Icon(Icons.cancel),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ReusableDialog(
+                        title: "Konfirmasi",
+                        content: "Apakah Kamu yakin ingin membatalkan pesanan ini?",
+                        cancelText: "Tidak",
+                        confirmText: "Iya",
+                        onCancelPressed: () {
+                          Get.back();
+                        },
+                        onConfirmPressed: () {
+                          editOrderController.updateCancelOrder(order.id);
+                          Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+                        },
+                        cancelButtonColor: ColorResources.primaryColorLight,
+                        confirmButtonColor: ColorResources.buttondelete,
+                        dialogImage: Image.asset(Images.askDialog),
+                      );
+                    },
+                  );
+                },
+              ),
                 if (order.status.toLowerCase() == 'konfirmasi pesanan')
                   IconButton(
                     icon: Icon(Icons.check),

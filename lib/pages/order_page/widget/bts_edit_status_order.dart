@@ -31,7 +31,7 @@ class EditOrderBottomSheet extends StatelessWidget {
     // Dropdown items based on the status
     final dropdownItems = isPendingCancellation
         ? ['menunggu pengembalian dana','batal']
-        : ['sedang diproses', 'selesai', 'pesanan siap', 'batal', 'menunggu pengembalian dana', 'konfirmasi pesanan', 'sedang diantar'];
+        : ['konfirmasi pesanan','sedang diproses', 'sedang diantar','pesanan siap','selesai'];
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -90,7 +90,7 @@ class EditOrderBottomSheet extends StatelessWidget {
                     orderId: order.id.toString(),
                     status: selectedCategory.value,
                   );
-                  Get.back();  
+                  Get.back();
                 },
                 child: Text('Ubah Status'),
                 style: ElevatedButton.styleFrom(

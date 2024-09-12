@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:warmindo_admin_ui/global/endpoint/warmindo_repository.dart';
 import 'package:warmindo_admin_ui/global/model/model_customers.dart';
@@ -7,12 +9,17 @@ import 'package:warmindo_admin_ui/global/model/model_product_response.dart';
 import 'package:warmindo_admin_ui/global/services/intenet_service.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../global/services/location_service.dart';
+
 class OrderController extends GetxController {
+  LocationService locationService = LocationService();
   var orderList = <Order>[].obs;
   var menuList = <Menu>[].obs;
   var customersList = <CustomerData>[].obs;
   RxBool isLoading = true.obs;
   RxBool isConnected = true.obs;
+  RxDouble latitude = 0.0.obs;
+  RxDouble longtitude = 0.0.obs;
   final InternetService _internetService = InternetService();
 
   @override
@@ -28,7 +35,36 @@ class OrderController extends GetxController {
       isLoading.value = false;
     }
   }
-
+  Future<void> checkUserWithinRadar (BuildContext context) async{
+    try{
+      Position position = await locationService.getCurrentPosition();
+      latitude.value = position.latitude;
+      longtitude.value = position.longitude;
+    }catch(e){
+      if (e.toString().contains('permanently denied')) {
+        // Show an alert dialog to guide the user to app settings
+        showSettingsDialog(context);
+      }
+      Get.snackbar('Pesan', '$e');
+    }
+  }
+  void showSettingsDialog(BuildContext context){
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text('Permission Required'),
+        content: Text('Izin lokasi dilarang, silahkan pergi ke setting dan pilih enable '),
+        actions: [
+          TextButton(onPressed: () {
+            locationService.openAppSettings();
+            Get.back(closeOverlays: true);
+          }, child: Text('Buka Settings')),
+          TextButton(onPressed: () {
+            Get.back(closeOverlays: true);
+          }, child: Text('Nanti')),
+        ],
+      );
+    },);
+  }
   Future<void> _checkInternetConnection() async {
     isConnected.value = await _internetService.isConnected;
     if (isConnected.value) {
