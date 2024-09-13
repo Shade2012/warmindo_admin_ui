@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:warmindo_admin_ui/global/model/model_order_detail.dart';
 
+import 'model_address.dart';
+
 OrderList orderListFromJson(String str) => OrderList.fromJson(json.decode(str));
 
 String orderListToJson(OrderList data) => json.encode(data.toJson());
@@ -50,15 +52,17 @@ class Order {
   String priceOrder;
   String status;
   String? note;
-  String? paymentMethod; 
-  String? orderMethod;   
+  String? paymentMethod;
+  String? orderMethod;
   String? cancelMethod;
   String? reasonCancel;
   String? noRekening;
+  double? deliveryfee;
   String? adminFee;
-  DateTime? createdAt;   
-  DateTime? updatedAt;   
+  DateTime? createdAt;
+  DateTime? updatedAt;
   List<OrderDetail> orderDetails;
+  final AddressModel? addressModel;
 
   Order({
     required this.id,
@@ -66,6 +70,8 @@ class Order {
     required this.priceOrder,
     required this.status,
     this.note,
+    this.deliveryfee,
+    this.addressModel,
     this.paymentMethod,
     this.orderMethod,
     this.cancelMethod,
@@ -90,6 +96,8 @@ class Order {
       reasonCancel: json['reason_cancel'] ?? '',
       noRekening: json['no_rekening'] ?? '',
       adminFee: json['admin_fee'] ?? '',
+      deliveryfee: double.tryParse(json['driver_fee'] ?? '0.0'),
+      addressModel: json['alamat'] != null ? AddressModel.fromJson(json['alamat']) : null,
       createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
       updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
       orderDetails: (json['orderDetails'] as List)

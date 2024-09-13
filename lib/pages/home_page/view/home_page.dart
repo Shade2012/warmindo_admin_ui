@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
               if (schedule.days == today) {
                 final startTime = _parseTime(schedule.start_time);
                 final endTime = _parseTime(schedule.end_time);
-                final forceClose = schedule.forceClose == '1'; 
+                final forceClose = schedule.forceClose == '1';
 
                 // Store is open if not force closed and current time is within open hours
                 isOpen = !forceClose && currentTime >= startTime && currentTime <= endTime;
@@ -197,6 +197,7 @@ class HomePage extends StatelessWidget {
                               order.status.toLowerCase() != 'menunggu batal' &&
                               order.status.toLowerCase() != 'batal' &&
                               order.status.toLowerCase() != 'selesai' &&
+                                  order.status.toLowerCase() != 'sedang diantar' &&
                               order.status.toLowerCase() != 'pesanan siap' &&
                               order.status.toLowerCase() != 'menunggu pengembalian dana' &&
                               order.status.toLowerCase() != 'konfirmasi pesanan')

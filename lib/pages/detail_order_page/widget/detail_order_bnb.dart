@@ -73,41 +73,44 @@ class DetailOrderBnb extends StatelessWidget {
               height: 65,
               child: Row(
                 children: [
-                  Container(
-                    width: 60,
-                    height: 45,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.red, 
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return ReusableDialog(
-                              title: "Konfirmasi",
-                              content: "Apakah Kamu yakin ingin membatalkan pesanan ini?",
-                              cancelText: "Tidak",
-                              confirmText: "Iya",
-                              onCancelPressed: () {
-                                Get.back();
-                              },
-                              onConfirmPressed: () {
-                                editOrderController.updateCancelOrder(order.id);
-                                Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
-                              },
-                              cancelButtonColor:
-                                  ColorResources.primaryColorLight,
-                              confirmButtonColor: ColorResources.buttondelete,
-                              dialogImage: Image.asset(Images.askDialog),
-                            );
-                          },
-                        );
-                      },
-                      icon: Icon(
-                        Icons.clear,
-                        color: Colors.white, 
+                  Visibility(
+                    visible: order.status != 'menunggu pengembalian dana',
+                    child: Container(
+                      width: 60,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.red,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ReusableDialog(
+                                title: "Konfirmasi",
+                                content: "Apakah Kamu yakin ingin membatalkan pesanan ini?",
+                                cancelText: "Tidak",
+                                confirmText: "Iya",
+                                onCancelPressed: () {
+                                  Get.back();
+                                },
+                                onConfirmPressed: () {
+                                  editOrderController.updateCancelOrder(order.id);
+                                  Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+                                },
+                                cancelButtonColor:
+                                    ColorResources.primaryColorLight,
+                                confirmButtonColor: ColorResources.buttondelete,
+                                dialogImage: Image.asset(Images.askDialog),
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.clear,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -115,7 +118,7 @@ class DetailOrderBnb extends StatelessWidget {
                     height: 45,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.red, 
+                      color: Colors.red,
                     ),
                     child: IconButton(
                       icon: Icon(Icons.edit,

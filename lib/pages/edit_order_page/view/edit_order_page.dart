@@ -30,16 +30,15 @@ class EditOrderPage extends StatelessWidget {
 
     // Determine available status options based on the current status
     List<String> statusOptions = [
-      'sedang diproses', 
-      'selesai', 
-      'pesanan siap', 
-      'batal', 
-      'menunggu pengembalian dana'
-      'sedang dikirim'
+      'konfirmasi pesanan',
+      'sedang diproses',
+      'sedang diantar',
+      'pesanan siap',
+      'selesai',
     ];
 
     if (selectedCategory.value == 'menunggu pengembalian dana') {
-      statusOptions = ['menunggu pengembalian dana','batal'];
+      statusOptions = ['menunggu pengembalian dana', 'batal'];
     }
 
     return Scaffold(
@@ -99,15 +98,15 @@ class EditOrderPage extends StatelessWidget {
             Text("Status Pesanan", style: titleAddProductTextStyle),
             SizedBox(height: screenHeight * 0.01),
             Obx(() => CustomDropdown(
-                  items: statusOptions,
-                  value: selectedCategory.value.isNotEmpty
-                      ? selectedCategory.value
-                      : null,
-                  onChanged: (String? value) {
-                    selectedCategory.value = value ?? '';
-                  },
-                  dropdownType: DropdownType.Status,
-                )),
+              items: statusOptions,
+              value: selectedCategory.value.isNotEmpty
+                  ? selectedCategory.value
+                  : null,
+              onChanged: (String? value) {
+                selectedCategory.value = value ?? '';
+              },
+              dropdownType: DropdownType.Status,
+            )),
             SizedBox(height: screenHeight * 0.45),
             Center(
               child: ElevatedButton(
@@ -134,3 +133,4 @@ class EditOrderPage extends StatelessWidget {
     );
   }
 }
+
