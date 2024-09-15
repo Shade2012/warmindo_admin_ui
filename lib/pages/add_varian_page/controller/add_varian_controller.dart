@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,9 +9,16 @@ import 'package:http/http.dart' as http;
 
 class AddVarianController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
+  RxList<String> categoryList = <String>[].obs;
   RxBool isLoading = false.obs;
   final ImagePicker _picker = ImagePicker();
   final ProductController productController = Get.put(ProductController());
+
+  @override
+  void onInit() {
+    fetchCategories();
+    super.onInit();
+  }
 
   Future<void> addVariants({
     File? image,
@@ -59,6 +67,21 @@ class AddVarianController extends GetxController {
         isLoading.value = false;
         print('Error: $e');
       }
+    }
+  }
+
+  void fetchCategories() async {
+    final response = await http.get(
+      Uri.parse(VariantApi.getCategoryVariant),
+      headers: {'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonData = json.decode(response.body)['menu_name'];
+      categoryList.addAll(List<String>.from(jsonData));
+      print('category: $categoryList');
+    } else {
+      Get.snackbar('Error', 'Failed to fetch categories', snackPosition: SnackPosition.BOTTOM);
     }
   }
 

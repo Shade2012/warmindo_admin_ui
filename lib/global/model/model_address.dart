@@ -1,5 +1,3 @@
-import 'package:get/get.dart';
-
 class AddressModel {
   int? id;
   final String? nameAddress;

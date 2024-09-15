@@ -9,8 +9,7 @@ import 'package:warmindo_admin_ui/pages/edit_varian_page/controller/edit_varian_
 
 class EditVarianPage extends StatelessWidget {
   final Menu varian;
-  final EditVariantController varianController =
-      Get.put(EditVariantController());
+  final EditVariantController varianController = Get.put(EditVariantController());
   final TextEditingController ctrProductName = TextEditingController();
   final selectedCategory = RxString('');
   final selectedStock = RxString('');
@@ -28,7 +27,7 @@ class EditVarianPage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     final stockItems = ['Tersedia', 'Tidak Tersedia'];
-    final categories = ['Mie Indomie', 'Mie Sedaap', 'Pop Ice', 'Es teh', 'Kapal Api', 'Nutrisari'];
+    final categories = varianController.categoryList;
 
     // Ensure the selected values are valid
     if (!categories.contains(selectedCategory.value)) {
@@ -124,7 +123,7 @@ class EditVarianPage extends StatelessWidget {
                     )),
               ],
             ),
-            SizedBox(height: screenHeight * 0.024),
+            SizedBox(height: screenHeight * 0.43),
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -155,7 +154,7 @@ class EditVarianPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.25),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.30),
                 ),
               ),
             )

@@ -35,6 +35,7 @@ class VariantApi {
   static var detailVariant = '$apiUrl/api/variants/';
   static var enableVariant = '$apiUrl/api/variants/enable/';
   static var disableVariant = '$apiUrl/api/variants/disable/';
+  static var getCategoryVariant = '$apiUrl/api/menus/all-name';
 }
 
 class AuthEndpoint {
