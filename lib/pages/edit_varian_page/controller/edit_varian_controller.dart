@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,9 +9,31 @@ import 'package:warmindo_admin_ui/pages/product_page/controller/product_controll
 
 class EditVariantController extends GetxController {
   Rx<File?> selectedImage = Rx<File?>(null);
+  RxList<String> categoryList = <String>[].obs;
   RxString error = ''.obs;
   RxBool isLoading = false.obs;
   final ProductController productController = Get.put(ProductController());
+
+  @override
+  void onInit() {
+    fetchCategories();
+    super.onInit();
+  }
+
+  void fetchCategories() async {
+    final response = await http.get(
+      Uri.parse(VariantApi.getCategoryVariant),
+      headers: {'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonData = json.decode(response.body)['menu_name'];
+      categoryList.addAll(List<String>.from(jsonData));
+      print('category: $categoryList');
+    } else {
+      Get.snackbar('Error', 'Failed to fetch categories', snackPosition: SnackPosition.BOTTOM);
+    }
+  }
 
   Future<void> updateStatusVariant({required String id, required bool statusVariant}) async {
     if (id == '0' || id.isEmpty) {

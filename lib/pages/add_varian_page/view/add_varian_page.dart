@@ -74,7 +74,7 @@ class AddVarianPage extends StatelessWidget {
                 Text("Kategori Varian", style: titleAddProductTextStyle),
                 SizedBox(height: screenHeight * 0.01),
                 Obx(() => CustomDropdown(
-                      items: ['Mie Indomie', 'Mie Sedaap', 'Pop Ice', 'Es teh', 'Kapal Api', 'Nutrisari'],
+                      items: varianController.categoryList,
                       value: selectedCategory.value.isNotEmpty
                           ? selectedCategory.value
                           : null,
